@@ -64,7 +64,13 @@
                 <!-- Header Widgets -->
                 <!-- You can create the widgets you want by replicating the following. Each one exists in a <li> element -->
                 <ul id="widgets" class="navbar-nav-custom pull-right">
-
+					<!-- 다국어 선택 -->
+					<li class="dropdown">
+						<a href="javascript:void(0)" class="dropdown-toggle selectedlang" data-toggle="dropdown">언어</a>
+                        <ul class="dropdown-menu langs">
+                            <li><a href="javascript:void(0)" class='lang' data-lang='ko' role="button">언어1</a></li>
+                        </ul>
+					</li>
                     <!-- User Menu -->
                     <li class="dropdown pull-right dropdown-user">
                     	<font color=white><b>(운영자)</b></font>
@@ -73,11 +79,11 @@
                             <!-- Just a button demostrating how loading of widgets could happen, check main.js- - uiDemo() -->
                             <li>
                                 <!-- Modal div is at the bottom of the page before including javascript code -->
-                                <a href="#modal-user-settings" role="button" data-toggle="modal"><i class="fa fa-user"></i> 개인 정보 설정</a>
+                                <a href="#modal-user-settings" role="button" data-toggle="modal"><i class="fa fa-user"></i><span data-lang="main_myinfo_setting">개인 정보 설정</span></a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="javascript:logout();" url="page_login.html"><i class="fa fa-lock"></i> 로그아웃</a>
+                                <a href="javascript:logout();" url="page_login.html"><i class="fa fa-lock"></i> <span data-lang="main_logout">로그아웃</span></a>
                             </li>
                         </ul>
                     </li>
@@ -126,71 +132,71 @@
                             </li>
                               -->
                             <li class='tmenu'>
-                                <a href="#"><i class="fa fa-th-list"></i>데이터 통합</a>
+                                <a href="#" data-lang="main_menu_datamgr"><i class="fa fa-th-list"></i>데이터 통합</a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="menu" data-link="meta_mgr.html"><i class="gi gi-sort"></i>통합데이터 관리</a>
+                                        <a href="#" class="menu" data-link="meta_mgr.html" data-lang="main_menu_data_mgmt"><i class="gi gi-sort"></i>통합데이터 관리</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="fileupload.html"><i class="gi gi-sort"></i>파일 업로드</a>
+                                        <a href="#" class="menu" data-link="fileupload.html" data-lang="main_menu_file_upload"><i class="gi gi-sort"></i>파일 업로드</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="ftpsync.html"><i class="gi gi-sort"></i>ftp 동기화</a>
+                                        <a href="#" class="menu" data-link="ftpsync.html" data-lang="main_menu_ftp_sync"><i class="gi gi-sort"></i>ftp 동기화</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="rdbsync.html"><i class="gi gi-sort"></i>rdb 동기화</a>
+                                        <a href="#" class="menu" data-link="rdbsync.html" data-lang="main_menu_rdb_sync"><i class="gi gi-sort"></i>rdb 동기화</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class='tmenu'>
-                                <a href="#"><i class="fa fa-th-list"></i>데이터 브라우즈</a>
+                                <a href="#" data-lang="main_menu_databrowse"><i class="fa fa-th-list"></i>데이터 브라우즈</a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="menu" data-link="datagrid.html"><i class="gi gi-sort"></i>데이터 그리드</a>
+                                        <a href="#" class="menu" data-link="datagrid.html" data-lang="main_menu_data_grid"><i class="gi gi-sort"></i>데이터 그리드</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class='tmenu'>
-                                <a href="#"><i class="fa fa-th-list"></i>분석</a>
+                                <a href="#" data-lang="main_menu_data_analysis"><i class="fa fa-th-list"></i>분석</a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="menu" data-link="analysis_wizard1.html"><i class="gi gi-sort"></i>자동분석1</a>
+                                        <a href="#" class="menu" data-link="analysis_wizard1.html" data-lang="main_menu_auto_analysis1"><i class="gi gi-sort"></i>자동분석1</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="analysis_wizard.html"><i class="gi gi-sort"></i>자동분석</a>
+                                        <a href="#" class="menu" data-link="analysis_wizard.html" data-lang="main_menu_auto_analysis"><i class="gi gi-sort"></i>자동분석</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="analysis_tools.html"><i class="gi gi-sort"></i>분석도구</a>
+                                        <a href="#" class="menu" data-link="analysis_tools.html" data-lang="main_menu_analysis_tool"><i class="gi gi-sort"></i>분석도구</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class='tmenu'>
-                                <a href="#"><i class="fa fa-th-list"></i>시각화</a>
+                                <a href="#" data-lang="main_menu_data_visualize"><i class="fa fa-th-list"></i>시각화</a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="menu" data-link="dashboard.html"><i class="gi gi-sort"></i>시각화도구</a>
+                                        <a href="#" class="menu" data-link="dashboard.html" data-lang="main_menu_visualize_tool"><i class="gi gi-sort"></i>시각화도구</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class='tmenu'>
-                                <a href="#"><i class="fa fa-th-list"></i>시스템 모니터링</a>
+                                <a href="#" data-lang="main_menu_monitoring"><i class="fa fa-th-list"></i>시스템 모니터링</a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="menu" data-link="monitoring.html"><i class="gi gi-sort"></i>시스템 모니터링</a>
+                                        <a href="#" class="menu" data-link="monitoring.html" data-lang="main_menu_system_monitoring"><i class="gi gi-sort"></i>시스템 모니터링</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="help.html"><i class="gi gi-sort"></i>사용법 및 도움말</a>
+                                        <a href="#" class="menu" data-link="help.html" data-lang="main_menu_usagenhelp"><i class="gi gi-sort"></i>사용법 및 도움말</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class='tmenu'>
-                                <a href="#"><i class="fa fa-th-list"></i>사용자및권한관리</a>
+                                <a href="#" data-lang="main_menu_usernrolemgr"><i class="fa fa-th-list"></i>사용자및권한관리</a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="menu" data-link="user_mgr.html"><i class="gi gi-sort"></i>사용자관리</a>
+                                        <a href="#" class="menu" data-link="user_mgr.html" data-lang="main_menu_user_mgmt"><i class="gi gi-sort"></i>사용자관리</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="group_mgr.html"><i class="gi gi-sort"></i>사용자그룹관리</a>
+                                        <a href="#" class="menu" data-link="group_mgr.html" data-lang="main_menu_group_mgmt"><i class="gi gi-sort"></i>사용자그룹관리</a>
                                     </li>
                                     <!--
                                     <li>
@@ -198,29 +204,29 @@
                                     </li>
                                       -->
                                     <li>
-                                        <a href="#" class="menu" data-link="menu_mgr.html"><i class="gi gi-circle_question_mark"></i>메뉴관리</a>
+                                        <a href="#" class="menu" data-link="menu_mgr.html" data-lang="main_menu_menu_mgmt"><i class="gi gi-circle_question_mark"></i>메뉴관리</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class='tmenu'>
-                                <a href="#"><i class="fa fa-th-list"></i>수집장치관리</a>
+                                <a href="#" data-lang="main_menu_devicemgr"><i class="fa fa-th-list"></i>수집장치관리</a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="menu" data-link="sensor_mgr.html"><i class="gi gi-sort"></i>센서관리</a>
+                                        <a href="#" class="menu" data-link="sensor_mgr.html" data-lang="main_menu_sensor_mgmt"><i class="gi gi-sort"></i>센서관리</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="device_mgr.html"><i class="gi gi-sort"></i>단말관리</a>
+                                        <a href="#" class="menu" data-link="device_mgr.html" data-lang="main_menu_device_mgmt"><i class="gi gi-sort"></i>단말관리</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class='tmenu'>
-                                <a href="#"><i class="fa fa-th-list"></i>모델 및 서비스관리</a>
+                                <a href="#" data-lang="main_menu_modelnsvcmgr"><i class="fa fa-th-list"></i>모델 및 서비스관리</a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="menu" data-link="model_mgr.html"><i class="gi gi-sort"></i>모델관리</a>
+                                        <a href="#" class="menu" data-link="model_mgr.html" data-lang="main_menu_model_mgmt"><i class="gi gi-sort"></i>모델관리</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu" data-link="svc_mgr.html"><i class="gi gi-sort"></i>서비스관리</a>
+                                        <a href="#" class="menu" data-link="svc_mgr.html" data-lang="main_menu_svc_mgmt"><i class="gi gi-sort"></i>서비스관리</a>
                                     </li>
                                 </ul>
                             </li>
@@ -237,7 +243,7 @@
 
                 <!-- Footer -->
                 <footer>
-                    <strong>© Copyright 데이터센터릭-IoTMan. All rights reserved.</strong>
+                    <strong data-lang="login_copyright">© Copyright 데이터센터릭-IoTMan. All rights reserved.</strong>
                 </footer>
                 <!-- END Footer -->
             </div>
@@ -257,7 +263,7 @@
                     <!-- Modal Header -->
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4>개인정보 설정</h4>
+                        <h4 data-lang="main_myinfo_setting">개인정보 설정</h4>
                     </div>
                     <!-- END Modal Header -->
 
@@ -265,7 +271,7 @@
                     <div class="modal-body">
                         <!-- Tab links -->
                         <ul id="example-user-tabs" class="nav nav-tabs" data-toggle="tabs">
-                            <li class="active"><a href="#user-tabs-account"><i class="fa fa-cogs"></i> 계정 정보</a></li>
+                            <li class="active"><a href="#user-tabs-account"><i class="fa fa-cogs"></i> <label data-lang="main_myinfo_account_info">계정 정보</label></a></li>
                         </ul>
                         <!-- END Tab links -->
 
@@ -279,7 +285,7 @@
                                 </div>
                                 <form class="form-horizontal">
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">사용자명</label>
+                                        <label class="control-label col-md-3" data-lang="common_username">사용자명</label>
                                         <div class="col-md-9">
                                             <!-- <p class="form-control-static" id=user-name>administrator</p> -->
                                             <input type="text" id="user-name" class="form-control">
@@ -287,16 +293,16 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3" for="user-pass">비밀번호</label>
+                                        <label class="control-label col-md-3" for="user-pass" data-lang="common_pwd">비밀번호</label>
                                         <div class="col-md-9">
                                             <input type="password" id="user-pass" class="form-control">
-                                            <span class="help-block">정보변경시 현재 비밀번호를 입력해주세요!</span>
+                                            <span class="help-block" data-lang="main_myinfo_msg_inp_pwd1">정보변경시 현재 비밀번호를 입력해주세요!</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3" for="user-newpass">새 비밀번호</label>
+                                        <label class="control-label col-md-3" for="user-newpass"data-lang="common_new_pwd">새 비밀번호</label>
                                         <div class="col-md-9">
-                                            <input type="password" id="user-newpass" placeholder="비밀번호 변경시에만 입력해주세요." class="form-control">
+                                            <input type="password" id="user-newpass"  data-lang="main_myinfo_msg_inp_pwd2" placeholder="비밀번호 변경시에만 입력해주세요." class="form-control">
                                         </div>
                                     </div>
                                 </form>
@@ -309,8 +315,8 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer remove-margin">
-                        <button type='button' class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
-                        <button type='button' class="btn btn-success" id="btnchginfo" ><i class="fa fa-check"></i> 변경내용 저장</button>
+                        <button type='button' class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" data-lang="common_close_btn"> 닫기</i></button>
+                        <button type='button' class="btn btn-success" id="btnchginfo" ><i class="fa fa-check" data-lang="main_myinfo_update"> 변경내용 저장</i></button>
                     </div>
                     <!-- END Modal footer -->
                 </div>
@@ -334,7 +340,6 @@
 
         <!-- Jquery plugins and custom javascript code -->
         <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
 
 		<!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
 		<script src="js/d3/js/d3.min.js"></script>
@@ -355,8 +360,9 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		
         <script src="js/sha/sha512.min.js"></script> 
-        <script src="js/baseapp.js"></script>
         <script src="js/language.js"></script>
+        <script src="js/baseapp.js"></script>
+        <script src="js/main.js"></script>
 		
     
         <!-- Javascript code only for this page -->
@@ -364,7 +370,7 @@
         
         	function logout()
         	{
-        		App.msg_confirm('로그아웃', '로그아웃할까요?', logout_action);
+        		App.msg_confirm(lang('main_logout','로그아웃'), lang('main_msg_logout','로그아웃할까요?'), logout_action);
         	}
         	
         	function logout_action()
@@ -382,12 +388,12 @@
 
                 if($("#user-name").val()=="")
                 {
-                    App.msg_alert('개인정보 변경', '이름를 입력해주세요..');
+                    App.msg_alert(lang('main_msg_myinfo_change','개인정보 변경'), '이름를 입력해주세요..');
                     return;
                 }
                 if($("#user-pass").val()=="")
                 {
-                    App.msg_alert('개인정보 변경', '기존비밀번호를 입력해주세요..');
+                    App.msg_alert(lang('main_msg_myinfo_change','개인정보 변경'), '기존비밀번호를 입력해주세요..');
                     return;
                 }
                 /*
@@ -404,14 +410,14 @@
         		$.post(App.baseurl+"/update_myinfo", post).done(function(ret) {
         			if(ret.success)
         			{
-                        App.msg_alert('개인정보 변경', ' 저장되었습니다. 다시로그인해주세요', logout_action);
+                        App.msg_alert(lang('main_msg_myinfo_change','개인정보 변경'), lang('main_msg_save_relogin','저장되었습니다. 다시로그인해주세요'), logout_action);
         			}
         			else
         			{
-                        App.msg_alert('개인정보 변경실패', '정보가 올바르지 않습니다.');
+                        App.msg_alert(lang('main_msg_myinfo_change_fail','개인정보 변경실패'), lang('main_msg_info_not_correct','정보가 올바르지 않습니다.'));
         			}
         		}).fail(function() {
-                    App.msg_alert('개인정보 변경실패', '에러가 발생했습니다.');
+                    App.msg_alert(lang('main_msg_myinfo_change_fail','개인정보 변경실패'), lang('common_msg_error','에러가 발생했습니다.'));
         		});
                 
             });
@@ -471,8 +477,27 @@
 	            	$(this).parent().parent().parent().find('a').eq(0).addClass('active');
 	            	if(url!==undefined && url!="") movepage(url);
 	            });
+
+	            // 언어 목록 
+	            var langstr = "";
+	            var sellang = getLanguage();
+	            for(var l of Object.keys(langs))
+	            {
+	            	langstr += '<li><a href="javascript:void(0)" class="chglang" data-lang="'+l+'" role="button">'+lang(l, l)+'</a></li>';
+	            }
+	            
+	            $('.langs').html(langstr);
+	            $('.selectedlang').html(lang('sel_lang', '언어({1}', lang(sellang, sellang)));
 	            
         	});
+
+	        // 언어 변경
+	        $(document).on('click','.chglang', function() {
+	        	changelang($(this).data('lang'));
+	        	var sellang = getLanguage();
+	            $('.selectedlang').html(lang('sel_lang', '언어({1}', lang(sellang, sellang)));
+        	
+	        }); 
         	
         	// session chk...
         	var lasttime = (new Date()).getTime();
