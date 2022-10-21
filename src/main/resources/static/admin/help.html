@@ -1,11 +1,11 @@
                     <!-- Navigation info -->
                     <ul id="nav-info" class="clearfix">
                         <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-                        <li class="active"><a href="">사용안내</a></li>
+                        <li class="active"><a href="" data-lang="usage_title">사용안내</a></li>
                     </ul>
                     <!-- END Navigation info -->
 
-					<pre style='font-size:16px;'>
+					<pre style='font-size:16px;' data-lang="usage_content">
                     사용순서:
                     
                     초기 접속 계정 : admin/admin
@@ -25,3 +25,10 @@
                     <b>7. 시스템 모니터링 :</b> 자원의 상태를 모니터링 및 사용법.
                     
                     </pre>
+
+					<script>
+                      $(function () {
+                    	  
+                    	   updatelang();
+                      });
+                    </script>

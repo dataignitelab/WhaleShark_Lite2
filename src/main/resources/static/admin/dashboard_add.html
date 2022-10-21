@@ -34,8 +34,7 @@
 </head>
 <body>
 <br>
-<h3 class="page-header page-header-top">
-	시각화 화면<small id='dashname'> </small>
+<h3 class="page-header page-header-top"><span data-lang="vis_screen">시각화 화면</span><small id='dashname'> </small>
 </h3>
 
 <style>
@@ -72,19 +71,19 @@
 <div class="push_dash">
 	<table>
 		<tr>
-			<th class='W'>통합데이터선택</th>
-			<td class='W' style='border:1px solid white;'><select id=mtype><option>통합데이터선택</option></select></td>
+			<th class='W' data-lang="common_metadata_select">통합데이터선택</th>
+			<td class='W' style='border:1px solid white;'><select id=mtype><option data-lang="common_metadata_select">통합데이터선택</option></select></td>
 			<th class='f W'>파일</th>
-			<td class='f W' style='border:1px solid white;'><select id='filename'><option>파일선택</option></select></td>
+			<td class='f W' style='border:1px solid white;'><select id='filename'><option data-lang="common_file_select">파일선택</option></select></td>
 			<th class='c W'>컬럼</th>
-			<td class='c W' style='border:1px solid white;'><input id='columns' style='width:350px'  readonly placeholder='컬럼선택'></td>
+			<td class='c W' style='border:1px solid white;'><input id='columns' style='width:350px'  readonly placeholder='컬럼선택' data-lang="common_column_select:placeholder"></td>
 			<td class='r W' style='border:1px solid white;'>
 			<select  id='range'>
-				<option value="">직접선택</option>
-				<option value='60s'>최근1분</option>
-				<option value='180s'>최근3분</option>
-				<option value='300s'>최근5분</option>
-				<option value='600s' selected>최근10분</option>
+				<option value="" data-lang="common_input_manual">직접입력</option>
+				<option value='60s' data-lang="vis_recent_1min">최근1분</option>
+				<option value='180s' data-lang="vis_recent_3min">최근3분</option>
+				<option value='300s' data-lang="vis_recent_5min">최근5분</option>
+				<option value='600s' selected data-lang="vis_recent_10min">최근10분</option>
 			</select>
 			</td>
 			<td class='W rd hide' style='border:1px solid white;'>
@@ -97,27 +96,27 @@
 			</td>
 			<td class='W'>
 				<select class='W' id="timer">
-					<option value="">갱신안함</option>
-					<option value="3">3초주기갱신</option>
-					<option value="5">5초주기갱신</option>
-					<option value="10">10초주기갱신</option>
+					<option value="" data-lang="vis_no_refresh">갱신안함</option>
+					<option value="3" data-lang="vis_every_3sec_refresh">3초주기갱신</option>
+					<option value="5" data-lang="vis_every_5sec_refresh">5초주기갱신</option>
+					<option value="10" data-lang="vis_every_10sec_refresh">10초주기갱신</option>
 				</select>
 			</td>
 			</tr>
 			<tr>
 			<td colspan=10 style='border:1px solid white;'>
-				<button type="button" class=" W btn btn-success" id='btnAddline' title="라인차트 추가"><i class="fa fa-line-chart"></i> 라인차트 추가</button>
-				<button type="button" class=" W btn btn-success" id='btnAddbar' title="바차트 추가"><i class="fa fa-bar-chart"></i> 바차트 추가</button>
-				<button type="button" class="W btn btn-success" id='btnAddpie' title="파이차트 추가"><i class="fa fa-pie-chart"></i> 파이차트 추가</button>
+				<button data-type="line" type="button" class=" W btn btn-success" id='btnAddline' title="라인차트 추가" data-lang="vis_add_linechart,vis_add_linechart:title"><i class="fa fa-line-chart"></i> 라인차트 추가</button>
+				<button data-type="bar" type="button" class=" W btn btn-success" id='btnAddbar' title="바차트 추가" data-lang="vis_add_barchart,vis_add_barchart:title"><i class="fa fa-bar-chart"></i> 바차트 추가</button>
+				<button data-type="pie" type="button" class="W btn btn-success" id='btnAddpie' title="파이차트 추가" data-lang="vis_add_piechart,vis_add_piechart:title"><i class="fa fa-pie-chart"></i> 파이차트 추가</button>
 
-				<button type="button" class="W btn btn-success" id='btnAddtext' title="Text 추가"><i class="fa fa-font"></i>Text추가</button>
+				<button data-type="text" type="button" class="W btn btn-success" id='btnAddtext' title="Text 추가" data-lang="vis_add_text,vis_add_text:title"><i class="fa fa-font"></i>Text추가</button>
 				<!-- <button type="button" class="W btn btn-success" id='btnAddsensortext' title="Sensor값 추가">센서값추가</button> -->
-				<button type="button" class="W btn btn-success" id='btnAddBack' title="배경이미지"><i class="fa fa-file-image-o"></i> 배경이미지</button>
+				<button type="button" class="W btn btn-success" id='btnAddBack' title="배경이미지" data-lang="vis_back_image,vis_back_image:title"><i class="fa fa-file-image-o"></i> 배경이미지</button>
 				<!-- <button type="button" class="btn btn-success" id='btnMax' title="전체화면"><i class="fa fa-desktop"></i>전체화면</button> -->
-				<button type="button" class="btn btn-default" id='dashboardNew' title="신규"><i class="fa fa-file-o"></i> 신규</button>
-				<button type="button" class="W btn btn-default" id='dashboardSave' title="저장"><i class="fa fa-floppy-o"></i> 저장</button>
-				<button type="button" class="W btn btn-default" id='btnlayout' title="레이이아웃편집"><i class="fa fa-pencil-square-o"></i> 레이아웃편집</button>
-				<button type="button" class="hide btn btn-default" id='btnexport' title="export">Export</button>
+				<button type="button" class="btn btn-default" id='dashboardNew' title="신규" data-lang="common_new_btn,common_new_btn:title"><i class="fa fa-file-o"></i> 신규</button>
+				<button type="button" class="W btn btn-default" id='dashboardSave' title="저장" data-lang="common_save_btn,common_save_btn:title"><i class="fa fa-floppy-o"></i> 저장</button>
+				<button type="button" class="W btn btn-default" id='btnlayout' title="레이이아웃편집" data-lang="vis_layout_edit,vis_layout_edit:title"><i class="fa fa-pencil-square-o"></i> 레이아웃편집</button>
+				<button type="button" class="hide btn btn-default" id='btnexport' title="export" data-lang="vis_export,vis_export:title">Export</button>
 			</td>
 		</tr>
 	</table>
@@ -134,7 +133,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">×</button>
-				<h4>시각화 Export</h4>
+				<h4 data-lang="vis_view_export">시각화 Export</h4>
 			</div>
 			<!-- END Modal Header -->
 
@@ -142,7 +141,7 @@
 			<div class="modal-body">
 				<form class="form-horizontal">
 					<div class="form-group">
-						<label class="control-label col-md-3">export 코드 <br><font color=red>오른쪽 코드를 외부 웹 콘텐츠에 붙여 넣으세요.</font> </label>
+						<label class="control-label col-md-3" data-lang="vis_export_comment">export 코드 <br><font color=red>오른쪽 코드를 외부 웹 콘텐츠에 붙여 넣으세요.</font> </label>
 						<div class="col-md-9">
 							<textarea name="export" class="form-control" rows=10 cols=180>
 <div id='test' style='width:800px; height:600px'></div>
@@ -163,12 +162,8 @@ loaddashboard('#test', {id})
 
 			<!-- Modal footer -->
 			<div class="modal-footer remove-margin">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">
-					<i class="fa fa-times"></i> 닫기
-				</button>
-				<button type="button" class="btn btn-success" id="btnSave">
-					<i class="fa fa-check"></i> 확인
-				</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
+				<button type="button" class="btn btn-success" id="btnSave" data-lang="common_ok_btn"><i class="fa fa-check"></i> 확인</button>
 			</div>
 			<!-- END Modal footer -->
 		</div>
@@ -185,7 +180,7 @@ loaddashboard('#test', {id})
 			<!-- Modal Header -->
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4>대시보드저장</h4>
+				<h4 data-lang="vis_save_dashboard">대시보드저장</h4>
 			</div>
 			<!-- END Modal Header -->
 
@@ -193,7 +188,7 @@ loaddashboard('#test', {id})
 			<div class="modal-body">
 				<form class="form-horizontal">
 					<div class="form-group">
-						<label class="control-label col-md-3">이름</label>
+						<label class="control-label col-md-3" data-lang="common_name" data-lang="common_name">이름</label>
 						<div class="col-md-9">
 							<input type="text" name="name" class="form-control" value="">
 							<input type="hidden" name="id" class="form-control" value="">
@@ -201,7 +196,7 @@ loaddashboard('#test', {id})
 					</div>
 
 					<div class="form-group">
-						<label class="control-label col-md-3">미리보기</label>
+						<label class="control-label col-md-3" data-lang="vis_preview">미리보기</label>
 						<div class="col-md-9">
 							<img name='preview' width='100%'>
 						</div>
@@ -212,12 +207,8 @@ loaddashboard('#test', {id})
 
 			<!-- Modal footer -->
 			<div class="modal-footer remove-margin">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">
-					<i class="fa fa-times"></i> 닫기
-				</button>
-				<button type="button" class="btn btn-success">
-					<i class="fa fa-check"></i> 확인
-				</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
+				<button type="button" class="btn btn-success" data-lang="common_ok_btn"><i class="fa fa-check"></i> 확인</button>
 			</div>
 			<!-- END Modal footer -->
 		</div>
@@ -234,7 +225,7 @@ loaddashboard('#test', {id})
 			<!-- Modal Header -->
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4>설정 선택</h4>
+				<h4 data-lang="vis_setting">설정 선택</h4>
 			</div>
 			<!-- END Modal Header -->
 
@@ -242,25 +233,25 @@ loaddashboard('#test', {id})
 			<div class="modal-body">
 				<form class="form-horizontal">
 					<div class="form-group">
-						<label class="control-label col-md-3">텍스트: </label>
+						<label class="control-label col-md-3" data-lang="vis_txt_label">텍스트: </label>
 						<div class="col-md-9">
 							<input type="text" name="text" class="form-control" value="">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-3">글자색: </label>
+						<label class="control-label col-md-3" data-lang="vis_txtcolor_label">글자색: </label>
 						<div class="col-md-9">
 							<input type="text" name="color" class="form-control" value="">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-3">배경색: </label>
+						<label class="control-label col-md-3" data-lang="vis_backcolor_label">배경색: </label>
 						<div class="col-md-9">
 							<input type="text" name="bgcolor" class="form-control" value="">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-3">폰트크기: </label>
+						<label class="control-label col-md-3" data-lang="vis_fontsize_label">폰트크기: </label>
 						<div class="col-md-9">
 							<select name='fontsize' class="form-control">
 								<option value='10'>10</option>
@@ -278,7 +269,7 @@ loaddashboard('#test', {id})
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-3">폰트굵기: </label>
+						<label class="control-label col-md-3" data-lang="vis_fontweight_label">폰트굵기: </label>
 						<div class="col-md-9">
 							<select name='fontweight' class="form-control">
 								<option value='normal'>normal</option>
@@ -296,7 +287,7 @@ loaddashboard('#test', {id})
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-3">폰트종류: </label>
+						<label class="control-label col-md-3" data-lang="vis_fontname_label">폰트종류: </label>
 						<div class="col-md-9">
 							<select name='fontname' class="form-control">
 								<option value=''>default</option>
@@ -323,12 +314,8 @@ loaddashboard('#test', {id})
 
 			<!-- Modal footer -->
 			<div class="modal-footer remove-margin">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">
-					<i class="fa fa-times"></i> 닫기
-				</button>
-				<button type="button" class="btn btn-success" id="btnSave">
-					<i class="fa fa-check"></i> 확인
-				</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
+				<button type="button" class="btn btn-success" id="btnSave" data-lang="common_ok_btn"><i class="fa fa-check"></i> 확인</button>
 			</div>
 			<!-- END Modal footer -->
 		</div>
@@ -361,7 +348,7 @@ $.post(App.baseurl+'/list', {qid:'metafind',column:'mtype',value:'csv',value1:'x
 	console.log(res);
 	if(res.success)
 	{
-    	$('#mtype').empty().append("<option value=''>통합데이터선택</option>");
+    	$('#mtype').empty().append("<option value=''data-lang='common_metadata_select'>"+lang("common_metadata_select","통합데이터선택")+"</option>");
     	for(var i=0; i<res.list.length; i++)
     	{
     		var item = res.list[i];
@@ -375,7 +362,7 @@ $('#mtype').change(function() {
 	var path = $('#mtype option:selected').attr('path');
 	if(mtype=="csv"|| mtype=="xls")
 	{
-		$('#filename').empty().append("<option value=''>파일을 선택해주세요.</option>");
+		$('#filename').empty().append("<option value='' data-lang='common_msg_select_file'>"+lang("common_msg_select_file","파일을 선택해주세요.")+"</option>");
 		$.post(App.baseurl+'/filelist', {path:path,mowner:App.loginuserid}, function(res) {
 			if(res.success) {
 				for(var i=0; i<res.list.length; i++){
@@ -472,39 +459,6 @@ $('#columns').off('click').on('click', function() {
 	});
 	
 });
-
-/*
-$('[name=pbtnfind]').click(function() {
-	var cbobj = $(this).parent().children('[name=pcbfind]');	
-	$.post(App.baseurl+"/list",{qid:"permissionfind",name:$(this).parent().children('[name=ptxtfind]').val()}).done(
-        	function(res){
-        		if(res.success)
-        		{
-        			cbobj.empty().append('<option value="">'+res.list.length+' 개 검색됨</option>');
-        			
-        			for(var i=0; i<res.list.length; i++)
-        			{
-        				var item = res.list[i];
-        				cbobj.append('<option value="'+item.id+'">'+item.name+'('+item.type+')</option>');
-        			}
-        		}
-        	});
-	
-});
-
-$('[name=pbtnadd]').click(function() {
-	var divobj = $(this).parent().parent().children('.permissionlst');
-	var cbobj = $(this).parent().children('[name=pcbfind]');
-	var val = cbobj.val();
-	if(val=="") return;
-	var txt = cbobj.children('option:selected').text();
-	divobj.append('<div>&nbsp;<button name=pbtndel type="button">삭제</button>&nbsp;<input type=hidden name=permission value="'+val+'">'+txt+'<br></div>');
-});
-
-$(document).off('click','[name=pbtndel]').on('click','[name=pbtndel]',function() {
-	$(this).parent().remove();
-});
-*/
 
 colors = [
 	'255, 99, 132',
@@ -666,7 +620,7 @@ function addchart(type, mtype, ourl, odatabase, table, filepath, sql, timer, id,
 	if(left!==undefined) style = "position:absolute;left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;";
 	$("#charts").append("<div class='chart' style='"+style+"'><canvas id="+chartobj.id+" width=400 height=400></canvas></div>");
 	
-	if(id===undefined) App.start_loading('검색중...');
+	if(id===undefined) App.start_loading(lang('common_msg_searching','검색중...'));
 
     chartobj.mtype = mtype;
     chartobj.ourl = ourl;
@@ -758,7 +712,7 @@ function refreshchart(chartobj)
 						yvals[c-1].push(item[cname]);
 				}
 			}
-			chartobj.data = {vals:[xvals,yvals],labels:["시간",ylabel]};
+			chartobj.data = {vals:[xvals,yvals],labels:[lang("common_time","시간"),ylabel]};
 			if(chartobj.obj!=null) {
 				chartobj.obj.destroy();
 				chartobj.obj = null;
@@ -797,7 +751,7 @@ function clearAllChart()
 //	$('#save-modal [name=permission]').val('');
 	$('#dashname').text('');
 //	$('.W').show();
-	$('#btnlayout').html('<i class="fa fa-pencil-square-o"></i> 레이아웃편집');
+	$('#btnlayout').html('<i class="fa fa-pencil-square-o"></i> '+lang('vis_edit_layout','레이아웃편집'));
 }
 
 //chart,pie deleteclear()
@@ -884,7 +838,7 @@ function addpie(mtype, ourl, odatabase, table, filepath, sql, timer, id, left, t
 					}
 				}
 				
-				cobj.data = {vals:[xvals,yvals],labels:["시간",ylabel]};
+				cobj.data = {vals:[xvals,yvals],labels:[lang("common_time","시간"),ylabel]};
 				
 				var style = "display:inline-block; width:400px;height:400px;";
 				if(left!==undefined) style = "position:absolute; display:inline-block; left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;";
@@ -950,7 +904,7 @@ function refreshpie(chartobj)
 				}
 			}
 			
-			chartobj.data = {vals:[xvals,yvals],labels:["시간",ylabel]};
+			chartobj.data = {vals:[xvals,yvals],labels:[lang("common_time","시간"),ylabel]};
 			
 			var maxval = 200;
 			
@@ -1044,11 +998,11 @@ $('#btnAddline,#btnAddbar,#btnAddpie').click(function() {
 	var range = $('#range').val(); // tsdb
 	
 	if(mname=="") {
-		App.msg_alert('오류', '통합데이터를 선택하지 않았습니다.');
+		App.msg_alert(lang('vis_error','오류'), lang('vis_msg_metadata_empty','통합데이터를 선택하지 않았습니다.'));
 		return;
 	}
 	if(columns=="")	{
-		App.msg_alert('오류', '컬럼을 선택하지 않았습니다.');
+		App.msg_alert(lang('vis_error','오류'), lang('vis_msg_column_empty','컬럼을 선택하지 않았습니다.'));
 		return;
 	}
 	
@@ -1062,11 +1016,11 @@ $('#btnAddline,#btnAddbar,#btnAddpie').click(function() {
 			var tdate = $('[name=tdate]').val();
 			
 			if(fdate=="") {
-				App.msg_alert('오류', '검색 시작일을 입력하지 않았습니다.');
+				App.msg_alert(lang('vis_error','오류'), lang('vis_msg_start_empty','검색 시작일을 입력하지 않았습니다.'));
 				return;
 			}
 			if(tdate=="") {
-				App.msg_alert('오류', '검색 종료일을 입력하지 않았습니다.');
+				App.msg_alert(lang('vis_error','오류'), lang('vis_msg_end_empty','검색 종료일을 입력하지 않았습니다.'));
 				return;
 			}
 			ftime = fdate + " "+$('[name=fhour]').val()+":"+$('[name=fminute]').val()+":00";
@@ -1090,17 +1044,17 @@ $('#btnAddline,#btnAddbar,#btnAddpie').click(function() {
 		sql = mtype+"#"+filepath+"#"+info_encoding+"#"+cols;
 	}
 	
-	if($(this).text().indexOf("파이")>=0)
+	if($(this).data("type")=="pie")
 	{
 		addpie(mtype, ourl, odatabase, mtable, filepath, sql, $('#timer').val());
 		return;
 	}
-	else if($(this).text().indexOf("라인")>=0)
+	else if($(this).data("type")=="line")
 	{
 		addchart("line", mtype, ourl, odatabase, mtable, filepath, sql, $('#timer').val());
 		return;
 	}
-	else if($(this).text().indexOf("바")>=0)
+	else if($(this).data("type")=="bar")
 	{
 		addchart("bar", mtype, ourl, odatabase, mtable, filepath, sql, $('#timer').val());
 		return;
@@ -1111,15 +1065,15 @@ $('#btnAddline,#btnAddbar,#btnAddpie').click(function() {
 (function init(){
 
 	$('.input-datepicker').datepicker({format:"yyyy-mm-dd"});
-	for(var i=0; i<24; i++) $('select.hour').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +'시</option>');
-	for(var i=0; i<60; i++) $('select.minute').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +'분</option>');
+	for(var i=0; i<24; i++) $('select.hour').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +lang('common_hh','시')+'</option>');
+	for(var i=0; i<60; i++) $('select.minute').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +lang('common_mm','분')+'</option>');
 	
 	
 	if(App.editdashboard!==undefined  && App.editdashboard!=null)
 	{
 		var info = App.editdashboard;
 		
-		$('title').text('시각화 수정 - '+info.name);
+		$('title').text(lang('vis_modify','시각화 수정 - {1}',info.name));
 		
 		$('#save-modal [name=id]').val(info.id);
 		$('#save-modal [name=name]').val(info.name);
@@ -1228,15 +1182,14 @@ $.contextMenu({
 	},
 	items: {
 //		"copy": {name: "복제", icon: "copy"},
-		"delete": {name: "삭제", icon: "delete"},
-		"setting": {name: "설정", icon: "edit"},
+		"delete": {name: lang("common_delete_btn","삭제"), icon: "delete"},
+		"setting": {name: lang("common_setting_btn","설정"), icon: "edit"},
 //		"sep1": "---------",
 //		"quit": {name: "Quit", icon: function(){
 //			return 'context-menu-icon context-menu-icon-quit';
 //		}}
 	}
 });        	
-
 
 /*
 $('#btnMax').click(function() {
@@ -1259,7 +1212,7 @@ $('#btnMax').click(function() {
 */
 
 $('#dashboardNew').click(function() {
-	App.msg_confirm('대시보드', '대시보드를 새로 만드시겠습니까?', clearAllChart);
+	App.msg_confirm(lang('vis_dashboard','대시보드'), lang('vis_msg_dashboard_new_confirm','대시보드를 새로 만드시겠습니까?'), clearAllChart);
 });
 
 $('#dashboardSave').click(function() {
@@ -1292,7 +1245,7 @@ $('#dashboardSave').click(function() {
 		}
 		
 //		console.log('save',save);
-		App.start_loading('정보저장중');
+		App.start_loading(lang('common_msg_saving','정보저장중'));
 		$.post(App.baseurl+"/insert",save).done(function(res) {
 			App.stop_loading();
 			
@@ -1303,9 +1256,9 @@ $('#dashboardSave').click(function() {
 				$('#save-modal [name=id]').val(res.id);
 				$('#dashname').text(save.name);
 				$('#save-modal').modal('hide');
-				App.msg_alert('대시보드', '저장되었습니다.', function() { if(opener.refreshgrid!==undefined) opener.refreshgrid(); });
+				App.msg_alert(lang('vis_dashboard','대시보드'), lang('common_msg_saved','저장되었습니다.'), function() { if(opener.refreshgrid!==undefined) opener.refreshgrid(); });
 			}
-			else App.msg_alert('저장오류', '저장에 오류가 발생했습니다.');
+			else App.msg_alert(lang('vis_save_error','저장오류'), lang('vis_msg_save_error','저장에 오류가 발생했습니다.'));
 			
 		});
 		
@@ -1338,7 +1291,7 @@ function updatedashdata(name, data)
 		else if (item.type=="img") addimg(item.text, item.id, item.left, item.top, item.width, item.height);
 		else if (item.type=="background") {
 			$("#charts").css("background-image", item.data).css("background-repeat","no-repeat");
-        	$('#btnAddBack').text("배경지우기");
+        	$('#btnAddBack').text(lang('vis_clear_back',"배경지우기"));
 		}
 	}
 }
@@ -1376,7 +1329,7 @@ function loaddash(i) {
 	
 	$('#open-modal').modal('hide');
 	
-	$('#btnAddBack').text("배경이미지");
+	$('#btnAddBack').text(lang('vis_back_image',"배경이미지"));
 	$("#charts").css("background", "none");
 	$("#charts").css("background-image","");
 	
@@ -1490,7 +1443,7 @@ $('#btnlayout').off('click').on('click',function() {
 		$('.chart').draggable({grid:[20,20]}).resizable({grid:20}); //.resize(resizeevt);
 		layoutmode = true;	
 		updatepos();
-		$('#btnlayout').html('<i class="fa fa-pencil-square-o"></i> 레이아웃고정');
+		$('#btnlayout').html('<i class="fa fa-pencil-square-o"></i> '+lang('vis_fix_layout','레이아웃고정'));
 	}
 });
 
@@ -1729,7 +1682,7 @@ function refreshtext(chartobj)
 			}
 			else 
 			*/
-			if($('#btnlayout').text().trim()=="레이아웃편집") $('#'+chartobj.id).text(text);
+			if($('#btnlayout').text().trim()==lang("vis_layout_edit","레이아웃편집")) $('#'+chartobj.id).text(text);
 		}
 		else
 		{
@@ -1746,11 +1699,11 @@ function refreshtext(chartobj)
 
 $('#btnAddBack').click(function() {
 
-	if($('#btnAddBack').text().indexOf("배경지우기")>=0)
+	if($('#btnAddBack').text().indexOf(lang("vis_clear_back","배경지우기"))>=0)
 	{
     	$("#charts").css("background", "none");
     	$("#charts").css("background-image","");
-    	$('#btnAddBack').text("배경이미지");
+    	$('#btnAddBack').text(lang("vis_back_image","배경이미지"));
 		return;		
 	}
 	
@@ -1768,7 +1721,7 @@ $('#btnAddBack').click(function() {
 //        	$("#charts img:first").remove();
 //        	$("#charts").append(html);
         	$("#charts").css("background-image", "url("+e.target.result+")").css("background-repeat","no-repeat");
-        	$('#btnAddBack').text("배경지우기");
+        	$('#btnAddBack').text(lang("vis_clear_back","배경지우기"));
 //			addimg(e.target.result);
 			$('#file').val('');
         };
@@ -1816,7 +1769,7 @@ $(document).off('dblclick', 'div.text,div.sensortext').on('dblclick', 'div.text,
 	
 	if($(this).hasClass('text'))
 	{
-		var newtxt = prompt('변경할문자열?',$(this).text());
+		var newtxt = prompt(lang('vis_msg_chg_text_input','변경할문자열?'),$(this).text());
 		if(newtxt!=null)
 		{
 			$(this).text(newtxt);
@@ -1831,7 +1784,7 @@ $(document).off('dblclick', 'div.text,div.sensortext').on('dblclick', 'div.text,
 		
 		val = val.split(fmt).join("");
 		
-		var newtxt = prompt('변경할문자열({} 에는 센서값이 치환됩니다.)?',$(this).data("text"));
+		var newtxt = prompt(lang('vis_msg_chg_text_sensorinput','변경할문자열({} 에는 센서값이 치환됩니다.)?'),$(this).data("text"));
 		
 		if(newtxt!=null)
 		{
