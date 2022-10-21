@@ -114,6 +114,7 @@ var langs = {
 		common_mm:"분",
 		common_ss:"초",
 		common_setting_btn:"설정",
+		common_metadata:"통합데이터",
 
 		// login 
 		login_title:"데이터 관리 도구",
@@ -253,9 +254,22 @@ var langs = {
 		rdbsync_exec:"프로세스실행",
 		rdbsync_kill:"강제종료",
 		
-		//analysis
-		
-		
+		//analysis1
+		ana1_title:"자동분석1",
+		ana1_refresh:" Refresh",
+		ana1_param:"파라미터",
+		ana1_manual_analysis:"수동 분석",
+		ana1_auto_analysis:"자동 분석",
+		ana1_msg_analysis_confirm:"분석을 실행할까요?",
+		ana1_msg_analyzing:"데이터 분석실행중...",
+		ana1_analysis_ok:"분석실행완료",
+		ana1_msg_analysis_executed:"분석이 실행되었습니다.",
+		ana1_msg_analysis_failed:"데이터 분석에 오류가 발생했습니다.",
+		ana1_error:"에러",
+		ana1_analysis_unable:"분석불가",
+		ana1_analysis_success:"분석완료",
+		ana1_msg_analysis_success:"데이터 분석이 완료되었습니다.",
+		ana1_msg_analysis_confirm2:"{1} 분석을 실행할까요?",
 		
 		// visualize
 		vis_title:"시각화 목록",
