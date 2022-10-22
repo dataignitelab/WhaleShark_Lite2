@@ -435,6 +435,10 @@
         				App.loginuserid = ret.loginuserid;
         				App.company = ret.company;
         				App.role = ret.role;
+        				if(getLanguage()!=ret.lang){
+        					changelang(ret.lang);
+        					$('.selectedlang').html(lang('sel_lang', '언어({1}', lang(sellang, sellang)));
+        				}
         				$("#user-name").val(App.loginname);
     	            	movepage("intro.html");
 
@@ -496,6 +500,10 @@
 	        	changelang($(this).data('lang'));
 	        	var sellang = getLanguage();
 	            $('.selectedlang').html(lang('sel_lang', '언어({1}', lang(sellang, sellang)));
+	            
+	            // lang db update
+	            var post={lang:$(this).data('lang')};
+        		$.post(App.baseurl+"/update_myinfo", post).done(function(ret) {});
         	
 	        }); 
         	

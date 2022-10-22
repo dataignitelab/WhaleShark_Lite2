@@ -108,7 +108,7 @@ public class CommonController {
 		pwd = pwd.replaceAll("'", "");
 		
 		HashMap<String, String> sql = new HashMap<String, String>();
-		sql.put("sql", "select id,userid,name,password,company,role from tb_user where userid='"+uid+"' AND (password='' OR password='"+pwd+"')");
+		sql.put("sql", "select id,userid,name,password,company,role,lang from tb_user where userid='"+uid+"' AND (password='' OR password='"+pwd+"')");
 		List<Object> lst = commonservice.selectsql(sql);
 		for (Object i :lst) {
 			Map item =	(Map)i;
@@ -122,6 +122,7 @@ public class CommonController {
 				session.putValue("name", item.get("name"));
 				session.putValue("company", item.get("company"));
 				session.putValue("role", item.get("role"));
+				session.putValue("lang", item.get("lang"));
 				return ret;
 			}
 		}
@@ -145,6 +146,7 @@ public class CommonController {
 		String userid = (String) session.getValue("userid");
 		String company = (String) session.getValue("company");
 		String role = (String) session.getValue("role");
+		String lang = (String) session.getValue("lang");
 		if(name==null || name=="")
 		{
 			ret.put("success", false);
@@ -155,13 +157,14 @@ public class CommonController {
 		ret.put("loginuserid", userid);
 		ret.put("company", company);
 		ret.put("role", role);
+		ret.put("lang", lang);
 		return ret;
 	}
 
 	@CrossOrigin("*")
 	@RequestMapping(value = "/update_myinfo")
 	@ResponseBody
-	public Map update_myinfo(HttpServletRequest request, @RequestParam Map<String, String> map) throws Exception {
+	public Map update_myinfo(HttpServletRequest request, HttpSession session, @RequestParam Map<String, String> map) throws Exception {
 		
 		Map ret = new HashMap();
 		ret.put("success", true);
@@ -169,18 +172,21 @@ public class CommonController {
 		String oldpwd = (String)map.get("oldpassword");
 		String newpwd = (String)map.get("password");
 		String name = (String)map.get("name");
-
-		HttpSession session = request.getSession();
+		String lang = (String)map.get("lang");
 		
 		String id = (String) session.getValue("loginid");
 		
-		oldpwd = oldpwd.replaceAll("'", "");
-		
 		HashMap<String, String> sql = new HashMap<String, String>();
 		
-		String qry = String.format("update tb_user set password='%s', name='%s' where id='%s' and password='%s'", newpwd, name, id, oldpwd);
-		if(newpwd==null || newpwd=="")
-			qry = String.format("update tb_user set name='%s' where id='%s' and password='%s'", name, id, oldpwd);
+		String qry = "";
+		
+		if(lang!=null && lang!="") qry = String.format("update tb_user set lang='%s' where id='%s'", lang, id);
+		else
+		{
+			oldpwd = oldpwd.replaceAll("'", "");
+			qry = String.format("update tb_user set password='%s', name='%s' where id='%s' and password='%s'", newpwd, name, id, oldpwd);
+			if(newpwd==null || newpwd=="") qry = String.format("update tb_user set name='%s' where id='%s' and password='%s'", name, id, oldpwd);
+		}
 		
 		sql.put("sql", qry);
 		int res = commonservice.updatesql(sql);
@@ -189,7 +195,10 @@ public class CommonController {
 		{
 			ret.put("success", false);
 		}
-		else session.putValue("name", name);
+		else {
+			if(lang!=null && lang!="") session.putValue("lang", lang);
+			else session.putValue("name", name);
+		}
 		
 		return ret;
 	}
