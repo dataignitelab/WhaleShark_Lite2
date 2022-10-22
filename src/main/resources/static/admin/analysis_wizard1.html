@@ -343,7 +343,7 @@
 						for(var i=0; i<res.list.length; i++)
 						{
 							var item = res.list[i];
-							if(item.state=="분석완료" || item.state=="분석불가" )
+							if(item.state=="분석완료" || item.state=="분석불가" || item.state=="Analyzed" || item.state=="Failed" )
 							{
 								var icon = '<i class="fa fa-cogs"></i>';
 								
@@ -352,8 +352,8 @@
 								else icon = '<img width=20 src=img/i8.png>';
 								
 								
-								if(item.state=="분석완료") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-success"><label class=tab-success>&nbsp;</label>'+icon+item.name+'</a></li>');
-								else if(item.state=="분석불가") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-fail"><label class=tab-fail>&nbsp;</label>'+icon+item.name+'</a></li>');
+								if(item.state=="분석완료" || item.state=="Analyzed") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-success"><label class=tab-success>&nbsp;</label>'+icon+item.name+'</a></li>');
+								else if(item.state=="분석불가" || item.state=="Failed") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-fail"><label class=tab-fail>&nbsp;</label>'+icon+item.name+'</a></li>');
 								if(item.run_log!=null) run_log = item.run_log.trim();
 							}
 						}
@@ -397,7 +397,7 @@
 				
 				$('#btnexec').removeClass('hide');
 				
-				if(state=="분석완료")
+				if(state=="분석완료" || state=="Analyzed")
 				{
 					if(content.indexOf("success:")==0) content = content.substring(8);
 					else if(content.indexOf("error:")==0) content = content.substring(6);
