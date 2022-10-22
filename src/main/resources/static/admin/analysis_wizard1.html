@@ -332,7 +332,7 @@
 			
 			function load_results()
 			{
-				var cond = {qid:"algorunlist",userid:App.loginuserid};
+				var cond = {qid:"algorunlist",userid:App.loginuserid,lang:getLanguage()};
 				$.post(App.baseurl+'/list', cond, function(res) {
 //					console.log(res);
 					if(res.success)
@@ -479,7 +479,6 @@
 				var d = {};
 				d.cmd=cmds.join("@");
 				d.deli= "@";
-				d.cmd +="@"+getLanguage(); // 언어 추가..
 				$.post(App.baseurl+'/shell',d).done(function(res){
 					App.stop_loading();
 //					console.log(res);
