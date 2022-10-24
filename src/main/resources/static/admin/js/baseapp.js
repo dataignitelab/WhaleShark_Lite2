@@ -618,19 +618,18 @@ function makegrid(param) {
  
  function state_str(state)
  {
-	 if(state=="REGISTERING") return "가입중";
-	 else if(state=="INACTIVE") return "비활성";
-	 else if(state=="ACTIVE") return "활성";
-	 else if(state=="REJECT") return "거절";
-	 else if(state=="QUESTION") return "질문";
-	 else if(state=="ANSWER") return "답변";
-	 else if(state=="ERROR") return "고장";
-	 else if(state=="FIXING") return "수리중";
-	 else if(state=="FIXED") return "수리완료";
-	 else if(state=="FIXED") return "수리완료";
-	 else if(state=="MAIN") return "메인메뉴";
-	 else if(state=="SUB") return "서브메뉴";
-	 else if(state=="DIV") return "구분자";
+	 if(state=="REGISTERING") return lang('common_state_registering',"가입중");
+	 else if(state=="INACTIVE") return lang('common_state_inactive',"비활성");
+	 else if(state=="ACTIVE") return lang('common_state_active',"활성");
+	 else if(state=="REJECT") return lang('common_state_reject',"거절");
+	 else if(state=="QUESTION") return lang('common_state_question',"질문");
+	 else if(state=="ANSWER") return lang('common_state_answer',"답변");
+	 else if(state=="ERROR") return lang('common_state_error',"고장");
+	 else if(state=="FIXING") return lang('common_state_fixing',"수리중");
+	 else if(state=="FIXED") return lang('common_state_fixed',"수리완료");
+	 else if(state=="MAIN") return lang('common_state_main',"메인메뉴");
+	 else if(state=="SUB") return lang('common_state_sub',"서브메뉴");
+	 else if(state=="DIV") return lang('common_state_div',"구분자");
 	 return state;
  }
    
@@ -641,9 +640,9 @@ function makegrid(param) {
 	 for(var i=0; i<roles.length; i++)
 	 {
 		 if(rolestrs!="") rolestrs += ",";
-		 if(roles[i]=="ADMIN") rolestrs += "어드민";
-		 else if(roles[i]=="USER") rolestrs += "개인";
-		 else if(roles[i]=="TEAM") rolestrs += "팀";
+		 if(roles[i]=="ADMIN") rolestrs += lang('common_role_admin',"어드민");
+		 else if(roles[i]=="USER") rolestrs += lang('common_role_user',"개인");
+		 else if(roles[i]=="TEAM") rolestrs += lang('common_role_team',"팀");
 		 else rolestrs+=roles[i]; 
 	 }
  
@@ -730,15 +729,15 @@ function makegrid(param) {
 	 }
 	 if(options.language===undefined)
 		 options.language = {
-		        emptyTable: "데이터가 없습니다.",
-		        lengthMenu: "페이지당 _MENU_ 개씩 보기",
-		        info: "현재 _START_ - _END_ / _TOTAL_건",
-		        infoEmpty: "데이터 없음",
-		        infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
-		        search: " 검색: ",
-		        zeroRecords: "일치하는 데이터가 없어요.",
-		        loadingRecords: "로딩중...",
-		        processing:     "잠시만 기다려 주세요...",
+		        emptyTable: lang('common_grid_emptytable',"데이터가 없습니다."),
+		        lengthMenu: lang('common_grid_lengthmenu',"페이지당 _MENU_ 개씩 보기"),
+		        info: lang('common_grid_info',"현재 _START_ - _END_ / _TOTAL_건"),
+		        infoEmpty: lang('common_grid_infoempty',"데이터 없음"),
+		        infoFiltered: lang('common_grid_infofiltered', "( _MAX_건의 데이터에서 필터링됨 )"),
+		        search: lang('common_grid_search', " 검색: "),
+		        zeroRecords: lang('common_grid_zerorecords', "일치하는 데이터가 없어요."),
+		        loadingRecords: lang('common_grid_loadingrecords', "로딩중..."),
+		        processing:     lang('common_grid_processing', "잠시만 기다려 주세요..."),
 		        /*
 		        paginate: {
 		            next: "다음",
@@ -793,14 +792,14 @@ document.oncontextmenu = function()
 function sessionchk()
 {
 	if(!App.islogin && getCookie("id")!="") App.islogin = true;
-	
+	user
 	// login timeout...
 	if(App.islogin && getCookie("id")=="")
 	{
 		clearInterval(App.sessiontimer);
 		App.sessiontimer = null;
 		
-		App.msg_alert('세션종료', '로그인 세션이 종료되었습니다. 다시 로그인해주세요!', function() {location.href = "page_login.html";});
+		App.msg_alert(lang('common_session_session_end','세션종료'), lang('common_session_msg_relogin','로그인 세션이 종료되었습니다. 다시 로그인해주세요!'), function() {location.href = "page_login.html";});
 	}
 }
 

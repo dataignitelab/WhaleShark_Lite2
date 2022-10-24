@@ -224,7 +224,7 @@
                     {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
                     {data: "wtime", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
                     {data: "utime", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
-                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn:title" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn:title" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
                 ],
                 paging: true,
                 serverSide: true,
@@ -361,4 +361,5 @@
 				}
 			}
             
+            updatelang();
         </script>

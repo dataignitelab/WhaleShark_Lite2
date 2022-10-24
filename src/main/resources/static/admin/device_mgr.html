@@ -20,14 +20,14 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
-                                <th><i class="fa fa-user" data-lang="device_name"></i> 단말명</th>
-                                <th class="hidden-xs hidden-sm" data-lang="common_bigo"><i class="fa fa-envelope-o"></i> 비고</th>
-                                <th class="hidden-xs hidden-sm"><i class="fa fa-envelope-o" data-lang="device_sensor_list"></i> 센서목록</th>
-                                <th class="hidden-xs hidden-sm"><i class="fa fa-file" data-lang="common_state"></i> 상태</th>
-                                <th title="동작안함-수신데이터가전혀없을시/수집중/수집멈춤-10분간데이터수신없을시"  data-lang="common_collect_state,device_collect_state_title:title"class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 수집상태</th>
-                                <th class="hidden-xs hidden-sm"><i class="fa fa-file" data-lang="device_info"></i> 단말정보</th>
-                                <th class="hidden-xs hidden-sm"><i class="fa fa-file" data-lang="common_wdate"></i> 등록일</th>
-                                <th class="text-center"><i class="fa fa-bolt" data-lang="common_action"></i> Actions</th>
+                                <th data-lang="device_name"><i class="fa fa-user"></i> 단말명</th>
+                                <th class="hidden-xs hidden-sm" data-lang="common_description"><i class="fa fa-envelope-o"></i> 설명</th>
+                                <th class="hidden-xs hidden-sm" data-lang="device_sensor_list"><i class="fa fa-envelope-o"></i> 센서목록</th>
+                                <th class="hidden-xs hidden-sm" data-lang="common_state"><i class="fa fa-file"></i> 상태</th>
+                                <th title="동작안함-수신데이터가전혀없을시/수집중/수집멈춤-10분간데이터수신없을시"  data-lang="device_collect_state,device_collect_state_title:title"class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 수집상태</th>
+                                <th class="hidden-xs hidden-sm" data-lang="device_info"><i class="fa fa-file"></i> 단말정보</th>
+                                <th class="hidden-xs hidden-sm" data-lang="common_wdate"><i class="fa fa-file"></i> 등록일</th>
+                                <th class="text-center" data-lang="common_action"><i class="fa fa-bolt"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,7 +61,7 @@
 			                                </div>
 	
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_bigo">비고 </label>
+			                                    <label class="control-label col-md-3" data-lang="common_description">설명</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="bigo" class="form-control" value="">
 			                                    </div>
@@ -417,5 +417,6 @@
 					delbtnclass = 'hide';
 				}
 			}
+            updatelang();
             
         </script>

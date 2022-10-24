@@ -20,14 +20,14 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
-                                <th><i class="fa fa-user" data-lang="common_id"></i> 아이디</th>
-                                <th><i class="fa fa-user" data-lang="common_name"></i> 이름</th>
-                                <th><i class="fa fa-envelope-o" data-lang="common_email"></i> 이메일</th>
-                                <th><i class="fa fa-envelope-o" data-lang="common_bigo"></i> 비고</th>
-                                <th><i class="fa fa-group" data-lang="usermgmt_user_company"></i> 소속회사</th>
-                                <th><i class="fa fa-group" data-lang="usermgmt_user_permission"></i> 사용권한</th>
-                                <th><i class="fa fa-group" data-lang="usermgmt_user_group"></i> 소속그룹</th>
-                                <th><i class="fa fa-file" data-lang="common_state"></i> 상태</th>
+                                <th data-lang="common_id"><i class="fa fa-user"></i> 아이디</th>
+                                <th data-lang="common_name"><i class="fa fa-user"></i> 이름</th>
+                                <th data-lang="common_email"><i class="fa fa-envelope-o"></i> 이메일</th>
+                                <th data-lang="common_bigo"><i class="fa fa-envelope-o"></i> 비고</th>
+                                <th data-lang="usermgmt_user_company"><i class="fa fa-group"></i> 소속회사</th>
+                                <th data-lang="usermgmt_user_permission"><i class="fa fa-group"></i> 사용권한</th>
+                                <th data-lang="usermgmt_user_group"><i class="fa fa-group"></i> 소속그룹</th>
+                                <th data-lang="common_state"><i class="fa fa-file"></i> 상태</th>
                                 <th data-lang="common_wdate"> 등록일시</th>
                                 <th class="text-center" data-lang="common_action"><i class="fa fa-bolt"></i> Actions</th>
                             </tr>
@@ -350,7 +350,7 @@
                     {data: "groupids", render : function(data, type, row, obj) { return group_names(data); }}, 
                     {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
                     {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
-                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn:title" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn:title" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
                 ],
                 paging: true,
                 serverSide: true,
@@ -458,4 +458,5 @@
 				}
 			}
 			
+            updatelang();
         </script>

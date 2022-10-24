@@ -95,7 +95,7 @@
 			                                </div>
 	
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="comment_bigo">비고 </label>
+			                                    <label class="control-label col-md-3" data-lang="common_description">설명 </label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="bigo" class="form-control" value="">
 			                                    </div>
@@ -338,7 +338,7 @@
                     {data: "wpermission", render : function(data, type, row, obj) { return permissionstr(data); }}, 
                     {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
                     {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
-                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn:title" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn:title" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
                 ],
                 paging: true,
                 serverSide: true,
@@ -353,6 +353,7 @@
                 addHandle();
                 delHandle();
                 editHandle();
+                updatelang();
 
             });
             
