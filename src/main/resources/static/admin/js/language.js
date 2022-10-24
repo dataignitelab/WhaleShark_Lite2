@@ -143,6 +143,9 @@ var langs = {
 		common_grid_processing:"잠시만 기다려 주세요...",
 		common_session_session_end:"세션종료",
 		common_session_msg_relogin:"로그인 세션이 종료되었습니다. 다시 로그인해주세요!",
+		common_period:"기간",
+		common_all:"전체",
+		common_column:"컬럼",
 
 		// login 
 		login_title:"데이터 관리 도구",
@@ -298,6 +301,37 @@ var langs = {
 		ana1_analysis_success:"분석완료",
 		ana1_msg_analysis_success:"데이터 분석이 완료되었습니다.",
 		ana1_msg_analysis_confirm2:"{1} 분석을 실행할까요?",
+		
+		// analysis
+		ana_title:"자동분석",
+		ana_refresh:" Refresh",
+		ana_cond_recent_1day:"최근1일",
+		ana_cond_recent_3day:"최근3일",
+		ana_cond_recent_7day:"최근7일",
+		ana_exec_auto:"자동분석실행",
+		ana_intro:"※ 자동분석에서는 선택한 데이터를 이용하여 모든알고리즘을 배치분석하여 분석결과를 제공합니다.<br>\
+                        ※ 데이터에따라 실행 되지 않는 알고리즘도 있을수 있습니다.</br>\
+                        ※ 분석을위한 알고리즘 파라미터는 초기값을 사용하고 종속변수/기준레이블 은 마지막컬럼을 사용합니다.",
+		ana_algorithm_name:"알고리즘명",
+		ana_exec_stime:"실행일시",
+		ana_exec_etime:"종료일시",
+		ana_msg_analyzing:"데이터 분석중...",
+		ana_msg_analysis_failed:"데이터 분석에 오류가 발생했습니다.",
+		ana_error:"에러",
+		ana_msg_metadata_empty:"통합데이터를 선택하지 않았습니다.",
+		ana_msg_start_empty:"시작일을 선택하지 않았습니다.",
+		ana_msg_end_empty:"종료일을 선택하지 않았습니다.",
+		ana_auto_analysis:"자동 분석",
+		ana_msg_analysis_confirm:"분석을 실행할까요?",		
+		ana_result_view:"결과보기",
+		
+		// analysis_tool
+		anatool_title:"분석도구",
+		anatool_data_dur:"데이터 기간",
+		anatool_manual_select:"직접선택",
+		anatool_cond_recent_1day:"최근1일",
+		anatool_cond_recent_3day:"최근3일",
+		anatool_cond_recent_7day:"최근7일",
 		
 		// visualize
 		vis_title:"시각화 목록",
@@ -626,6 +660,9 @@ var langs = {
 		common_grid_processing:"Please wait for a moment...",
 		common_session_session_end:"Session End",
 		common_session_msg_relogin:"Your login session has ended. Please log in again!",
+		common_period:"Period",
+		common_all:"All",
+		common_column:"Column",
 
 		// login 
 	    login_title:"Data Management Tool",
@@ -781,6 +818,37 @@ var langs = {
 		ana1_analysis_success:"analysis complete",
 		ana1_msg_analysis_success:"Data analysis has completed.",
 		ana1_msg_analysis_confirm2:"Do you want to start analyzing {1}?",
+		
+		// analysis
+		ana_title:"auto analysis",
+		ana_refresh:" Refresh",
+		ana_cond_recent_1day:"Recent 1 day",
+		ana_cond_recent_3day:"Recent 3 days",
+		ana_cond_recent_7day:"Recent 7 days",
+		ana_exec_auto:"Automatic analysis execution",
+		ana_intro:"※ Automatic analysis provides analysis results by batch analysis of all algorithms using the selected data.<br>\
+                        ※ Depending on the data, some algorithms may not be executed.</br>\
+                        ※ The algorithm parameters for analysis use the initial values, and the dependent variable/reference label uses the last column.",
+		ana_algorithm_name:"Algorithm name",
+		ana_exec_stime:"Run time",
+		ana_exec_etime:"End time",
+		ana_msg_analyzing:"Data analysis in progress",
+		ana_msg_analysis_failed:"An error occurred during data analysis.",
+		ana_error:"에러",
+		ana_msg_metadata_empty:"No integrated data has been selected.",
+		ana_msg_start_empty:"No start date has been selected.",
+		ana_msg_end_empty:"No end date has been selected.",
+		ana_auto_analysis:"auto analysis",
+		ana_msg_analysis_confirm:"Do you want to start analyzing?",		
+		ana_result_view:"Result view",
+		
+		// analysis_tool
+		anatool_title:"Analysis tool",
+		anatool_data_dur:"data period",
+		anatool_manual_select:"manual select",
+		anatool_cond_recent_1day:"Recent 1 day",
+		anatool_cond_recent_3day:"Recent 3 days",
+		anatool_cond_recent_7day:"Recent 7 days",
 		
 		// visualize
 		vis_title:"Visualization list",

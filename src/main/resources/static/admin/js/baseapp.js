@@ -1028,16 +1028,16 @@ function selectcolumn_dlg(columns, selected, ok_callback)
 	html += '<div class="modal-dialog">';
 	html += '	<div class="modal-content">';
 	html += '		<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
-	html += '		<h4>컬럼선택</h4>';
+	html += '		<h4>'+lang('common_column_select','컬럼선택')+'</h4>';
 	html += '		</div>';
 	html += '		<div class="modal-body"><form class=form-horizontal>';
 	html += '			<div class="form-group">';
-	html += '			<label class="control-label col-md-3">컬럼선택</label>';
+	html += '			<label class="control-label col-md-3">'+lang('common_column_select','컬럼선택')+'</label>';
 	html += '			<div class="col-md-9">';
 	html += '			<input name=selected type=text class="form-control" value="'+selected.join(",")+'" readonly>';
 	html += '			</div>';
 	html += '			<div class="form-group">';
-	html += '			<label class="control-label col-md-3">컬럼<a class="all">[전체]</a></label>';
+	html += '			<label class="control-label col-md-3">'+lang('common_column','컬럼')+'<a class="all">['+lang('common_all','전체')+']</a></label>';
 	html += '			<div id="columnlist" class="col-md-8" style="height:400px; overflow:auto">';
 	for(var i=0; i<columns.length;i++)
 	{
@@ -1050,8 +1050,8 @@ function selectcolumn_dlg(columns, selected, ok_callback)
 	html += '			</div>';
 	html += '		</form></div>';
 	html += '		<div class="modal-footer remove-margin">';
-	html += '			<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>';
-	html += '			<button type="button" class="btn btn-success btn-selok" ><i class="fa fa-check"></i>확인</button>';
+	html += '			<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> '+lang('common_close_btn','닫기')+'</button>';
+	html += '			<button type="button" class="btn btn-success btn-selok" ><i class="fa fa-check"></i>'+lang('common_ok_btn','확인')+'</button>';
 	html += '		</div>';
 	html += '	</div>';
 	html += '</div>';
