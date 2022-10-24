@@ -437,6 +437,7 @@
         				App.role = ret.role;
         				if(getLanguage()!=ret.lang){
         					changelang(ret.lang);
+        					var sellang = getLanguage();
         					$('.selectedlang').html(lang('sel_lang', '언어({1}', lang(sellang, sellang)));
         				}
         				$("#user-name").val(App.loginname);
@@ -482,6 +483,7 @@
 	            	if(url!==undefined && url!="") movepage(url);
 	            });
 
+	            
 	            // 언어 목록 
 	            var langstr = "";
 	            var sellang = getLanguage();

@@ -73,13 +73,13 @@ window.App =  {
     },
     // 예/아니오 메세지창  
     msg_alert : function(title, content, func) {
-        		var alert_obj = $('<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">×</button><h4>'+title+'</h4></div><div class="modal-body">'+content+'</div><div class="modal-footer"><button class="btn btn-default" data-dismiss="modal">확인</button></div> </div> </div> </div>').appendTo(App.body===undefined?'body':App.body);
+        		var alert_obj = $('<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">×</button><h4>'+title+'</h4></div><div class="modal-body">'+content+'</div><div class="modal-footer"><button class="btn btn-default" data-dismiss="modal">'+lang('common_ok_btn','확인')+'</button></div> </div> </div> </div>').appendTo(App.body===undefined?'body':App.body);
                 alert_obj.on('hidden.bs.modal', function () { if(func != undefined ) func(); alert_obj.remove(); });
                 alert_obj.modal({backdrop:'static'});
     },
     // 확인 메세지창  
     msg_confirm : function(title, content, func) {
-    			var confirm_obj = $('<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">×</button><h4>'+title+'</h4></div><div class="modal-body">'+content+'</div><div class="modal-footer"><button class="btn btn-danger" data-dismiss="modal">아니오</button> <button class="btn btn-success">예</button></div> </div> </div> </div>').appendTo(App.body===undefined?'body':App.body);
+    			var confirm_obj = $('<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">×</button><h4>'+title+'</h4></div><div class="modal-body">'+content+'</div><div class="modal-footer"><button class="btn btn-danger" data-dismiss="modal">'+lang('common_no_btn','아니오')+'</button> <button class="btn btn-success">'+lang('common_yes_btn','예')+'</button></div> </div> </div> </div>').appendTo(App.body===undefined?'body':App.body);
                 confirm_obj.find('.btn-success').click(function () { if(func != undefined ) func(confirm_obj); confirm_obj.modal('hide'); } );
                 confirm_obj.on('hidden.bs.modal', function () { confirm_obj.remove(); });
                 confirm_obj.modal({backdrop:'static'});
