@@ -505,7 +505,7 @@
 				var filename = $("#filename").val();
 				var realpath = "/lite2/upload/"+App.loginuserid+"/"+path+"/"+filename;
 				App.start_loading(lang('datagrid_msg_detail_analyzing','데이터 상세 정보분석중...'));
-				var cmds = ["/python/python", "/python/datainfo.py", "-input_path", realpath, "-detailview", "Y", "-encoding",info_encoding];
+				var cmds = ["/python/python", "/python/datainfo_v2.py", "-input_path", realpath, "-detailview", "Y", "-encoding",info_encoding];
 //				console.log('cmd===>', cmds)
 				var d = {};
 				d.cmd=cmds.join("@");
