@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,17 +15,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import org.springframework.core.io.Resource;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
-
+import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -1547,7 +1541,7 @@ public class CommonController {
 	@CrossOrigin("*")
 	@RequestMapping(value="/svc/{svcid}", method=RequestMethod.POST)
 	@ResponseBody
-	public Map runsvc(MultipartHttpServletRequest request, @PathVariable("svcid") String svcid, @RequestParam Map<String,Object> param) {
+	public Map runsvc(HttpServletRequest request, @PathVariable("svcid") String svcid, @RequestParam Map<String,Object> param) {
 		Map ret = new HashMap();
 		ret.put("success", true);
 		ret.put("svcid", svcid);
@@ -1578,23 +1572,27 @@ public class CommonController {
 			System.out.printf("paramcnt=%d\n", pnames.length);
 			
 			for(String pname:pnames) {
-				String value = ""; 
-				MultipartFile file = request.getFile(pname);
-				if(file!=null) {
-					String filename = file.getOriginalFilename();
-					String ext = "";
-					int pos = filename.lastIndexOf( "." );
-					if(pos>=0) ext = filename.substring( pos );
-					File tempfile = File.createTempFile("temp_", ext, new File(app_basedir+"tmp/"));
-//					File tempfile = new File(app_basedir+"tmp/"+filename);
-					file.transferTo(tempfile);
-					value = tempfile.getAbsolutePath();
-					// Delete temp flie            
-					tempfile.deleteOnExit();
-				} else {
-					value = request.getParameter(pname);
+				String value = (String) param.get(pname);
+				if(value==null)
+				{
+					MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
+					MultipartFile file = mrequest.getFile(pname);
+					if(file!=null) {
+						String filename = file.getOriginalFilename();
+						String ext = "";
+						int pos = filename.lastIndexOf( "." );
+						if(pos>=0) ext = filename.substring( pos );
+						File tempfile = File.createTempFile("temp_", ext, new File(app_basedir+"tmp/"));
+	//					File tempfile = new File(app_basedir+"tmp/"+filename);
+						file.transferTo(tempfile);
+						value = tempfile.getAbsolutePath();
+						// Delete temp flie            
+						tempfile.deleteOnExit();
+					} else {
+						value = request.getParameter(pname);
+					}
 				}
-				System.out.printf("param=[%s],value=[%s/%s]\n", pname, value, file);
+				System.out.printf("param=[%s],value=[%s]\n", pname, value);
 				cmds.add("-"+pname);
 				cmds.add(value);
 			}
