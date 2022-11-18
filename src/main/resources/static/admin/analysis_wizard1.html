@@ -230,8 +230,10 @@
             
             function execautoshell(mtype, sql, host, port, uid, pwd, db)
 			{
+            	var l = getLanguage();
+            	if(l!="ko") l="en";            	
 				App.start_loading(lang('ana1_msg_analyzing','데이터 분석실행중...'));
-				var cmds = ["/lite2/shell/autoanalysis.sh", mtype, App.loginuserid, sql, host, port, uid, pwd, db, getLanguage()];
+				var cmds = ["/lite2/shell/autoanalysis.sh", mtype, App.loginuserid, sql, host, port, uid, pwd, db, l];
 //				var cmds = ["/python/python","/lite/shell/autoanalysis.py", "-ftype", mtype, "-userid", App.loginuserid, "-q", sql, "-server", host, "-port", port, "-uid", uid, "-pwd", pwd, "-db", db];
 				console.log('cmd===>', cmds)
 				var d = {};
@@ -332,7 +334,9 @@
 			
 			function load_results()
 			{
-				var cond = {qid:"algorunlist",userid:App.loginuserid,lang:getLanguage()};
+				var l = getLanguage();
+				if(l!="ko") l = "en";
+				var cond = {qid:"algorunlist",userid:App.loginuserid,lang:l};
 				$.post(App.baseurl+'/list', cond, function(res) {
 //					console.log(res);
 					if(res.success)

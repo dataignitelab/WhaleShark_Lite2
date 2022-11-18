@@ -366,7 +366,10 @@ $(window).resize();
 
 $('iframe').css('width',$('#page-content').width());
 $('iframe').css('height',$('#page-content').height());
-$('iframe').attr('src','/upload/front/html/views/analysis_tools_'+getLanguage()+'.html?USER_ID='+App.loginuserid);
+
+var l = getLanguage();
+if(l!="ko") l="en";
+$('iframe').attr('src','/upload/front/html/views/analysis_tools_'+l+'.html?USER_ID='+App.loginuserid);
 updatelang();
 </script>
 <!-- 스크립트 영역 -->
