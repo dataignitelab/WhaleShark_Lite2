@@ -2,7 +2,7 @@
 WhaleShark AIoT 플랫폼에 대한 소스 코드를 관리하는 프로젝트 저장소 입니다. 
 WhaleShark AIoT 플랫폼은 산업 현장에서 설치되어 데이터를 수집하고 처리하는 AIoT, IIoT 기기들과 각 센서들의 연결 제어를 하고 수집되는 데이터에 대한 저장 및 처리에 대한 기능을 수행하며 각각의 기기에서 동작하는 AI 모델 및 IoT 서비스에 대한 배포 기능을 수행하는 등의 AIoT 서비스를 운용하기 위한 핵심적인 기능들을 제공합니다.
 
-<img src="git_images/whaleshark_ui_1.png" width="600" > 
+<img src="git_images/whaleshark_ui_1.png" width="1000" > 
 
 ## 주요 기능
 
@@ -23,7 +23,7 @@ WhaleShark는 AIoT 플랫폼으로 아래 5가지 주요 기능을 가지고 있
 
 ## 아키텍처
 
-<img src="git_images/whaleShark_architecture.png" width="600" > 
+<img src="git_images/whaleShark_architecture.png" width="1000" > 
 
 
 ## Installation
