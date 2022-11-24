@@ -29,3 +29,11 @@ WhaleShark는 AIoT 플랫폼으로 아래 5가지 주요 기능을 가지고 있
   * 플랫폼 사용자에 대한 로그인, 그룹, 접근 권한 등을 관리하는 기능
 
 <img src="git_images/whaleShark_architecture.png" width="1000" > 
+
+## 프로젝트 개발 환경
+* 개발 언어 : JAVA (OpenJDK 1.8)
+* 빌드 도구 : Maven 3.6
+* WAS : Apache tomcat 8.5
+* RDB : MariaDB 10.3
+* WebFramework : Spring boot 2.0
+
