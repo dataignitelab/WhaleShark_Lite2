@@ -70,7 +70,9 @@ public class CommonController {
 
 	@Value("${appbase-dir}")
 	private String app_basedir;
-	
+		
+	@Value("${datainfo-shell}")
+	private String datainfo_shell;
 	
 	@CrossOrigin("*")
 	@RequestMapping(value = "/login")
@@ -1458,6 +1460,109 @@ public class CommonController {
 
 		return ret;
 	}	
+	
+	@CrossOrigin("*")
+	@RequestMapping(value = "/fileinfo")
+	@ResponseBody
+	public Map fileinfo(@RequestParam Map<String, String> form) throws Exception {
+		Map ret = new HashMap();
+		ret.put("success", true);
+
+		String filename = form.get("filename");
+			
+		File file = new File(uploadPath+filename);
+		if(file.exists()){
+			ret.put("filename", uploadPath+filename);
+			ret.put("size", ""+file.length());
+			ret.put("directory", ""+file.isDirectory());
+		}
+		else ret.put("success", false);
+		
+		return ret;
+	}
+		
+	@CrossOrigin("*")
+	@RequestMapping(value = "/readtext")
+	@ResponseBody
+	public Map convert(HttpServletRequest request, @RequestParam Map<String, String> map) throws Exception {
+		
+		HttpSession session = request.getSession();
+		String userid = (String) session.getValue("userid");
+
+		
+		String path = (String)map.get("path");
+		String maxline = (String)map.get("maxline");
+		if(maxline==null) maxline="201";
+		int lc = Integer.parseInt(maxline);
+
+		File f = new File(path);
+		if(!f.exists())
+		{
+			path = uploadPath+userid+"/"+path;
+		}
+		
+   		Map ret = new HashMap();
+
+		java.io.FileInputStream fis = new java.io.FileInputStream(path); 
+		UniversalDetector detector = new UniversalDetector(null);
+		byte[] buf = new byte[4096];
+		int nread;
+		while ((nread = fis.read(buf)) > 0 && !detector.isDone()) 
+		{ 
+			detector.handleData(buf, 0, nread); 
+		}
+		fis.close();
+		detector.dataEnd();
+
+		String encoding = detector.getDetectedCharset();
+		
+		if(encoding==null) encoding="UTF-8";
+
+		try {
+			String cmd = String.format("%s@%s@%s@%s", datainfo_shell, path, maxline, encoding); 
+			String[] cmdp = cmd.split("@");
+			String[] log = exec_shell(cmdp);
+           
+			String result = log[0];
+			String columninfo = "", readdata = "", readcnt = "0", recordcount="0";
+			
+			int sp1 = result.indexOf("<datacount>");
+			int sp2 = result.indexOf("<datainfos>");
+			int sp3 = result.indexOf("<datapreview>");
+			
+			if(sp1>=0 && sp2>=0 && sp3>=0)
+			{
+				readcnt = recordcount = result.substring(sp1+12,sp2-1);
+				int sp = recordcount.indexOf("/");
+				if(sp>=0)
+				{
+					readcnt = readcnt.substring(0, sp);
+					recordcount = recordcount.substring(sp+1);
+				}
+				columninfo = result.substring(sp2+12,sp3-1);
+				readdata = result.substring(sp3+14);
+			}
+			else {
+				readdata = result;
+			}
+			
+			// <datacount> <datainfos> <datapreview>
+			
+			ret.put("errorlog", log[1]);
+			ret.put("encoding", encoding);
+			ret.put("text", readdata);
+			ret.put("columninfo",columninfo);
+			ret.put("linecount", recordcount);
+			ret.put("readcount", readcnt);
+			ret.put("success", true);
+	    } catch (Exception e) {
+	           ret.put("success", false);
+	           ret.put("errormsg", e.getMessage());
+		}
+
+		return ret;
+	}
+	
 	
 	@CrossOrigin("*")
 	@RequestMapping(value = "/sessiontest")

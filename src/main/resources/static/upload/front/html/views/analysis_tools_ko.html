@@ -1547,9 +1547,8 @@
 <!-- 스크립트 영역 -->
 <script type="text/javascript">
 
-
-var base_url = "http://kamp.datacentric.kr:8080/"; //
-//var base_url = ""; //
+//var base_url = "http://whalesharklite2.datacentric.kr:8090/"; //
+var base_url = ""; //
 
 var st = null;
 var loading_timer = null;
@@ -1607,7 +1606,6 @@ function msg_alert(title, msgtext)
 	$("#msgbox .pop-container").html(msgtext);
 	layerPopupTypeA.toggle('msgbox');
 }
-
 // 공통합수: 메세지 박스 출력 및 callback 함수 실행
 function msg_alert_callback(title, msgtext, callback)
 {
@@ -2134,11 +2132,11 @@ $('#step11,#step21,#step41,#step51,#step61,#step71,#step81,#step91,#step1_11,#st
 	
 	if(parent.importdata !== undefined)
 	{
-		parent.importdata(function(ftype, qry, server, port, uid, pwd, db, name) {
+		parent.importdata(function(ftype, qry, server, port, dbuid, pwd, db, name) {
 			if(ftype=="influxdb")
 			{
 				start_loading('데이터를 가져오는 중입니다...');
-				var cmds = ["/python/python","/python/fetchdata.py", "-ftype","influxdb", "-output_path", "/upload/influx.csv", "-q", qry, "-server", server, "-port", port, "-uid", uid, "-pwd", pwd, "-db", db];
+				var cmds = ["/python/python","/python/fetchdata.py", "-ftype","influxdb", "-output_path", "/upload/"+uid+"/influx.csv", "-q", qry, "-server", server, "-port", port, "-uid", dbuid, "-pwd", pwd, "-db", db];
 				var d = {};
 				d.cmd=cmds.join("@");
 				d.deli= "@";
@@ -2147,7 +2145,7 @@ $('#step11,#step21,#step41,#step51,#step61,#step71,#step81,#step91,#step1_11,#st
 					stop_loading();
 					if(res.success)
 					{
-						upload_path = "/upload/influx.csv";
+						upload_path = "/lite2/upload/"+uid+"/influx.csv";
 						var deli = ",";
 						var fileName = name;
 						
