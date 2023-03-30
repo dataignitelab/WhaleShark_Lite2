@@ -20,6 +20,7 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
+                                <th data-lang="common_id"><i class="fa fa-envelope-o"></i> 아이디</th>
                                 <th data-lang="menumgmt_parent_menu"><i class="fa fa-envelope-o"></i> 상위메뉴</th>
                                 <th data-lang="menumgmt_menu_name"><i class="fa fa-user"></i> 메뉴명</th>
                                 <th data-lang="menumgmt_menu_type"><i class="fa fa-user"></i> 메뉴종류</th>
@@ -56,10 +57,15 @@
 					                <div class="modal-body">
 			                            <form class="form-horizontal">
 			                                <div class="form-group">
+			                                    <label class="control-label col-md-3" data-lang="common_id">아이디</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="id" class="form-control" value="" readonly>
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
 			                                    <label class="control-label col-md-3" data-lang="menumgmt_menu_name">메뉴명</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="name" class="form-control" value="">
-		                                            <input type="hidden" name="id" value="" >
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
@@ -243,6 +249,7 @@
                      $("#btnAdd").click(function () {
                     	$('#modal-form .modal-header h4').text(lang('menumgmt_add','메뉴 등록'));
                     	$('[name=id]').val('');
+                    	$('[name=id]').prop('readonly', false);
                     	$('[name=name]').val('');
 //                    	$('[name=type]').val('');
                     	$('[name=parent').val('');
@@ -271,6 +278,7 @@
                     	$('#modal-form .modal-header h4').text(lang('menumgmt_modify','메뉴 정보수정'));
                     	
                     	$('#modal-form [name=id]').val(d.id);
+                    	$('[name=id]').prop('readonly', true);
                     	$('#modal-form [name=name]').val(d.name);
                     	$('#modal-form [name=type]').val(d.type);
 						chgtype(d.parent);
@@ -328,6 +336,7 @@
                 },
                 columns: [
                     {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
+                    {data: "id"}, 
                     {data: "parentname"}, 
                     {data: "name"},
                     {data: "type", render : function(data, type, row, obj) { return state_str(data); }},
@@ -385,6 +394,12 @@
             
             $('#modal-form #btnSave').click(function() {
 
+                if($("#modal-form [name=id]").val()=="")
+                {
+                    App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_id_empty','아이디를 입력하지 않았습니다.'));
+                    return;
+                }
+
                 if($("#modal-form [name=name]").val()=="")
                 {
                     App.msg_alert(lang('common_input_error','입력오류'), lang('menumgmt_msg_menu_name_empty','메뉴명을 입력하지 않았습니다.'));
@@ -410,15 +425,15 @@
                 }
                                 
                 var data = {qid:"menuupdate"};
-            	var uid = hashcode('mnu_');
+//            	var uid = hashcode('mnu_');
                 var url = App.baseurl+"/update";
                 
-                if($("#modal-form [name=id]").val()=="") {
+                if(!$("#modal-form [name=id]").prop("readonly")) {
                 	url = App.baseurl+"/insert";
                 	data.qid = "menuadd";
-                	data.id = uid;
+//                	data.id = uid;
                	}
-                else data.id = $("#modal-form [name=id]").val();
+				data.id = $("#modal-form [name=id]").val();
                 data.name = $('#modal-form [name=name]').val();
                 data.type = $('#modal-form [name=type]').val();
                 if(data.type=="MAIN") data.parent = "";
