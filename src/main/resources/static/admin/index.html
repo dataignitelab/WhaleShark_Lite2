@@ -384,7 +384,8 @@ $(function init() {
 						if(App.menus[menu.id]!==undefined) continue;
 						if( menu.parent!=""  && (menu.rwtype=="R" || menu.rwtype=="W") )
 						{
-							let pmenu = App.menus[menu.parent].name;
+							let pmenu = menu.parent;
+							if(App.menus[menu.parent]!==undefined) pmenu = App.menus[menu.parent].name;
 							if(prevpmenu!=pmenu)
 							{
 								menuhtml+= (menuhtml.length>0?'</ul></li>':"")+'<li class="tmenu"><a href="#" data-lang="'+menu.parent+'"><i class="fa fa-th-list"></i>'+pmenu+'</a><ul>';
