@@ -77,9 +77,13 @@ class DeviceMonitor:
         # Connection 으로부터 Cursor 생성
         curs = conn.cursor()
         # SQL문 실행
-        #for u in updates:
+        
+        for u in updates:
+            sql = "update tb_device set last_datarecv_time='%s' where id='%s'"%(u[1],u[0])
+            curs.execute(sql)
+                
         sql = "insert tb_device_status_log (deviceid, last_datarecv_time, datacnt, duration) values (%s, %s, %s, %s)"
-            #print(sql)
+        #print(sql)
         curs.executemany(sql, updates)
         # 데이타 Fetch
         conn.commit()
@@ -117,23 +121,27 @@ class DeviceMonitor:
             updates = []
             for d in dinfos:
 #                query = 'select max(ms_time) from %s'%(d[1])
-                query = 'select max(ms_time), count(ms_time) from %s where ms_time > %d'%(d[1], last_chktime)
-                did = d[0]
-                
-#                print(query)
-                result = self.influxdb_mgr.query(query)
-                #print(result)
-                #print(len(result))
-                duration = int(ct_ts-last_chktime)
-                if len(result)>0 :
-                    #print(result.raw['series'][0]['values'][0][1])
-                    last_datarecv_time = datetime.datetime.fromtimestamp(result.raw['series'][0]['values'][0][1])
-                    datacnt = result.raw['series'][0]['values'][0][2]
-                    #해당 device last_data_time: result.raw['series'][0]['values'][0][1]
-                    updates.append([did, last_datarecv_time, datacnt, duration])
-                else:
-                    last_datarecv_time = ""
-                    datacnt = 0
+                try:
+                    query = 'select max(ms_time), count(ms_time) from %s where ms_time > %d'%(d[1], last_chktime)
+                    did = d[0]
+                    
+                    #print('influxchk==>', query, did)
+                    result = self.influxdb_mgr.query(query)
+                    #print(result)
+                    #print(len(result))
+                    duration = int(ct_ts-last_chktime)
+                    if len(result)>0 :
+                        #print(result.raw['series'][0]['values'][0][1])
+                        last_datarecv_time = datetime.datetime.fromtimestamp(result.raw['series'][0]['values'][0][1])
+                        datacnt = result.raw['series'][0]['values'][0][2]
+                        #해당 device last_data_time: result.raw['series'][0]['values'][0][1]
+                        updates.append([did, last_datarecv_time, datacnt, duration])
+                    else:
+                        last_datarecv_time = ""
+                        datacnt = 0
+                except Exception as e:
+                    print('예외가 발생했습니다.'+str(e))
+                    continue
                 #udatesql = "update tb_device set state='{\"last_datarecv_time\":\"%s\"}' where id='%s'"%(last_datarecv_time,did)
                 #updates.append(udatesql)
 #                updates.append([did, last_datarecv_time, datacnt, duration])
@@ -146,6 +154,7 @@ class DeviceMonitor:
         
 if __name__ == '__main__':
     monitor = DeviceMonitor()
+    #print('host', monitor.influx_host, monitor.influx_port, monitor.influx_id, monitor.influx_pwd, monitor.influx_db)
     monitor.influxdb_mgr = monitor.get_influxdb(host=monitor.influx_host, port=monitor.influx_port, name=monitor.influx_id, pwd=monitor.influx_pwd, db=monitor.influx_db)
     
     monitor.monitoring(60)
