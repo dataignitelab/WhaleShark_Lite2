@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--
+-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.jqueryui.min.css">
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  
+<!--<script src="https://cdn.datatables.net/1.10.24/js/dataTables.jqueryui.min.js"></script>-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- 
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+-->
+<script type="text/javascript" src="js/language.js"></script>
+<script type="text/javascript" src="js/baseapp.js"></script>
+
+<style>
+body {margin:20px}
+.rack {padding:5px; border:1px solid black; vertical-align: top; display:inline-block;width:500px;} 
+</style>
+</head>
+
+</body>
+</html>
+<body>
+<h1>DC 서버실</h1>
+<div style='width:1550px'>
+<div id="arack" class=rack>
+<b>Rack A</b>
+</div>&nbsp; &nbsp; 
+
+<div id="brack" class=rack>
+<b>Rack B</b>
+</div>&nbsp; &nbsp; 
+
+<div id="crack" class=rack>
+<b>Rack C</b>
+</div>
+<div>
+<br>
+<div id=temparea style='margin-top:-180px;'>
+<img id=tempimg>
+</div>
+<br>
+실행명령: <textarea id="cmds" cols=120 rows=2></textarea>
+<br>(실행할 명령을 입력해주세요.. 하나이상일 경우 여러줄로 입력해주세요.)
+<br><button id="exec">실행</button>&nbsp;<button onclick='livechk();'>live check</button>
+
+&nbsp;<button disabled id='btnlogin' onclick='login();'>Login</button>
+
+<hr>
+실행결과 :
+<div id='res'>
+</div>
+
+<script>
+var mid = 0;
+function tempshow()
+{
+	var scale = 3;
+	var iw = 1920*scale;
+	var w = 125*scale;
+	var h = 60*scale;
+	var y = 585*scale;
+	var x = 367*scale;
+
+	$('#temparea').css('width',w+"px").css('height',h+"px").css('overflow',"hidden");
+	$('#tempimg').css('width',iw+"px").css('margin-top',"-"+y+"px").css('margin-left',"-"+x+"px");
+	
+	$("#tempimg").attr("src", "/image_4.jpg?tmp="+(mid++));
+}
+
+var servers = [
+			{info:"demo server:172.17.250.211:57001:root:eoqkrWkd!@3",rack:"arack"},
+			{info:"iot server:172.17.250.210:22:root:eoqkrWkd!@3",rack:"arack"},
+			{info:"nextcloud/git:s3.xip.kr:22:root:eoqkrWkd!@3",rack:"arack"},
+			{info:"namenode1:172.17.250.199:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"namenode2:172.17.250.200:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"datanode1:172.17.250.201:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"datanode2:172.17.250.202:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"datanode3:172.17.250.203:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"datanode4:172.17.250.204:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"datanode5:172.17.250.205:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"datanode6:172.17.250.206:57001:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"datanode7:172.17.250.207:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"altibase:172.17.250.214:22:root:eoqkrWkd!@3",rack:"brack"},
+			{info:"master01:172.17.250.230:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"master02:172.17.250.231:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"master03:172.17.250.232:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"worker01:172.17.250.233:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"worker02:172.17.250.234:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"worker03:172.17.250.235:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"worker04:172.17.250.236:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"worker05:172.17.250.237:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"worker06:172.17.250.238:22:root:eoqkrWkd!@3",rack:"crack"},
+			{info:"kube-nfs:172.17.250.239:22:root:eoqkrWkd!@3",rack:"crack"}
+	];
+	
+for(var i=0; i<servers.length; i++)
+{
+	var name = servers[i].info;
+	var val = servers[i].info;
+	var sp = name.indexOf(':');
+	if(sp>0){
+		val = name.substring(sp+1);
+		name = name.substring(0,sp);
+	}
+	var item = '<br><input id="s'+i+'" type="checkbox" value="'+val+'"> <label for="s'+i+'">'+name+'</label><label class=info><span class="badge badge-success info"></span></label>';
+	$('#'+servers[i].rack).append(item);
+}
+
+$('.rack b').click(function() {
+	if($(this).parent().children('input:checked').length>0)
+		$(this).parent().children('input').each(function(i,e){ if(!$(e).prop('disabled')) $(e).prop('checked',false); }); //.prop('checked', false);
+	else
+		$(this).parent().children('input').each(function(i,e){ if(!$(e).prop('disabled')) $(e).prop('checked',true); }); //.prop('checked', true);
+});
+
+$('#exec').click(function () {
+
+	var cmds = $('#cmds').val();//.split("\n");
+	
+	if(cmds.length==0) {
+		alert('실행명령을 입력하세요..');
+		return;
+	}
+	
+	$('#res').empty();
+	
+	if($("input:checked").length==0)
+	{
+		alert('실행할 서버를 선택해주세요..');
+		return;
+	}
+	
+	$("input:checked").each(function(){
+	
+//		$('#res').append($(this).next().text()+"==="+$(this).val()+"<br>");
+		
+		var name = $(this).next().text();
+		var params = $(this).val().split(":");
+		
+		exec(name, params[0], params[1], params[2], params[3], cmds);
+	});
+});
+
+function exec(server, host, port, id, pwd, cmd, idx, callback)
+{
+//	cmd = cmd.split(";").join("\r\n");
+	var data = {host:host,port:port,id:id,password:pwd,cmd:cmd};
+	
+//	var lastcmd = lastcmd = cmd.trim().split("\n");
+//	if(lastcmd>1) lastcmd = lastcmd[lastcmd.length-1];
+	
+	$.post('/rshell', data).done(function(res) {
+	
+		if(callback===undefined) $('#res').append("<br>서버=>"+server+"<br>");
+		if(res.success)
+		{
+			var result = res.result;
+			var sp = result.lastIndexOf("Last login:");
+//			if(sp<0) sp = result.lastIndexOf(cmd);
+			var ep =  result.lastIndexOf("exit");
+			if(sp>0 && ep >0) result = result.substring(sp, ep);
+			else console.log('errlog', result);
+			
+			if(callback!==undefined) callback(true,idx,result);
+			else $('#res').append('<pre style="border:1px solid black">'+result+'</pre><br>');
+		}
+		else
+		{
+			if(callback!==undefined) callback(false,idx,res.error);
+			else $('#res').append("<font color=red>에러:"+res.error+"</font><br>");
+		}
+	});
+}
+
+function livechk()
+{
+//	var chkcmd = "hostname;cat /proc/cpuinfo | grep processor| wc -l;free -h| grep Mem;fdisk -l | grep /dev/s | grep bytes";
+	var chkcmd = "hostname;dmidecode --type processor | grep 'Version: Not' | wc -l;dmidecode --type memory | grep 'No Module'| wc -l;cat /proc/cpuinfo | grep processor| wc -l;free -h| grep Mem;fdisk -l | grep /dev/s | grep bytes";
+
+	
+	// chkcmd = 'echo ok';
+	for(var i=0; i<servers.length; i++)
+	{
+		var params = servers[i].info.split(":");
+		exec(params[0], params[1], params[2], params[3], params[4], chkcmd, i, function(islive, i, msg) {
+		
+			var id ="#s"+i;
+			if(islive){
+				$(id).prop("disabled", false);
+				$(id).next().css('color','black');
+ 				$('#btnlogin').prop('disabled', true);
+ 				$('#exec').prop('disabled', false);
+				
+				var sp = msg.indexOf("s\n");
+				if(sp>0) msg = msg.substring(sp);
+				else
+				{
+					console.log("errorlog", msg);
+				}
+				if((sp=msg.indexOf("exit\n"))>0)
+				{
+					sp = msg.indexOf("s\n",sp);
+					if(sp>0) msg = msg.substring(sp);
+				}
+				
+				var disks = [];
+				var df = msg.indexOf("Disk ");
+				while(df>0) {
+					var de = msg.indexOf(",", df+5);
+					if(de>0)
+					{
+						var disk = msg.substring(df,de).replace("Disk /","");
+						var dp = disk.indexOf(":");
+						if(dp>0) disk = disk.substring(dp-3).replace(": ",":");
+						var up = disk.indexOf(" ");
+						if(up>0) disk = disk.substring(0, up+2).replace(" ","");
+						
+						disk = "<span class='badge badge-info'>"+disk+"</span>";
+						disks.push(disk);
+						df = msg.indexOf("Disk ", df+5);
+					} else break;
+				}
+				
+				var tk = msg.split('\n');
+				var hostname = tk[1].trim();
+				
+				var blankcpu = tk[2].trim();
+				var blankmem = tk[3].trim();
+			
+				var cores = tk[4].trim();
+				
+				var mem = tk[5].split(":");
+				if(mem.length>=2)
+				{
+					mem = mem[1].trim();
+					mem = mem.split(' ')[0];
+					mem = mem.replace("Gi","G");
+				}
+				else mem = "";
+				
+//				$(id).next().next().text("("+hostname+"/"+cores+" core/"+mem+")");
+				$(id).next().next().html("(<span class='badge badge-primary'>"+cores+" core</span>/<span class='badge badge-success'>"+mem+"</span>/"+disks.join(",")+"/<span class='badge badge-warning'>blank cpu:"+blankcpu+",mem:"+blankmem+"</span>"+")").prop('title', msg);
+			} else {
+//				$('#res').append("<font color=red>에러:"+id+"</font><br>");
+				$(id).prop("disabled", true);
+				$(id).prop("checked", false);
+				$(id).next().css('color','red');
+				$(id).next().next().html("(<span class='badge badge-warning'>"+msg+"</span>)");
+				 
+ 				$('#btnlogin').prop('disabled', false);
+ 				$('#exec').prop('disabled', true);
+			}
+		
+		});
+	}
+}
+
+$(document).ready(function() {
+livechk();
+setInterval(function() { tempshow();}, 30000);
+tempshow();
+});
+
+function login() {
+	var sx = (window.screen.width-500)/2;
+	var sy = (window.screen.height-400)/2;
+	window.open('/admin/login.html?retfunc=opener.location.reload()','login','left='+sx+',top='+sy+',height=400,width=500');
+}
+</script>
+

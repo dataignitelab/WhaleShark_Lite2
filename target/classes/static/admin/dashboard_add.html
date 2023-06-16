@@ -1,0 +1,1816 @@
+<title>시각화 추가</title>
+<head>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/plugins.css">
+<link rel="stylesheet" href="js/summernote/summernote-lite.min.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="js/Chart/Chart.min.css">
+<script src="js/vendor/modernizr-respond.min.js"></script>
+<script src="js/vendor/jquery-1.11.1.min.js"></script>
+<script src="js/vendor/jquery-ui.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<!-- Jquery plugins and custom javascript code -->
+<script src="js/plugins.js"></script>
+<script src="js/main.js"></script>
+<!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
+<script src="js/d3/js/d3.min.js"></script>
+<!-- <script src="js/d3/js/d3.v4.min.js"></script> -->
+<script src="js/Chart/d3.v4.min.js"></script>
+<!-- <script src="js/d3/js/d3.layout.cloud.js"></script> --> 
+<script src="js/summernote/summernote-lite.js"></script>
+<script src="js/Chart/Chart.min.js"></script>
+<script src="js/Chart/jquery.awesomeCloud-0.2.js"></script>
+<script src="js/Chart/plotLine-chart.js"></script>
+<link href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.ui.position.min.js" type="text/javascript"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="js/sha/sha512.min.js"></script> 
+<script src="js/baseapp.js"></script>
+<script src="js/language.js"></script>
+</head>
+<body>
+<br>
+<h3 class="page-header page-header-top"><span data-lang="vis_screen">시각화 화면</span><small id='dashname'> </small>
+</h3>
+
+<style>
+.push table th {
+	text-align: center;
+	padding: 0px 10px 0px 10px;
+	border: 1px solid white
+}
+
+.push table td, th {
+	padding: 0px 2px 0px 2px;
+	border: 1px solid white
+}
+
+.dashlist th {
+	text-align: center;
+	padding: 0px 10px 0px 10px;
+	border: 1px solid lightgray
+}
+
+.dashlist td {
+	padding: 0px 10px 0px 10px;
+	border: 1px solid lightgray
+}
+
+.text,.sensortext {
+	text-align: center;
+	display:table-cell;
+	vertical-align:middle;
+}
+
+</style>
+
+<div class="push_dash">
+	<table>
+		<tr>
+			<th class='W' data-lang="common_metadata_select">통합데이터선택</th>
+			<td class='W' style='border:1px solid white;'><select id=mtype><option data-lang="common_metadata_select">통합데이터선택</option></select></td>
+			<th class='f W'>파일</th>
+			<td class='f W' style='border:1px solid white;'><select id='filename'><option data-lang="common_file_select">파일선택</option></select></td>
+			<th class='c W'>컬럼</th>
+			<td class='c W' style='border:1px solid white;'><input id='columns' style='width:350px'  readonly placeholder='컬럼선택' data-lang="common_column_select:placeholder"></td>
+			<td class='r W' style='border:1px solid white;'>
+			<select  id='range'>
+				<option value="" data-lang="common_input_manual">직접입력</option>
+				<option value='60s' data-lang="vis_recent_1min">최근1분</option>
+				<option value='180s' data-lang="vis_recent_3min">최근3분</option>
+				<option value='300s' data-lang="vis_recent_5min">최근5분</option>
+				<option value='600s' selected data-lang="vis_recent_10min">최근10분</option>
+			</select>
+			</td>
+			<td class='W rd hide' style='border:1px solid white;'>
+			<input type="text" name="fdate" style='width:100px' class="input-datepicker">
+			<select name="fhour" class='hour'></select>
+			<select name="fminute" class='minute'></select>~ 
+			<input type="text" name="tdate" style='width:100px' class="input-datepicker">
+			<select name="thour" class='hour'></select>
+			<select name="tminute" class='minute'></select>
+			</td>
+			<td class='W'>
+				<select class='W' id="timer">
+					<option value="" data-lang="vis_no_refresh">갱신안함</option>
+					<option value="3" data-lang="vis_every_3sec_refresh">3초주기갱신</option>
+					<option value="5" data-lang="vis_every_5sec_refresh">5초주기갱신</option>
+					<option value="10" data-lang="vis_every_10sec_refresh">10초주기갱신</option>
+				</select>
+			</td>
+			</tr>
+			<tr>
+			<td colspan=10 style='border:1px solid white;'>
+				<button data-type="line" type="button" class=" W btn btn-success" id='btnAddline' title="라인차트 추가" data-lang="vis_add_linechart,vis_add_linechart:title"><i class="fa fa-line-chart"></i> 라인차트 추가</button>
+				<button data-type="bar" type="button" class=" W btn btn-success" id='btnAddbar' title="바차트 추가" data-lang="vis_add_barchart,vis_add_barchart:title"><i class="fa fa-bar-chart"></i> 바차트 추가</button>
+				<button data-type="pie" type="button" class="W btn btn-success" id='btnAddpie' title="파이차트 추가" data-lang="vis_add_piechart,vis_add_piechart:title"><i class="fa fa-pie-chart"></i> 파이차트 추가</button>
+
+				<button data-type="text" type="button" class="W btn btn-success" id='btnAddtext' title="Text 추가" data-lang="vis_add_text,vis_add_text:title"><i class="fa fa-font"></i>Text추가</button>
+				<!-- <button type="button" class="W btn btn-success" id='btnAddsensortext' title="Sensor값 추가">센서값추가</button> -->
+				<button type="button" class="W btn btn-success" id='btnAddBack' title="배경이미지" data-lang="vis_back_image,vis_back_image:title"><i class="fa fa-file-image-o"></i> 배경이미지</button>
+				<!-- <button type="button" class="btn btn-success" id='btnMax' title="전체화면"><i class="fa fa-desktop"></i>전체화면</button> -->
+				<button type="button" class="btn btn-default" id='dashboardNew' title="신규" data-lang="common_new_btn,common_new_btn:title"><i class="fa fa-file-o"></i> 신규</button>
+				<button type="button" class="W btn btn-default" id='dashboardSave' title="저장" data-lang="common_save_btn,common_save_btn:title"><i class="fa fa-floppy-o"></i> 저장</button>
+				<button type="button" class="W btn btn-default" id='btnlayout' title="레이이아웃편집" data-lang="vis_layout_edit,vis_layout_edit:title"><i class="fa fa-pencil-square-o"></i> 레이아웃편집</button>
+				<button type="button" class="hide btn btn-default" id='btnexport' title="export" data-lang="vis_export,vis_export:title">Export</button>
+			</td>
+		</tr>
+	</table>
+
+</div>
+
+<!-- modal form -->
+<div id="export-modal" class="modal">
+	<!-- Modal Dialog -->
+	<div class="modal-dialog modal-lg"  style="width:800px">
+		<!-- Modal Content -->
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h4 data-lang="vis_view_export">시각화 Export</h4>
+			</div>
+			<!-- END Modal Header -->
+
+			<!-- Modal Content -->
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="vis_export_comment">export 코드 <br><font color=red>오른쪽 코드를 외부 웹 콘텐츠에 붙여 넣으세요.</font> </label>
+						<div class="col-md-9">
+							<textarea name="export" class="form-control" rows=10 cols=180>
+<div id='test' style='width:800px; height:600px'></div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<link rel="stylesheet" href="http://whalesharklite.datacentric.kr/admin/js/Chart/Chart.min.css">
+<script src='http://whalesharklite.datacentric.kr/admin/js/Chart/Chart.min.js'></script>
+<script src='http://whalesharklite.datacentric.kr/admin/js/whalesharklite.js'></script>
+<script>
+loaddashboard('#test', {id})
+</script>							
+							</textarea>
+							</div>
+					</div>
+				</form>
+			</div>
+			<!-- END Modal Content -->
+
+			<!-- Modal footer -->
+			<div class="modal-footer remove-margin">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
+				<button type="button" class="btn btn-success" id="btnSave" data-lang="common_ok_btn"><i class="fa fa-check"></i> 확인</button>
+			</div>
+			<!-- END Modal footer -->
+		</div>
+		<!-- END Modal Content -->
+	</div>
+	<!-- END Modal Dialog -->
+</div>
+
+<div id="save-modal" class="modal">
+	<!-- Modal Dialog -->
+	<div class="modal-dialog">
+		<!-- Modal Content -->
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 data-lang="vis_save_dashboard">대시보드저장</h4>
+			</div>
+			<!-- END Modal Header -->
+
+			<!-- Modal Content -->
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="common_name" data-lang="common_name">이름</label>
+						<div class="col-md-9">
+							<input type="text" name="name" class="form-control" value="">
+							<input type="hidden" name="id" class="form-control" value="">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="vis_preview">미리보기</label>
+						<div class="col-md-9">
+							<img name='preview' width='100%'>
+						</div>
+					</div>
+					<form>
+			</div>
+			<!-- END Modal Content -->
+
+			<!-- Modal footer -->
+			<div class="modal-footer remove-margin">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
+				<button type="button" class="btn btn-success" data-lang="common_ok_btn"><i class="fa fa-check"></i> 확인</button>
+			</div>
+			<!-- END Modal footer -->
+		</div>
+		<!-- END Modal Content -->
+	</div>
+	<!-- END Modal Dialog -->
+</div>
+
+<div id="setting-modal" class="modal">
+	<!-- Modal Dialog -->
+	<div class="modal-dialog">
+		<!-- Modal Content -->
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 data-lang="vis_setting">설정 선택</h4>
+			</div>
+			<!-- END Modal Header -->
+
+			<!-- Modal Content -->
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="vis_txt_label">텍스트: </label>
+						<div class="col-md-9">
+							<input type="text" name="text" class="form-control" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="vis_txtcolor_label">글자색: </label>
+						<div class="col-md-9">
+							<input type="text" name="color" class="form-control" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="vis_backcolor_label">배경색: </label>
+						<div class="col-md-9">
+							<input type="text" name="bgcolor" class="form-control" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="vis_fontsize_label">폰트크기: </label>
+						<div class="col-md-9">
+							<select name='fontsize' class="form-control">
+								<option value='10'>10</option>
+								<option value='15'>15</option>
+								<option value='10'>20</option>
+								<option value='25'>25</option>
+								<option value='30'>30</option>
+								<option value='35'>35</option>
+								<option value='40'>40</option>
+								<option value='45'>45</option>
+								<option value='50'>50</option>
+								<option value='55'>55</option>
+								<option value='60'>60</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="vis_fontweight_label">폰트굵기: </label>
+						<div class="col-md-9">
+							<select name='fontweight' class="form-control">
+								<option value='normal'>normal</option>
+								<option value='bold'>bold</option>
+								<option value='100'>100</option>
+								<option value='200'>200</option>
+								<option value='300'>300</option>
+								<option value='400'>400</option>
+								<option value='500'>500</option>
+								<option value='600'>600</option>
+								<option value='700'>700</option>
+								<option value='800'>800</option>
+								<option value='900'>900</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3" data-lang="vis_fontname_label">폰트종류: </label>
+						<div class="col-md-9">
+							<select name='fontname' class="form-control">
+								<option value=''>default</option>
+								<option value='굴림'>굴림</option>
+								<option value='굴림체'>굴림체</option>
+								<option value='바탕'>바탕</option>
+								<option value='바탕체'>바탕체</option>
+								<option value='돋움'>돋움</option>
+								<option value='돋움체'>돋움체</option>
+								<option value='궁서'>궁서</option>
+								<option value='궁서체'>궁서체</option>
+								<option value='Arial'>Arial</option>
+								<option value='Arial Black'>Arial Black</option>
+								<option value='Comic Sans MS'>Comic Sans MS</option>
+								<option value='Courier'>Courier</option>
+								<option value='Impact'>Impact</option>
+								<option value='MS Gothic'>MS Gothic</option>
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<!-- END Modal Content -->
+
+			<!-- Modal footer -->
+			<div class="modal-footer remove-margin">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
+				<button type="button" class="btn btn-success" id="btnSave" data-lang="common_ok_btn"><i class="fa fa-check"></i> 확인</button>
+			</div>
+			<!-- END Modal footer -->
+		</div>
+		<!-- END Modal Content -->
+	</div>
+	<!-- END Modal Dialog -->
+</div>
+
+<!-- END user modal form -->
+
+<div id=charts style='position: relative;'></div>
+
+<input type="file" accept="image/*" id='file' style="display: none">
+</body>
+<!-- 스크립트 영역 -->
+<script type="text/javascript">
+
+App = opener.App;
+App.body = $('body');
+var info_columnnames = [];
+var info_encoding = "";
+
+App.chartobjs = undefined;
+
+$( window ).unload(function() {
+	App.body = undefined;
+});
+
+$.post(App.baseurl+'/list', {qid:'metafind',column:'mtype',value:'csv',value1:'xls',value2:'rdb',value3:'tsdb',mowner:App.loginuserid}, function(res) {
+	console.log(res);
+	if(res.success)
+	{
+    	$('#mtype').empty().append("<option value=''data-lang='common_metadata_select'>"+lang("common_metadata_select","통합데이터선택")+"</option>");
+    	for(var i=0; i<res.list.length; i++)
+    	{
+    		var item = res.list[i];
+        	$('#mtype').append("<option value='"+item.mname+"' path='"+item.mpath+"' mtype='"+item.mtype+"' mtable='"+item.mtable+"' url='"+item.ourl+"' otable='"+item.otable+"' odatabase='"+item.odatabase+"'>"+item.mdesc+"</option>");
+    	}
+	}
+});
+
+$('#mtype').change(function() {
+	var mtype = $('#mtype option:selected').attr('mtype');
+	var path = $('#mtype option:selected').attr('path');
+	if(mtype=="csv"|| mtype=="xls")
+	{
+		$('#filename').empty().append("<option value='' data-lang='common_msg_select_file'>"+lang("common_msg_select_file","파일을 선택해주세요.")+"</option>");
+		$.post(App.baseurl+'/filelist', {path:path,mowner:App.loginuserid}, function(res) {
+			if(res.success) {
+				for(var i=0; i<res.list.length; i++){
+					$('#filename').append("<option value='"+res.list[i].filename+"'>"+res.list[i].filename+"</option>");
+				}	
+			}
+		})
+		
+		$('.r,.rd').addClass('hide');
+		$('.f').removeClass('hide');
+	}
+	else if(mtype=="rdb")
+	{
+    	var table = $('#mtype option:selected').attr('mtable');
+		
+    	gridtotal = "";
+    	gridurl = App.baseurl+'/readrdb';
+		$.post(gridurl, {table:table,length:1},function(res) {
+    		if(res.success)
+    		{
+            	var filtercolumns = [];
+				var cnames = [];
+				info_columnnames = res.columns.split(",");
+				
+				cnames = info_columnnames;
+
+				$('#columns').val(cnames.join(","));
+    		}
+    	});
+		
+		$('.r,.rd').addClass('hide');
+    	$('.f').addClass('hide');
+	}
+	else if(mtype=="tsdb")
+	{
+    	var ourl = $('#mtype option:selected').attr('url');
+    	var odatabase = $('#mtype option:selected').attr('odatabase');
+    	var otable = $('#mtype option:selected').attr('otable');
+		
+    	sql = "select * from "+otable+ " limit 1";
+		query_lite(ourl, odatabase, sql, function(success, res, param){
+			if(success)
+			{
+				var data = gettsdata(res);
+				info_columnnames = data.columns;
+				$('#columns').val(info_columnnames.join(","));
+			}
+		}, null);
+		
+		
+		$('.r,.rd').removeClass('hide');
+//		$('#sdate').parent().removeClass('hide');
+//		$('#edate').parent().removeClass('hide');
+		$('.f').addClass('hide');
+		$('#range').change();
+		
+		$('#columns').val("");
+		
+	}
+	else $('.f').addClass('hide');
+});
+
+$('#filename').off('change').on('change', function() {
+	
+	var path = $("#mtype option:selected").attr('path');
+	var filepath = path+"/"+$("#filename").val();
+	
+	gridurl = App.baseurl+'/readcsv';
+	$.post(gridurl, {filepath:filepath,length:1},function(res) {
+		if(res.success)
+		{
+			info_columnnames = res.columns.split(",");
+			info_encoding = res.encoding;
+			
+//			for(var i=0; i<initcolumncnt && i<info_columnnames.length; i++) cnames.push(info_columnnames[i]);
+			cnames = info_columnnames;
+
+			$('#columns').val(cnames.join(","));
+			
+//			makegrid(cnames);
+		}
+	});
+});        	
+
+$('#range').off('change').on('change',function() {
+	if($('#range').val()=="") $('.rd').removeClass('hide');
+	else $('.rd').addClass('hide');
+});
+
+$('#columns').off('click').on('click', function() {
+	
+	selectcolumn_dlg(info_columnnames, $('#columns').val().split(","), function(checked) {
+		$('#columns').val(checked.join(","));
+	});
+	
+});
+
+colors = [
+	'255, 99, 132',
+	'54, 162, 235',
+	'255, 206, 86',
+	'75, 192, 192',
+	'153, 102, 255',
+	'255, 159, 64'];
+
+for(var i=0; i<100; i++) colors.push(""+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255));
+
+function graph(selector, type, data, labels) {
+
+	var ds = [];
+	
+//	var colors = [];
+
+
+	if(!Array.isArray(data[1][0]))
+	{
+		ds.push({
+			legend: true,
+			tooltips: true,
+			label: labels[1],
+			data: data[1],
+			backgroundColor:'rgba(255, 99, 132, 0.2)',
+			borderColor: 'rgba(255,99,132,1)',
+			borderWidth: 1,  //선굵기
+			pointRadius: 2,
+			pointHoverRadius: 2,
+			fill:true
+
+		 });
+	}
+	else
+	{
+		for(var i=0; i<data[1].length; i++)
+		{
+			ds.push({
+				legend: true,
+				tooltips: true,
+				label: labels[1][i],
+				data: data[1][i],
+				backgroundColor:"rgba("+colors[i]+",0.2)",
+				borderColor: "rgba("+colors[i]+",1)",
+				borderWidth: 1, //선굵기
+				pointRadius: 2,
+				pointHoverRadius: 2,
+				fill:true
+			 });
+		}
+	
+	}
+	var chart = new Chart(selector, {
+		type: type, //그래프 형태 지정하기
+			data: {
+				labels: data[0], //X축 제목
+				datasets: ds,
+			},
+			options: {
+//				responsive: true,
+				maintainAspectRatio: false,
+				scales: { //X,Y축 옵션
+				yAxes: [{
+					ticks: {
+							beginAtZero: true //Y축의 값이 0부터 시작
+						}
+					}],
+				},
+				legend: {
+					display: true
+				},
+				animation: {
+					duration: 0
+				}
+			}
+	});	
+//	console.log('chart end', new Date());
+	return chart;
+}
+
+function makechartobj(id)
+{
+	var chartobj = {};
+	if(App.chid===undefined) App.chid = 0;
+ 	if(App.chartobjs===undefined) App.chartobjs = [];
+ 	
+	if(id===undefined)
+	{
+		App.chid++;
+		chartobj.id = "chart"+App.chid;
+	}
+	else 
+	{
+		chartobj.id = id;
+		var cid = Number(id.replace("chart", ""));
+		if(cid>App.chid) App.chid = cid;
+	}
+ 	
+	return chartobj;
+}
+
+function readdata(mtype, ourl, odatabase, table, filepath, sql, callback, param)
+{
+	if(mtype=="tsdb")
+	{
+		query_lite(ourl, odatabase, sql, function(success, res){
+			if(success)
+			{
+				var data = gettsdata(res);
+				if(callback!==undefined) callback(true, data, param)
+			}
+			else if(callback!==undefined) callback(false, null, param)
+		}, null);
+		
+	}
+	else if(mtype=="rdb")
+	{
+		gridurl = App.baseurl+'/readrdb';
+		$.post(gridurl, {table:table,length:10000},function(res) {
+    		if(res.success)
+    		{
+				var data = {list:res.list};
+				data.columns = []; 
+				if(res.list.length>0) data.columns = Object.keys(data.list[0]);
+				if(callback!==undefined) callback(true, data, param)
+    		}
+			else if(callback!==undefined) callback(false, null, param)
+    	});
+		
+	}
+	else if(mtype=="csv" || mtype=="xls")
+	{
+		gridurl = App.baseurl+'/readcsv';
+		var filepath = sql.split("#")[1];
+		var encoding = sql.split("#")[2];
+    	$.post(gridurl, {filepath:filepath,length:10000},function(res) {
+    		if(res.success)
+    		{
+				var data = {list:res.list};
+				data.columns = []; 
+				if(res.list.length>0) data.columns = Object.keys(data.list[0]);
+				if(callback!==undefined) callback(true, data, param)
+    		}
+			else if(callback!==undefined) callback(false, null, param)
+    	});
+	}
+}
+
+// chart 추가, id 가 있으면 .. load 
+function addchart(type, mtype, ourl, odatabase, table, filepath, sql, timer, id, left, top, width, height)
+{
+//	if(App.chid==undefined) App.chid = 0;
+// 	if(App.chartobjs==undefined) App.chartobjs = [];
+
+	var chartobj = makechartobj(id);
+	
+	var style = "display:inline-block;width:95%;height:400px;";
+	if(left!==undefined) style = "position:absolute;left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;";
+	$("#charts").append("<div class='chart' style='"+style+"'><canvas id="+chartobj.id+" width=400 height=400></canvas></div>");
+	
+	if(id===undefined) App.start_loading(lang('common_msg_searching','검색중...'));
+
+    chartobj.mtype = mtype;
+    chartobj.ourl = ourl;
+    chartobj.odatabase = odatabase;
+    chartobj.table = table;
+    chartobj.filepath= filepath;
+    chartobj.sql = sql;
+    chartobj.timer_interval = timer;
+    chartobj.type = type;
+    chartobj.left = left;
+    chartobj.top = top;
+    chartobj.width = width;
+    chartobj.height = height;
+
+	readdata(mtype, ourl, odatabase, table, filepath, sql, function(issuccess, result, param) { // result == {columns:[], list:[]}
+		if(id===undefined) App.stop_loading();
+		if(issuccess)
+		{
+			var xvals = [];
+			var yvals = [];
+			var ylabel = [];
+
+			// columns info
+			for(var i=0;i<result.columns.length; i++)
+			{
+				var item = result.columns[i];
+				if(i>0) ylabel.push(item);
+			}
+			
+//			console.log("labels", ylabel);
+			// values
+			for(var i=0; i<result.list.length; i++)
+			{
+				var item = result.list[i];
+				var t = item[result.columns[0]]; // 첫번째 컬럼
+				xvals.push(t);
+				
+				for(var c=1; c<result.columns.length;c++) {
+					var cname = result.columns[c];
+					if(i==0) 
+						yvals.push([ item[cname] ]);
+					else
+						yvals[c-1].push(item[cname]);
+				}
+			}
+			chartobj.data = {vals:[xvals,yvals],labels:["시간",ylabel]};
+			chartobj.obj = graph(chartobj.id, type, chartobj.data.vals,chartobj.data.labels);
+		}
+	}, null);
+	chartobj.timer = null; //setTimeout();
+	if(chartobj.timer_interval!="") chartobj.timer = setTimeout(refreshchart, 1000*chartobj.timer_interval, chartobj);
+	
+	App.chartobjs.push(chartobj);
+}
+
+// refreshchart
+function refreshchart(chartobj)
+{
+//	console.log('refreshchart_'+chartobj.id+(new Date()).format('yyyy-MM-dd HH:mm:ss'));
+	if($('#'+chartobj.id).length<=0) {
+		return;
+	}
+	
+	readdata(chartobj.mtype, chartobj.ourl, chartobj.odatabase, chartobj.table, chartobj.filepath, chartobj.sql, function(issuccess, result, param) {
+		if(issuccess)
+		{
+			var xvals = [];
+			var yvals = [];
+			var ylabel = [];
+
+			// columns info
+			for(var i=0;i<result.columns.length; i++)
+			{
+				var item = result.columns[i];
+				if(i>0) ylabel.push(item);
+			}
+			// values
+			for(var i=0; i<result.list.length; i++)
+			{
+				var item = result.list[i];
+				var t = item[result.columns[0]]; // 첫번째 컬럼
+				xvals.push(t);
+				
+				for(var c=1; c<result.columns.length;c++) {
+					var cname = result.columns[c];
+					if(i==0) 
+						yvals.push([ item[cname] ]);
+					else
+						yvals[c-1].push(item[cname]);
+				}
+			}
+			chartobj.data = {vals:[xvals,yvals],labels:[lang("common_time","시간"),ylabel]};
+			if(chartobj.obj!=null) {
+				chartobj.obj.destroy();
+				chartobj.obj = null;
+			}
+			chartobj.obj = graph(chartobj.id, chartobj.type, chartobj.data.vals,chartobj.data.labels);
+		}
+		else
+		{
+			console.log('query error...['+chartobj.sql+']', chartobj);
+		}
+		if(chartobj.timer!=null) {
+			clearTimeout(chartobj.timer);
+			chartobj.timer = null;
+		}
+		if(chartobj.timer_interval!="") chartobj.timer = setTimeout(refreshchart, 1000*chartobj.timer_interval, chartobj);
+	});
+}
+
+//chart,pie allclear()
+function clearAllChart()
+{
+	if(App.chartobjs==undefined) return;
+	for(var i=0; i<App.chartobjs.length; i++)
+	{
+		var chartobj = App.chartobjs[i];
+		if(chartobj.timer!==undefined && chartobj.timer!=null) clearTimeout(chartobj.timer);
+		if(chartobj.obj!==undefined && chartobj.obj!=null) chartobj.obj.destroy();
+		if(chartobj.type=="line" || chartobj.type=="pie") $('#'+chartobj.id).parent().remove();
+		else $('#'+chartobj.id).remove();
+	}
+	App.chartobjs =[];
+	App.chid = 0;
+	
+	$('#save-modal [name=name]').val('');
+	$('#save-modal [name=id]').val('');
+//	$('#save-modal [name=permission]').val('');
+	$('#dashname').text('');
+//	$('.W').show();
+	$('#btnlayout').html('<i class="fa fa-pencil-square-o"></i> '+lang('vis_edit_layout','레이아웃편집'));
+}
+
+//chart,pie deleteclear()
+function deleteChart(id)
+{
+	if(App.chartobjs==undefined) return;
+	for(var i=0; i<App.chartobjs.length; i++)
+	{
+		var chartobj = App.chartobjs[i];
+		if(chartobj.id==id){
+			console.log('delete', chartobj);
+			if(chartobj.timer!==undefined && chartobj.timer!=null) {
+				clearTimeout(chartobj.timer);
+				chartobj.timer = null;
+			}
+			if(chartobj.obj!==undefined && chartobj.obj!=null) chartobj.obj.destroy();
+			
+			if(chartobj.type=="line" || chartobj.type=="pie") $('#'+chartobj.id).parent().remove();
+			else if(chartobj.type=="text" || chartobj.type=="sensortext" || chartobj.type=="img")  $('#'+chartobj.id).remove();
+			App.chartobjs.splice(i, 1);
+			break;
+		}
+	}
+}
+
+//pie 추가 id 가 있으면 load
+function addpie(mtype, ourl, odatabase, table, filepath, sql, timer, id, left, top, width, height)
+{
+//		App.chid++;
+//		if(id===undefined) chartobj.id = "pie"+App.chid;
+//		else chartobj.id = id;
+
+		var chartobj = makechartobj(id);
+
+		chartobj.mtype = mtype;
+	    chartobj.ourl = ourl;
+	    chartobj.odatabase = odatabase;
+	    chartobj.table = table;
+	    chartobj.filepath= filepath;
+	    chartobj.sql = sql;
+	    
+	    if(id===undefined) App.start_loading('검색중...');
+	    
+	    chartobj.timer_interval = timer;
+	    chartobj.type = "pie";
+	    
+//	    chartobj.cinfo = infos[ci];
+//	    chartobj.idx = ci;
+		chartobj.data = {};
+
+
+	    chartobj.left = left;
+	    chartobj.top = top;
+	    chartobj.width = width;
+	    chartobj.height = height;
+
+	    readdata(mtype, ourl, odatabase, table, filepath, sql, function(issuccess, result, cobj) {
+	    	if(id===undefined) App.stop_loading();
+			if(issuccess)
+			{
+				var xvals = [];
+				var yvals = [];
+				var ylabel = [];
+
+				// columns info
+				for(var i=0;i<result.columns.length; i++)
+				{
+					var item = result.columns[i];
+					if(i>0) ylabel.push(item);
+				}
+				// values
+				for(var i=0; i<result.list.length; i++)
+				{
+					var item = result.list[i];
+					var t = item[result.columns[0]];
+					xvals.push(t);
+					
+					for(var c=1; c<result.columns.length;c++) {
+						var cname = result.columns[c];
+						if(i==0) 
+							yvals.push([ item[cname] ]);
+						else
+							yvals[c-1].push( item[cname] );
+					}
+				}
+				
+				cobj.data = {vals:[xvals,yvals],labels:[lang("common_time","시간"),ylabel]};
+				
+				var style = "display:inline-block; width:400px;height:400px;";
+				if(left!==undefined) style = "position:absolute; display:inline-block; left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;";
+				
+//				console.log("pie",style);
+				$("#charts").append("<div class='chart' style='"+style+"'><canvas id="+cobj.id+" width=100% height=100%></canvas></div>");
+				
+//				var maxval = cobj.cinfo.vrange.split("~")[1];
+
+				var maxval = 200;
+				
+				cobj.maxval = maxval;
+				cobj.name = ylabel[0];
+				cobj.idx = 0;
+				
+				cobj.obj = pie(cobj.id, cobj.idx, cobj.name, cobj.maxval, yvals[0][0], null);
+
+				cobj.timer = null; //setTimeout();
+				if(cobj.timer_interval!="") cobj.timer = setTimeout(refreshpie, 1000*cobj.timer_interval, cobj);
+				
+				App.chartobjs.push(cobj);
+			}
+			else
+			{
+				console.log('query error...['+chartobj.sql+']');
+			}
+		},chartobj);
+}
+
+function refreshpie(chartobj)
+{
+//	console.log('refreshpie_'+chartobj.id+(new Date()).format('yyyy-MM-dd HH:mm:ss'));
+	if($('#'+chartobj.id).length<=0) {
+		return;
+	}
+	
+	readdata(chartobj.mtype, chartobj.ourl, chartobj.odatabase, chartobj.table, chartobj.filepath, chartobj.sql, function(issuccess, result, cobj) {
+		if(issuccess)
+		{
+			var xvals = [];
+			var yvals = [];
+			var ylabel = [];
+
+			// columns info
+			for(var i=0;i<result.columns.length; i++)
+			{
+				var item = result.columns[i];
+				if(i>0) ylabel.push(item);
+			}
+			// values
+			for(var i=0; i<result.list.length; i++)
+			{
+				var item = result.list[i];
+				var t = item[result.columns[0]];
+				xvals.push(t);
+				
+				for(var c=1; c<result.columns.length;c++) {
+					var cname = result.columns[c];
+					if(i==0) 
+						yvals.push([ item[cname] ]);
+					else
+						yvals[c-1].push( item[cname] );
+				}
+			}
+			
+			chartobj.data = {vals:[xvals,yvals],labels:[lang("common_time","시간"),ylabel]};
+			
+			var maxval = 200;
+			
+			cobj.maxval = maxval;
+			cobj.name = ylabel[0];
+			cobj.idx = 0;
+
+			chartobj.obj = pie(chartobj.id, chartobj.idx, chartobj.cinfo.name, maxval, yvals[0][0], chartobj.obj);
+		}
+		else
+		{
+			console.log('query error...['+chartobj.sql+']', chartobj);
+		}
+		
+		if(chartobj.timer!=null) {
+			clearTimeout(chartobj.timer);
+			chartobj.timer = null;
+		}
+		if(chartobj.timer_interval!="") chartobj.timer = setTimeout(refreshpie, 1000*chartobj.timer_interval, chartobj);
+	}, chartobj);
+}
+
+function pie(id, idx, title, maxval, value, chart)
+{
+	var keys = [title,''];
+	var vals = [value, maxval-value];
+
+	var pieinfo = {
+		type : 'doughnut',
+		data : {
+			datasets : [ {
+				data : vals,
+				label : title,
+				backgroundColor:["rgba("+colors[idx]+",1)", 'lightgrey'],
+				borderColor: ["rgba("+colors[idx]+",1)", 'white'],
+				borderWidth: 0//[0, 0, 0, 0, 0, 0, 0]
+			} ],
+			labels : keys
+		},
+		options : {
+			circumference: Math.PI+1,
+			rotation: -Math.PI - 0.5,
+			legend:{
+			display:false,
+			position : 'right'
+		},
+		responsive : true,
+		title : {
+				display:true,
+				text : title+"("+value+")",
+				fontSize:20,
+				fontStyle:'bold',
+				position:'top'
+		},
+		plugins: {
+		          labels: { 
+		        	  	render: 'value',
+		              	position: 'outside'
+		              }	            
+		         },
+		}
+	};
+
+	if(chart==null || chart === undefined)
+		chart = new Chart(id,pieinfo);
+	else {
+		chart.options.title.text = title+"("+value+")";
+		chart.data.datasets[0].data = vals;
+		chart.data.labels = keys;
+		chart.update();
+	}
+
+	return chart;
+}
+
+$('#btnAddline,#btnAddbar,#btnAddpie').click(function() {
+
+	var mname = $('#mtype').val();
+	var columns = $('#columns').val();
+	var range = $('#range').val();
+	var ftime = "";
+	var ttime = "";
+	
+	var mtype = $('#mtype option:selected').attr('mtype');
+	var mtable = $('#mtype option:selected').attr('mtable');
+	var path = $('#mtype option:selected').attr('path'); // csv
+	var ourl = $('#mtype option:selected').attr('url');
+	var odatabase = $('#mtype option:selected').attr('odatabase');
+	var otable = $('#mtype option:selected').attr('otable');
+	var filename = $('#filename').val(); // csv
+	var range = $('#range').val(); // tsdb
+	
+	if(mname=="") {
+		App.msg_alert(lang('vis_error','오류'), lang('vis_msg_metadata_empty','통합데이터를 선택하지 않았습니다.'));
+		return;
+	}
+	if(columns=="")	{
+		App.msg_alert(lang('vis_error','오류'), lang('vis_msg_column_empty','컬럼을 선택하지 않았습니다.'));
+		return;
+	}
+	
+	var sql = "select \""+columns.split(",").join("\",\"")+ "\" from "+otable+" ";
+	var filepath = "";
+	
+	if(mtype=="tsdb")
+	{
+		if(range=="") {
+			var fdate = $('[name=fdate]').val();
+			var tdate = $('[name=tdate]').val();
+			
+			if(fdate=="") {
+				App.msg_alert(lang('vis_error','오류'), lang('vis_msg_start_empty','검색 시작일을 입력하지 않았습니다.'));
+				return;
+			}
+			if(tdate=="") {
+				App.msg_alert(lang('vis_error','오류'), lang('vis_msg_end_empty','검색 종료일을 입력하지 않았습니다.'));
+				return;
+			}
+			ftime = fdate + " "+$('[name=fhour]').val()+":"+$('[name=fminute]').val()+":00";
+			ttime = tdate + " "+$('[name=thour]').val()+":"+$('[name=tminute]').val()+":00";
+			sql += "where time >='"+ftime+"' and time <='"+ttime+"'";
+		}
+		else
+			sql += "where time >=now()-"+range;
+		sql += " order by time";
+	}
+	else if(mtype=="rdb")
+	{
+		sql = "select `"+columns.split(",").join("`,`")+ "` from `"+mtable+"` ";
+	}
+	else if(mtype=="csv"||mtype=="xls")
+	{
+		var cols = columns.split(",");
+		var path = $("#mtype option:selected").attr('path');
+    	var filepath = path+"/"+$("#filename").val();
+//    	filepath = App.loginuserid+"/"+path+"/"+$("#filename").val();
+		sql = mtype+"#"+filepath+"#"+info_encoding+"#"+cols;
+	}
+	
+	if($(this).data("type")=="pie")
+	{
+		addpie(mtype, ourl, odatabase, mtable, filepath, sql, $('#timer').val());
+		return;
+	}
+	else if($(this).data("type")=="line")
+	{
+		addchart("line", mtype, ourl, odatabase, mtable, filepath, sql, $('#timer').val());
+		return;
+	}
+	else if($(this).data("type")=="bar")
+	{
+		addchart("bar", mtype, ourl, odatabase, mtable, filepath, sql, $('#timer').val());
+		return;
+	}
+	return;
+});
+
+(function init(){
+
+	$('.input-datepicker').datepicker({format:"yyyy-mm-dd"});
+	for(var i=0; i<24; i++) $('select.hour').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +lang('common_hh','시')+'</option>');
+	for(var i=0; i<60; i++) $('select.minute').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +lang('common_mm','분')+'</option>');
+	
+	
+	if(App.editdashboard!==undefined  && App.editdashboard!=null)
+	{
+		var info = App.editdashboard;
+		
+		$('title').text(lang('vis_modify','시각화 수정 - {1}',info.name));
+		
+		$('#save-modal [name=id]').val(info.id);
+		$('#save-modal [name=name]').val(info.name);
+		$('#btnexport').removeClass('hide');
+
+		clearAllChart();
+		
+//		console.log(info.data);
+		// tsdb query 오류 보완
+		var json = info.data;
+		var sp = json.indexOf('"sql":"');
+		
+		var cvtjson="";
+		while(sp>=0)
+		{
+			var ep = json.indexOf('","timer_interval"', sp+7);
+			if(ep>=0)
+			{
+				cvtjson += json.substring(0,sp+7);
+				cvtjson += json.substring(sp+7, ep).split('"').join('\\"');
+				
+				json = json.substring(ep);
+				sp = json.indexOf('"sql":"');
+			}
+		}
+		cvtjson += json;
+//		"sql":"~","timer_interval"
+//		console.log(cvtjson);
+				
+		updatedashdata(info.name, JSON.parse(cvtjson));
+	}
+	
+})();
+
+
+$.contextMenu({
+	selector: '.chart', 
+	callback: function(key, options) {
+		/*
+		if(key=="delete") {
+			var id = $(this).attr("id");
+			if(_timerid[id+"_refresh"]!==undefined) clearTimeout(_timerid[id+"_refresh"]);
+			$(this).remove();
+		}
+		else 
+		*/
+		if(key=="setting") {
+			var id = $(this).attr("id");
+			var obj = $(this);
+			var fobj = findchartobj(id);
+			if(fobj==null || (fobj.type!="text" && fobj.type!="sensortext")) return;
+
+			$('#setting-modal button.btn-success').off('click').on('click', function() {
+				
+				obj.css('font-size',$('#setting-modal [name=fontsize]').val()+"px");
+				obj.css('font-family',$('#setting-modal [name=fontname]').val());
+				obj.css('font-weight',$('#setting-modal [name=fontweight]').val());
+				obj.css('color',$('#setting-modal [name=color]').val());
+				obj.css('background-color',$('#setting-modal [name=bgcolor]').val());
+								
+				var fontattr = [$('#setting-modal [name=fontsize]').val(),$('#setting-modal [name=fontname]').val(),$('#setting-modal [name=fontweight]').val(),$('#setting-modal [name=color]').val(),$('#setting-modal [name=bgcolor]').val()].join("|");
+				fobj.fontattr = fontattr;
+				
+				var newtxt = $('#setting-modal [name=text]').val();
+				fobj.text = newtxt;
+				
+				if(fobj.type=="text")
+				{
+					obj.text(newtxt);
+				}
+				else
+				{
+					var val = obj.text();
+					var fmt = obj.data("text");
+					fmt = fmt.split("{}").join("");
+					val = val.split(fmt).join("");	
+					obj.data("text", newtxt);
+					val = newtxt.split("{}").join(val);
+					obj.text(val);
+				}
+				
+				$('#setting-modal').modal('hide');
+			});
+			$('#setting-modal [name=text]').val(fobj.text);
+			$('#setting-modal [name=fontsize]').val(obj.css('font-size').replace("px",""));
+			$('#setting-modal [name=fontname]').val(obj.css('font-family'));
+			$('#setting-modal [name=fontweight]').val(obj.css('font-weight'));
+			$('#setting-modal [name=color]').val(obj.css('color'));
+			$('#setting-modal [name=bgcolor]').val(obj.css('background-color'));
+			
+			$('#setting-modal').modal({backdrop:'static'});
+			$('#setting-modal .modal-dialog').draggable();
+		}
+		else if(key=="copy") {
+			var pos = $(this).position();
+			additem(pos.left+10, pos.top+10, $(this).text());
+
+			//var obj = $("<label class='labelling' style='position:absolute;left:"+($(this).position().left+5)+"px;top:"+($(this).position().top+5)+"px'>"+$(this).text()+"</label>").appendTo('body');
+		}
+		else if(key=="delete") {
+			var id = "";
+			if($(this).children('canvas').length>0) id = $(this).children('canvas').attr('id');
+			else id = $(this).attr('id');
+			deleteChart(id);
+		}
+	},
+	items: {
+//		"copy": {name: "복제", icon: "copy"},
+		"delete": {name: lang("common_delete_btn","삭제"), icon: "delete"},
+		"setting": {name: lang("common_setting_btn","설정"), icon: "edit"},
+//		"sep1": "---------",
+//		"quit": {name: "Quit", icon: function(){
+//			return 'context-menu-icon context-menu-icon-quit';
+//		}}
+	}
+});        	
+
+/*
+$('#btnMax').click(function() {
+	if($('#btnMax').text().trim()=='전체화면'){
+		$('#btnMax').html('<i class="fa fa-desktop"></i> 화면복귀');
+		$('header').hide();
+		$('nav').hide();
+		$('#sidebar-search').hide();
+		$('#page-content').css('margin','0');
+		$('footer').hide();
+	} else {
+		$('#btnMax').html('<i class="fa fa-desktop"></i> 전체화면');
+		$('header').show();
+		$('nav').show();
+		$('#sidebar-search').show();
+		$('#page-content').css('margin','0 0 0 250px');
+		$('footer').show();
+	}
+});
+*/
+
+$('#dashboardNew').click(function() {
+	App.msg_confirm(lang('vis_dashboard','대시보드'), lang('vis_msg_dashboard_new_confirm','대시보드를 새로 만드시겠습니까?'), clearAllChart);
+});
+
+$('#dashboardSave').click(function() {
+	
+	if(App.chartobjs === undefined) return; 
+	
+	//	var objs = App.chartobjs.slice();
+	var objs = clonelayout();
+	var backimage = $("#charts").css("background-image");
+	
+	backimage = backimage.split("\"").join("");
+	
+	if(backimage!="") objs.push({id:"background",type:"background",data:backimage});// 배경...
+	
+//	console.log("save...", JSON.stringify(objs),objs);
+	
+	$('#save-modal button.btn-success').off('click').on('click',function() {
+		var save = {qid:"dashboardadd"};
+		save.data = JSON.stringify(objs);
+		save.author = App.loginid;
+		save.name = $('#save-modal [name=name]').val();
+//		save.permission = $('#save-modal [name=permission]').val();
+		save.state = 'ACTIVE';
+		save.preview = $('[name=preview]').attr('src');
+		
+		if($('#save-modal [name=id]').val()!="")
+		{
+			save.id = $('#save-modal [name=id]').val();
+			save.qid = "dashboardupdate";
+		}
+		
+//		console.log('save',save);
+		App.start_loading(lang('common_msg_saving','정보저장중'));
+		$.post(App.baseurl+"/insert",save).done(function(res) {
+			App.stop_loading();
+			
+			console.log('saved...', res);
+			
+			if(res.success)
+			{
+				$('#save-modal [name=id]').val(res.id);
+				$('#dashname').text(save.name);
+				$('#save-modal').modal('hide');
+				App.msg_alert(lang('vis_dashboard','대시보드'), lang('common_msg_saved','저장되었습니다.'), function() { if(opener.refreshgrid!==undefined) opener.refreshgrid(); });
+			}
+			else App.msg_alert(lang('vis_save_error','저장오류'), lang('vis_msg_save_error','저장에 오류가 발생했습니다.'));
+			
+		});
+		
+	});
+//	capture('#page-content', function(imgurl) {
+	capture('#charts', function(imgurl) {
+		$('[name=preview]').attr('src', imgurl);
+	});
+	
+	$('#save-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
+	
+});
+
+var loaddashs = [];
+
+function updatedashdata(name, data)
+{
+	$('#dashname').text(name);
+	
+	var lst = data; //JSON.parse(data);
+	for(var i=0; i<lst.length; i++)
+	{
+		var item = lst[i];
+		
+		if(item.type=="line") addchart(item.type, item.mtype, item.ourl, item.odatabase, item.table, item.filepath, item.sql, item.timer_interval, item.id, item.left, item.top, item.width, item.height);
+		else if(item.type=="bar") addchart(item.type, item.mtype, item.ourl, item.odatabase, item.table, item.filepath, item.sql, item.timer_interval, item.id, item.left, item.top, item.width, item.height);
+		else if (item.type=="pie") addpie(item.mtype, item.ourl, item.odatabase, item.table, item.filepath, item.sql, item.timer_interval, item.id, item.left, item.top, item.width, item.height);
+		else if (item.type=="text") addstatictext(item.text, item.id, item.fontattr, item.left, item.top, item.width, item.height);
+		else if (item.type=="sensortext") addtext(item.mtype, item.ourl, item.odatabase, item.table, item.filepath, item.sql, item.timer_interval, item.id, item.text, item.fontattr, item.left, item.top, item.width, item.height);
+		else if (item.type=="img") addimg(item.text, item.id, item.left, item.top, item.width, item.height);
+		else if (item.type=="background") {
+			$("#charts").css("background-image", item.data).css("background-repeat","no-repeat");
+        	$('#btnAddBack').text(lang('vis_clear_back',"배경지우기"));
+		}
+	}
+}
+
+function loaddash(i) {
+	var info = loaddashs[i];
+
+	clearAllChart();
+	
+	$('#save-modal [name=name]').val(info.name);
+	$('#save-modal [name=id]').val(info.id);
+
+	/*
+	$('.rpermission').empty();
+	$('.wpermission').empty();
+	
+	if(info.rwtype=="W" || info.author==App.loginid) // 작성자또는 쓰기권한자..
+	{
+		$('.W').show();
+	}
+	else
+		$('.W').hide();
+	
+	if(info.permissions === undefined) info.permissions = "";
+	var infos = info.permissions.split(",");
+	for(var i=0; i<infos.length; i++)
+	{
+		if(infos[i]=="") continue;
+		var perm = infos[i].split('|');
+		
+		if(perm[3]=="W") $('.wpermission').append('<div>&nbsp;<button name=pbtndel type="button">삭제</button>&nbsp;<input type=hidden name=permission value="'+perm[0]+'">'+perm[1]+"("+perm[2]+')<br></div>');
+		else if(perm[3]=="R") $('.rpermission').append('<div>&nbsp;<button name=pbtndel type="button">삭제</button>&nbsp;<input type=hidden name=permission value="'+perm[0]+'">'+perm[1]+"("+perm[2]+')<br></div>');
+	}
+	*/
+	
+	$('#open-modal').modal('hide');
+	
+	$('#btnAddBack').text(lang('vis_back_image',"배경이미지"));
+	$("#charts").css("background", "none");
+	$("#charts").css("background-image","");
+	
+	updatedashdata(info.name, JSON.parse(info.data));
+}
+
+function defdash(i) {
+	var info = loaddashs[i];
+	
+	$('#open-modal').modal('hide');
+	
+	
+	var obj = {name:info.name,data:info.data};
+
+	var savestr = JSON.stringify(obj);
+	
+//	var v = {"name":"TS0005-온도대시보드","data":"[{"id":"pie1","sql":null,"facilityid":"TS0005","cols":null,"ids":"dev_1794450379","range":"300s","ftime":"","ttime":"","timer_interval":"5","type":"pie","cinfo":{"bigo":"온도1(PV)","unit":"℃","vname":"TEMPERATURE1(PV)","vtype":"정수","vrange":"0~2000","name":"온도1(PV)","id":"dev_1794450379","state":"ACTIVE","udate":"2021-05-09T15:00:00.000+0000","wdate":"2021-05-09T15:00:00.000+0000"},"idx":0,"data":null,"obj":null,"timer":15088},{"id":"pie2","sql":null,"facilityid":"TS0005","cols":null,"ids":"dev__99261750","range":"300s","ftime":"","ttime":"","timer_interval":"5","type":"pie","cinfo":{"bigo":"온도1(SV)","unit":"℃","vname":"TEMPERATURE1(SV)","vtype":"정수","vrange":"0~2000","name":"온도1(SV)","id":"dev__99261750","state":"ACTIVE","udate":"2021-05-09T15:00:00.000+0000","wdate":"2021-05-09T15:00:00.000+0000"},"idx":1,"data":null,"obj":null,"timer":15089},{"id":"pie3","sql":null,"facilityid":"TS0005","cols":null,"ids":"dev__862962453","range":"300s","ftime":"","ttime":"","timer_interval":"5","type":"pie","cinfo":{"bigo":"OVER TEMP","unit":"℃","vname":"OVER_TEMP","vtype":"정수","vrange":"0~2000","name":"OVER TEMP","id":"dev__862962453","state":"ACTIVE","udate":"2021-05-09T15:00:00.000+0000","wdate":"2021-05-09T15:00:00.000+0000"},"idx":2,"data":null,"obj":null,"timer":15090}]"};
+	
+	$.post(App.baseurl+"/update",{qid:"configput",key:App.loginid+"_defdashboard",value:savestr});	
+}
+
+/*
+if(showtimeout === undefined)
+{
+	var showtimeout = null;
+} else {
+	if(showtimeout!=null) clearTimeout(showtimeout);
+	showtimeout = null;
+}
+
+$('#page-content').off('mousemove').on('mousemove', function() {
+	if($('.push_dash').length<=0) return;
+	$('.push_dash').slideDown(500);
+	
+	if(showtimeout!=null) {
+		clearTimeout(showtimeout);
+		showtimeout = null;
+	}
+	showtimeout = setTimeout(function() {$('.push_dash').slideUp(500);}, 10000);
+});
+
+$('.push_dash').hide();
+*/
+
+// 캠쳐...
+function capture(selector,callback)
+{
+	html2canvas($(selector)[0]).then(function(canvas) {
+		var imgurl = canvas.toDataURL("image/jpeg");
+		if(callback!==undefined) callback(imgurl); 
+	});
+}
+
+/*
+// W 권한 없을때...
+var delbtnclass = "";
+if(App.menus[App.curpage] !== undefined)
+{
+	if(App.menus[App.curpage].rwtype!="W") {
+		$('#dashboardNew,#dashboardSave').hide();
+		delbtnclass = 'hide';
+	}
+}
+*/
+
+function clonelayout()
+{
+	var objs = [];
+	for(var i=0; i<App.chartobjs.length; i++)
+	{
+		var chartobj = App.chartobjs[i];
+		if(chartobj.fontattr===undefined) chartobj.fontattr="";
+		
+		if(chartobj.type=="text" || chartobj.type=="img"/* || chartobj.type=="sensortext"*/) objs.push({id:chartobj.id,text:chartobj.text,fontattr:chartobj.fontattr,type:chartobj.type,left:chartobj.left,top:chartobj.top,width:chartobj.width,height:chartobj.height});
+		else objs.push({id:chartobj.id,text:chartobj.text,fontattr:chartobj.fontattr,mtype:chartobj.mtype,ourl:chartobj.ourl,odatabase:chartobj.odatabase,table:chartobj.table,filepath:chartobj.filepath,sql:chartobj.sql,timer_interval:chartobj.timer_interval,type:chartobj.type,cinfo:chartobj.cinfo,idx:chartobj.idx,left:chartobj.left,top:chartobj.top,width:chartobj.width,height:chartobj.height});
+		
+		/*
+		objs[i].sql = null;
+		objs[i].cols = null;
+		objs[i].obj = null;
+		objs[i].data = null;
+		*/
+	}
+
+	return objs;
+}
+
+var layoutmode = false;
+
+$('#btnlayout').off('click').on('click',function() {
+	
+	if(layoutmode)
+	{
+		updatepos();
+		var name = $('#dashname').text();
+		var id = $('#save-modal [name=id]').val();
+		// data 복사...
+		var objs = clonelayout();
+		
+		clearAllChart();
+
+		$('#save-modal [name=name]').val(name);
+		$('#save-modal [name=id]').val(id);
+		
+		// 다시그리기...
+		updatedashdata(name, objs);
+		
+		layoutmode = false;
+	}
+	else {
+		$('.chart').draggable({grid:[20,20]}).resizable({grid:20}); //.resize(resizeevt);
+		layoutmode = true;	
+		updatepos();
+		$('#btnlayout').html('<i class="fa fa-pencil-square-o"></i> '+lang('vis_fix_layout','레이아웃고정'));
+	}
+});
+
+
+$(document).off('resize','div.text,div.sensortext').on('resize','div.text,div.sensortext',function() {
+//	updatepos();
+
+	if($(this).hasClass('text') || $(this).hasClass('sensortext') )
+	{
+//		$(this).css("font-size", $(this).height()-5);
+		$(this).css("line-height", $(this).height()+"px");
+	}
+});
+
+function updatepos()
+{
+//	console.log('updatepos');
+	for(var i=0; i<App.chartobjs.length; i++)
+	{
+		var chartobj = App.chartobjs[i];
+		
+		var obj = null;
+		if(chartobj.type=="line"||chartobj.type=="pie") obj = $('#'+chartobj.id).parent();
+		else obj = $('#'+chartobj.id);
+		
+		chartobj.left = obj.position().left;
+		chartobj.top = obj.position().top;
+		chartobj.width = obj.width();
+		chartobj.height = obj.height();
+	}
+}
+
+$('#btnAddtext').off('click').on('click', function() {
+	addstatictext("Text");
+});
+
+//단순 text 추가 id 가 있으면 load
+function addstatictext(text, id, fontattr, left, top, width, height)
+{
+	var chartobj = makechartobj(id);
+	var style = "display:inline-block;width:400px;height:40px;line-height:40px;";
+	var fontsize = "35";
+	if(left!==undefined) {
+		style = "position:absolute; display:inline-block; left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;line-height:"+height+"px;";
+		fontsize = height - 5;
+	}
+		
+	$("#charts").append("<div id='"+chartobj.id+"' class='chart text' style='"+style+";font-size:"+fontsize+"px'>"+text+"</div>");
+	
+	if(fontattr!=undefined)
+	{
+		var obj = $('#'+chartobj.id);
+		var attrs = fontattr.split("|"); 
+		
+		obj.css('font-size',attrs[0]+"px");
+		obj.css('font-family',attrs[1]);
+		obj.css('font-weight',attrs[2]);
+		obj.css('color',attrs[3]);
+		obj.css('background-color',attrs[4]);
+	}
+	
+	chartobj.type = "text";
+	chartobj.text = text;
+    chartobj.left = left;
+    chartobj.top = top;
+    chartobj.width = width;
+    chartobj.height = height;
+    chartobj.fontattr = fontattr;
+	
+	App.chartobjs.push(chartobj);
+}
+
+//sessor text 추가 id 가 있으면 load
+function addtext(mtype, ourl, odatabase, table, filepath, sql, timer, id, text, fontattr, left, top, width, height)
+{
+ 	var sids = sensorids.split(",");
+	var infos = sensor_infos(sensorids);
+	
+	console.log('infos',infos);
+ 	
+ 	for(var ci=0; ci<sids.length; ci++)
+ 	{
+ 		var chartobj = makechartobj(id); //{};
+		
+		var cols = sensor_cols(sids[ci]);
+		var sql = "select "+cols+ " from "+facilityid+" "; 
+		if(range=="") {
+			sql += "where time >='"+ftime+"' and time <='"+ttime+"'";
+		}
+		else
+			sql += "where time >=now()-"+range;
+		sql += " order by time desc limit 1";
+		
+		chartobj.sql = sql;
+		
+	    chartobj.facilityid = facilityid;
+	    chartobj.cols = cols;
+	    chartobj.ids = sids[ci];
+	    chartobj.range = range;
+	    chartobj.ftime = ftime;
+	    chartobj.ttime = ttime;
+	    chartobj.timer_interval = timer;
+	    chartobj.type = "sensortext";
+	    chartobj.cinfo = infos[ci];
+	    chartobj.idx = ci;
+	    chartobj.text = text;
+	    chartobj.left = left;
+	    chartobj.top = top;
+	    chartobj.width = width;
+	    chartobj.height = height;
+	    chartobj.fontattr = fontattr;
+	    
+	    
+	    if(text===undefined)
+	    	chartobj.text = chartobj.cinfo.name+":{}";
+	    else
+	    	chartobj.text = text;
+		
+		query("facility", chartobj.sql, function(issuccess, result, cobj) {
+			if(issuccess)
+			{
+				var xvals = [];
+				var yvals = [];
+				var ylabel = [];
+
+				// columns info
+				for(var i=0;i<result.results[0].series[0].columns.length; i++)
+				{
+					var item = result.results[0].series[0].columns[i];
+					if(i>0) ylabel.push(item);
+				}
+				
+//				console.log("labels", ylabel);
+				// values
+				for(var i in result.results[0].series[0].values)
+				{
+					var items = result.results[0].series[0].values[i];
+					var t = (new Date(items[0])).format("HH:mm:ss");
+					xvals.push(t);
+					
+					for(var c=1; c<items.length;c++) {
+						if(i==0) 
+							yvals.push([ items[c] ]);
+						else
+							yvals[c-1].push(items[c]);
+					}
+				}
+				
+				cobj.data = yvals[0]; //{vals:[xvals,yvals],labels:["시간",ylabel]};
+				
+				var style = "display:inline-block; width:400px;height:40px;line-height:40px;";
+				var fontsize = "35";
+				if(left!==undefined) {
+					style = "position:absolute; display:inline-block; left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;line-height:"+height+"px;";
+					fontsize = height-5;
+				}
+				
+				var text = cobj.text;
+				text = text.split("{}").join(cobj.data);
+				$("#charts").append("<div class='chart sensortext' data-text='"+ cobj.text+"' id="+cobj.id+" style='font-size:"+fontsize+"px;"+style+"'>"+text+"</div>");
+				
+				if(fontattr!=undefined)
+				{
+					var obj = $('#'+cobj.id);
+					var attrs = fontattr.split("|"); 
+					
+					obj.css('font-size',attrs[0]+"px");
+					obj.css('font-family',attrs[1]);
+					obj.css('font-weight',attrs[2]);
+					obj.css('color',attrs[3]);
+					obj.css('background-color',attrs[4]);
+				}
+				
+				cobj.timer = null; //setTimeout();
+				if(cobj.timer_interval!="") cobj.timer = setTimeout(refreshtext, 1000*cobj.timer_interval, cobj);
+				
+				App.chartobjs.push(cobj);
+			}
+			else
+			{
+				console.log('query error...['+chartobj.sql+']');
+			}
+		},chartobj);
+ 	}
+}
+
+function refreshtext(chartobj)
+{
+//	console.log('refreshtext_'+chartobj.id+(new Date()).format('yyyy-MM-dd HH:mm:ss'));
+	if($('#'+chartobj.id).length<=0) {
+		return;
+	}
+	
+	query("facility", chartobj.sql, function(issuccess, result, param) {
+		if(issuccess)
+		{
+			var xvals = [];
+			var yvals = [];
+			var ylabel = [];
+
+			// columns info
+			for(var i=0;i<result.results[0].series[0].columns.length; i++)
+			{
+				var item = result.results[0].series[0].columns[i];
+				if(i>0) ylabel.push(item);
+			}
+			
+//			console.log("labels", ylabel);
+			// values
+			for(var i in result.results[0].series[0].values)
+			{
+				var items = result.results[0].series[0].values[i];
+				var t = (new Date(items[0])).format("HH:mm:ss");
+				xvals.push(t);
+				
+				for(var c=1; c<items.length;c++) {
+					if(i==0) 
+						yvals.push([ items[c] ]);
+					else
+						yvals[c-1].push(items[c]);
+				}
+			}
+			chartobj.data = yvals[0]; //{vals:[xvals,yvals],labels:["시간",ylabel]};
+
+			var text = chartobj.text;
+			text = text.split("{}").join(chartobj.data);
+			/*
+			var mode = $('#btnlayout').text().trim();
+			console.log('refresh text...'+mode);
+			
+			if(mode.indexOf("고정")>0)
+			{
+				console.log('resize...');
+				$('#'+chartobj.id).text(text);
+				$('#'+chartobj.id).resizable({grid:20});
+			}
+			else 
+			*/
+			if($('#btnlayout').text().trim()==lang("vis_layout_edit","레이아웃편집")) $('#'+chartobj.id).text(text);
+		}
+		else
+		{
+			console.log('query error...['+chartobj.sql+']', chartobj);
+		}
+		
+		if(chartobj.timer!=null) {
+			clearTimeout(chartobj.timer);
+			chartobj.timer = null;
+		}
+		if(chartobj.timer_interval!="") chartobj.timer = setTimeout(refreshtext, 1000*chartobj.timer_interval, chartobj);
+	});
+}
+
+$('#btnAddBack').click(function() {
+
+	if($('#btnAddBack').text().indexOf(lang("vis_clear_back","배경지우기"))>=0)
+	{
+    	$("#charts").css("background", "none");
+    	$("#charts").css("background-image","");
+    	$('#btnAddBack').text(lang("vis_back_image","배경이미지"));
+		return;		
+	}
+	
+	$('#file').unbind('change').change(function() {
+
+		if($('#file').get(0).files.length<=0) return;
+		input_file = $('#file').get(0).files[0];
+		var file = input_file;
+		var fileName = file.name;
+		
+		var reader = new FileReader();
+        reader.onload = function(e){
+        	
+//        	var html = '<img style="position:absolute; left:0;top:0;" src='+e.target.result+' />';
+//        	$("#charts img:first").remove();
+//        	$("#charts").append(html);
+        	$("#charts").css("background-image", "url("+e.target.result+")").css("background-repeat","no-repeat");
+        	$('#btnAddBack').text(lang("vis_clear_back","배경지우기"));
+//			addimg(e.target.result);
+			$('#file').val('');
+        };
+        reader.readAsDataURL(file);
+		
+	});
+	
+	$('#file').click();
+	
+});
+
+// img 추가 id 가 있으면 load
+function addimg(img, id, left, top, width, height)
+{
+	var chartobj = makechartobj(id);
+	var style = "left:0px;top:0px;";
+	if(left!==undefined) {
+		style = "position:absolute; display:inline-block; left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;";
+	}
+		
+	$("#charts").append("<img id='"+chartobj.id+"' class='chart img' style='"+style+"' src='"+img+"'/>");
+
+	chartobj.type = "img";
+	chartobj.text = img;
+	App.chartobjs.push(chartobj);
+}
+
+function findchartobj(id)
+{
+	if(App.chartobjs===undefined) return null;
+	
+	for(var i = 0; i<App.chartobjs.length; i++)
+	{
+		if(App.chartobjs[i].id==id) {
+			return App.chartobjs[i];
+		}
+	}
+	return null;	
+}
+
+$(document).off('dblclick', 'div.text,div.sensortext').on('dblclick', 'div.text,div.sensortext', function() {
+	var id = $(this).attr("id");
+	var fobj = findchartobj(id);
+	if(fobj==null) return;
+	
+	if($(this).hasClass('text'))
+	{
+		var newtxt = prompt(lang('vis_msg_chg_text_input','변경할문자열?'),$(this).text());
+		if(newtxt!=null)
+		{
+			$(this).text(newtxt);
+			fobj.text = newtxt;
+		}
+	}
+	else
+	{
+		var val = $(this).text();
+		var fmt = $(this).data("text");
+		fmt = fmt.split("{}").join("");
+		
+		val = val.split(fmt).join("");
+		
+		var newtxt = prompt(lang('vis_msg_chg_text_sensorinput','변경할문자열({} 에는 센서값이 치환됩니다.)?'),$(this).data("text"));
+		
+		if(newtxt!=null)
+		{
+			$(this).data("text", newtxt);
+			fobj.text = newtxt;
+		
+			val = newtxt.split("{}").join(val);
+			$(this).text(val);
+		}
+	}
+	
+});
+
+var h = $('body')[0].scrollHeight-$('header').height()-$('footer').height()-130;
+$('#charts').css('height',h);
+
+$('#btnexport').click(function() {
+
+	var id = $('#save-modal [name=id]').val();
+	
+	var code = $('#export-modal textarea').val();
+	
+	$('#export-modal textarea').val(code.replace("{id}", id));
+	$('#export-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
+
+});
+
+</script>
+<!-- 스크립트 영역 -->

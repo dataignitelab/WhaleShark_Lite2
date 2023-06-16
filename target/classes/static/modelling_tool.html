@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
+<!--
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+-->
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+
+<script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
+<link rel="stylesheet" href=" https://cdn.datatables.net/select/1.2.1/css/select.dataTables.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<link href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.ui.position.min.js" type="text/javascript"></script>
+
+<title>modelling tool</title>
+<style>
+body {font-size:9}
+.divboxl {
+	margin: 15px 0; /*상하 좌우*/
+	padding: 10px 15px;
+	border: 1px solid black;
+	background-color: #ffffff;
+	box-shadow: 0 rgb(182, 182, 182, 0.5);
+}
+.divboxr {
+	margin: 15px 0; /*상하 좌우*/
+	padding: 10px 15px;
+	border: 1px solid black;
+	background-color: #ffffff;
+	box-shadow: 0 rgb(182, 182, 182, 0.5);
+}
+.divbox {
+	margin: 15px 0; /*상하 좌우*/
+	padding: 10px 15px;
+	border: 1px solid black;
+	background-color: #ffffff;
+	box-shadow: 5px 5px 5px 5px rgb(182, 182, 182, 0.5);
+}
+.divimgbox {
+	margin: 0 0; /*상하 좌우*/
+	padding: 0 0;
+	border: 1px solid black;
+	background-color: #ffffff;
+	box-shadow: 5px 5px 5px 5px rgb(182, 182, 182, 0.5);
+}
+.labelling {
+	font-size:10px; color:lightgreen;
+	border:1px solid lightgreen;
+	/* font-weight:bold; */
+	white-space: nowrap;overflow:hidden;text-overflow: ellipsis;
+}
+.itembox {
+	margin: 0px 0; /*상하 좌우*/
+	padding: 0 0;
+	width:100px;
+	height:40px;
+/*	position:absolute; */
+	border: 1px solid black;
+	background-color: #ffffff;
+	box-shadow: 5px 5px 5px 5px rgb(182, 182, 182, 0.5);
+}
+.sel {
+position:absolute; border:2px solid rgb(0,255,0); background:rgb(255,255,255); opacity:0.7
+}
+
+.loading {
+	box-shadow: 5px 5px 5px 5px rgb(182, 182, 182, 0.5);
+}
+</style>
+
+</head>
+<body>
+<br>
+<h4>&nbsp;&nbsp;AI Object Detect modelling Tool Demo(YOLOV5)</h4>
+<br>&nbsp;&nbsp;
+<button class='step1'>1. 데이터셋 목록 관리(등록 및 object 박스 라벨링)</button>&nbsp;&nbsp;&nbsp;▶&nbsp;
+<button class='step2'>2. 학습(모델생성)</button>&nbsp;&nbsp;&nbsp;▶&nbsp;
+<button class='step3'>3. 모델 실행</button>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+
+<!-- 데이터셋 목록 -->
+<div class="modal fade" id="gridModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+	  <div class="modal-content" style='width:800px'>
+		<div class="modal-header">
+		  <h5 class="modal-title">데이터 셋 목록</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		
+		<div class="form-group row">
+		  <label class="col-sm-2 col-form-label">데이터셋명:</label>
+		  <div class="col-sm-10">
+				<select name='cbdataset' class="form-control">
+				<option value="">데이터셋선택</option>
+				</select>
+		  </div>
+		</div>		
+		<div id='datasetgrid' style='width:750px;height:400px;overflow:auto'>
+		  
+		</div>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="updatedataset btn btn-primary">데이터수정</button>
+		  <button type="button" class="deldataset btn btn-primary">데이터삭제</button>
+		  <button type="button" class="adddataset btn btn-primary">데이터추가</button>
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<!-- 데이터셋 추가 -->
+<div class="modal fade" id="adddatasetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+	  <div class="modal-content" style='width:1054px'>
+		<div class="modal-header">
+		  <h5 class="modal-title">데이터셋 추가</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  
+			<div class="form-group row">
+			  <label class="col-sm-2 col-form-label">데이터셋명:</label>
+			  <div class="col-sm-10" style='display:flex'>
+					<select name='cbdataset' class="form-control col-sm-3">
+					<option value="">직접입력</option>
+					</select>&nbsp;&nbsp;
+					<input type="text" class="form-control col-sm-7" name="datasetname" placeholder="데이터셋명">
+			  </div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">파일선택:</label>
+				<div class="col-sm-10">
+					<input id='annotation_files' type='file' name='files' multiple accept='image/*'>
+				</div>
+			</div>
+			<div class="form-group">
+				<div id='annotation_work' style='position:relative;border:1px solid black; width:1024px; height:768px; overflow:auto'>
+					<img>
+				</div>
+			</div>
+		  
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="previmg btn btn-primary">이전</button>
+		  <label class=imgpos>0/0</label>
+		  <button type="button" class="nextimg btn btn-primary">다음</button>
+		  <select name='cbclass' class="form-control col-sm-3">
+					<option value="">직접입력</option>
+					</select>
+					<input type="text" class="form-control col-sm-3" name="addclassname" placeholder="클래스명">
+		  <button type="button" class="addclass btn btn-primary">클래스추가</button>
+		  <button type="button" class="savedataset btn btn-primary">저장</button>
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<!-- 데이터셋 수정 -->
+<div class="modal fade" id="updatedatasetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+	  <div class="modal-content" style='width:1054px'>
+		<div class="modal-header">
+		  <h5 class="modal-title">데이터셋 수정</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  
+			<div class="form-group row">
+			  <label class="col-sm-2 col-form-label">데이터셋명:</label>
+			  <div class="col-sm-10" style='display:flex'>
+					<select name='cbdataset' class="form-control col-sm-3">
+					<option value="">직접입력</option>
+					</select>&nbsp;&nbsp;
+					<input type="text" class="form-control col-sm-7" name="datasetname" placeholder="데이터셋명">
+			  </div>
+			</div>
+			<!--
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">파일선택:</label>
+				<div class="col-sm-10">
+					<input id='annotation_files' type='file' name='files' multiple accept='image/*'>
+				</div>
+			</div>
+			-->
+			<div class="form-group">
+				<div id='annotation_work2' style='position:relative;border:1px solid black; width:1024px; height:768px; overflow:auto'>
+					<img>
+				</div>
+			</div>
+		  
+		</div>
+		<div class="modal-footer">
+		  <select name='cbclass' class="form-control col-sm-3">
+					<option value="">직접입력</option>
+					</select>
+					<input type="text" class="form-control col-sm-3" name="updateclassname" placeholder="클래스명">
+		  <button type="button" class="addclass btn btn-primary">클래스추가</button>
+		  <button type="button" class="savedataset btn btn-primary">저장</button>
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<!-- 학습(모델생성) -->
+<div class="modal fade" id="modelcreateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+	  <div class="modal-content"  style='width:1100px'>
+		<div class="modal-header">
+		  <h5 class="modal-title">학습(모델생성)</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		
+		<div class="form-group row">
+		  <label class="col-sm-2 col-form-label">데이터셋명:</label>
+		  <div class="col-sm-10">
+				<select name='cbdataset' class="form-control">
+				<option value="">데이터셋 선택</option>
+				</select>
+		  </div>
+		</div>
+		
+		<div id='modellist' style='width:1050px;height:400px'>
+		  
+		</div>
+		</div>
+		<div class="modal-footer">
+		  모델명:<input type="text" class="form-control col-sm-2" name="modelname">
+		  전이학습:<select class="form-control col-sm-2" name="cbmodel">
+		  <option value="yolov5s.pt">기본</option>
+		  </select>
+		  epoch:<input type="text" class="form-control col-sm-1" name="epoch" value="10">
+		  batch:<input type="text" class="form-control col-sm-1" name="batch" value="16">
+		  <button type="button" class="createmodel btn btn-primary">모델생성</button>
+		  <button type="button" class="delmodel btn btn-primary">모델삭제</button>
+		  <button type="button" class="refreshmodel btn btn-primary">갱신</button>
+		  <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>-->
+		</div>
+	  </div>
+	</div>
+</div>
+
+<!-- 학습 결과 확인 -->
+<div class="modal fade" id="modeltestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+	  <div class="modal-content" style='width:1054px'>
+		<div class="modal-header">
+		  <h5 class="modal-title">학습결과 확인</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  
+			<div class="form-group row">
+			  <label class="col-sm-2 col-form-label">데이터셋명:</label>
+			  <div class="col-sm-10" style='display:flex'>
+					<select name='cbdataset' class="form-control col-sm-4"><option value="">데이터셋 선택</option>
+					</select>&nbsp;&nbsp;
+					<select name='cbmodel' class="form-control col-sm-4"><option value="">모델 선택</option>
+					</select>
+			  </div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">파일선택:</label>
+				<div class="col-sm-10">
+					<input id='testfile' type='file' name='testfile' accept='image/*'>
+				</div>
+			</div>
+			<div class="form-group">
+				<div id='test_work' style='border:1px solid black; width:1024px; height:768px; overflow:auto'>
+					<img src=sampledetect.png>
+				</div>
+			</div>
+		  
+		</div>
+		<div class="modal-footer">
+		  외부연동url:<input name="exporturl" class="form-control col-sm-8" placeholder="예) http://aimodel.datacentric.kr/ai/f29c7f955f897b2db2f3600671f4ac3fefd9f92e69b8df53257472b81feea529">
+		  <button type="button" class="execmodel btn btn-primary">테스트 실행</button>
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<!-- 학습 결과 확인 -->
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+	  <div class="modal-content"  style='width:800px'>
+		<div class="modal-header">
+		  <h5 class="modal-title">학습결과 상세보기</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+			<div class="form-group" style='height:400px; overflow: auto'>
+				<pre id='txtview'></pre>
+			</div>
+		  
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<!--  로딩 중 -->
+<div class="modal fade" id='loading'>
+<div class="modal-dialog  modal-dialog-centered">
+ <div class="modal-content loading" style='width:450px'>
+ <div class="modal-body">
+ <div class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+<span class=msg>로딩중입니다...</span>
+<span class=time>(시간)</span>
+</div>
+</div>
+</DIV>
+</div>
+
+</body>
+<script>
+
+Date.prototype.format = function(f) {
+    if (!this.valueOf()) return " ";
+ 
+    var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+    var d = this;
+     
+    return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+        switch ($1) {
+            case "yyyy": return d.getFullYear();
+            case "yy": return (d.getFullYear() % 1000).zf(2);
+            case "MM": return (d.getMonth() + 1).zf(2);
+            case "dd": return d.getDate().zf(2);
+            case "E": return weekName[d.getDay()];
+            case "HH": return d.getHours().zf(2);
+            case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2);
+            case "mm": return d.getMinutes().zf(2);
+            case "ss": return d.getSeconds().zf(2);
+            case "a/p": return d.getHours() < 12 ? "오전" : "오후";
+            default: return $1;
+        }
+    });
+};
+ 
+String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
+String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
+Number.prototype.zf = function(len){return this.toString().zf(len);};
+
+var loading_stime = null;
+var loading_timer = null;
+
+function loading_timer_func()
+{
+	var  ct = (new Date()).getTime();
+	
+	var dur = Math.floor((ct-loading_stime)/1000);
+	
+	var m = Math.floor(dur / 60);
+	var s = dur % 60;
+
+	$('#loading .time').text('('+m+":"+s+")");
+
+}
+
+function loading_start(msg, interval)
+{
+	$('#loading').modal({backdrop:'static'}).draggable();
+	$('#loading .msg').text(msg);
+	loading_stime = (new Date()).getTime();
+	$('#loading .time').text('');
+	
+	if(interval!==undefined)
+	{
+		if(loading_timer!= null) clearInterval(loading_timer);
+		loading_timer = null;
+		loading_timer = setInterval(loading_timer_func, interval);
+	}
+}
+
+function loading_msg(msg)
+{
+	$('#loading .msg').text(msg);
+}
+
+function loading_stop()
+{
+	setTimeout(function() {$('#loading').modal('hide');}, 500);
+	if(loading_timer!= null) clearInterval(loading_timer);
+	loading_timer = null;
+}
+
+//loading_start("로딩중입니다...", 1000);
+//setTimeout(function() {loading_stop();},120000);
+
+// 다중  post... item  {url:'url',data:{},callback:function() {} }, callback
+function multi_post(postinfos, callback)
+{
+	if(postinfos.length==0) return;
+	
+	var postitem = postinfos[0];
+	$.post(postitem.url, postitem.data).done(function(res) {
+		if(postitem.callback !== undefined) postitem.callback(true, res, postitem);
+		var infos = postinfos.slice(1);
+		if(infos.length>0) multi_post(infos,callback);
+		else {if(callback!==undefined) callback();}
+	}).fail(function() {
+		if(postitem.callback !== undefined) postitem.callback(false, null, postitem);
+		var infos = postinfos.slice(1);
+		if(infos.length>0) multi_post(infos,callback);
+		else {if(callback!==undefined) callback();}
+	});
+}
+
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+// csv to jsonlist
+function csvtolist(data, deli=",")
+{
+	var lst = [];
+	var lines = data.split("\n");
+	for(var i in lines)
+	{
+		var line = lines[i].replace("\r","");
+		if(line.length<=0) continue;
+		var record = {};
+		var cols = line.split(deli);
+		for(j in cols) {
+			if(!cols[j].startsWith("\"")) record['column'+j] = cols[j];
+			else record['column'+j] = cols[j].substring(1, cols[j].length-1);
+		}
+		lst.push(record);
+	}
+	return lst;
+}
+
+var _timerid = {};
+//그리드 생성
+function grid(id, url, method, param, resulttype, headers, columns, height, root, refresh, iscreate=true) {
+	if(_timerid[id+"_refresh"]!==undefined) clearTimeout(_timerid[id+"_refresh"]);
+	if(refresh!="") {
+		_timerid[id+"_refresh"] = setTimeout(function() { grid(id, url, method, param, resulttype, headers, columns, height, root, refresh,false)}, refresh);
+	}
+
+	if(iscreate)
+	{
+		var tblhtml = "<table id='"+id+"_table' width='100%'><thead><tr>";
+		var arr_column = [];
+		for(var i in headers) {
+			tblhtml += "<th>"+headers[i]+"</th>";
+			if(columns[i]==="__no__") arr_column.push({orderable:false, className:'dt-body-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }});
+			else if (typeof(columns[i]) == "object")  arr_column.push(columns[i]);
+			else arr_column.push({data:columns[i],defaultContent: "NULL"}); 
+		}
+		tblhtml += "</tr></thead></table>";
+
+		$('#'+id+"_table").DataTable().destroy();
+		$("#"+id+" table").remove();
+		$('#'+id).empty().append(tblhtml);
+	}
+
+	var ret = {};
+
+	var methodfunc = $.post;
+	if(method=="GET" || method=="get") methodfunc = $.get;
+
+	methodfunc(url, param).done(function (data) { 
+		var list = (resulttype=="CSV"||resulttype=="csv") ? csvtolist(data):data[root];
+		if(iscreate)
+		{
+			var tblinfo = {
+				scrollY: height,
+				scrollCollapse: false,
+				searching: false,
+				//			pageLength : 10,
+				bPaginate : false,
+	//			responsive: true,
+				language : "kor",
+				select: {style: 'single'},
+	//			processing: true,
+					// order : [ [ 2, 'asc' ],
+					//[ 0, 'asc' ] ],
+				ordering : true, 
+				info:false,
+				data:list,
+				columns : arr_column
+			};
+
+			ret.tblinfo = tblinfo;	
+
+			ret.tblobj = $('#'+id+"_table").DataTable(tblinfo);
+			$('#'+id+"_table_wrapper").css("font-size", 14);
+			_timerid[id+"_obj"] = ret;
+		} else {
+//				var table = _timerid[id+"_obj"].tblobj;
+			$('#'+id+"_table").dataTable().fnClearTable(); 
+			$('#'+id+"_table").dataTable().fnAddData(list);
+		}
+
+ }).fail( function () {});
+
+ return ret;
+}
+
+$.contextMenu({
+		selector: '.sel', 
+		callback: function(key, options) {
+			if(key=="delete") {
+//				var id = $(this).attr("id");
+//				if(_timerid[id+"_refresh"]!==undefined) clearTimeout(_timerid[id+"_refresh"]);
+				$(this).remove();
+			}
+			else if(key=="setting") {
+				var id = $(this).attr("id");
+				var datastr = $('#'+id).attr("alt");
+				if(datastr!==undefined && datastr!="")
+				{
+//					console.log(id, datastr)
+					var data = JSON.parse(datastr);
+					$('#gridModal form input,select').each(function(i,e) { $(this).val(data[$(this).attr('name')]); });
+				} else $('#gridModal form')[0].reset();
+
+				$('#gridModal').attr("alt", id);
+				$('#gridModal').modal({backdrop:'static'});
+				$('#gridModal').draggable();
+			}
+			else if(key=="copy") {
+				var pos = $(this).position();
+				additem(pos.left+10, pos.top+10, $(this).text());
+
+				//var obj = $("<label class='labelling' style='position:absolute;left:"+($(this).position().left+5)+"px;top:"+($(this).position().top+5)+"px'>"+$(this).text()+"</label>").appendTo('body');
+			}
+		},
+		items: {
+//			"edit": {name: "Edit", icon: "edit"},
+//			"cut": {name: "Cut", icon: "cut"},
+//			copy: {name: "Copy", icon: "copy"},
+//			"copymeta": {name: "CopyMeta", icon: "copy"},			"copy": {name: "복제", icon: "copy"},
+			"delete": {name: "삭제", icon: "delete"},
+			"setting": {name: "설정", icon: "edit"},
+//			"setting_pie": {name: "pie설정", icon: "edit"},
+//			"setting_bar": {name: "bar/line설정", icon: "edit"},
+//			"sep1": "---------",
+//			"quit": {name: "Quit", icon: function(){
+//				return 'context-menu-icon context-menu-icon-quit';
+//			}}
+		}
+	});
+
+//	$('.sel').draggable().resizable();
+	$(document).on('dblclick', '.sel', function() {
+		var txt = prompt('change class',$(this).text());
+		if(txt!==null) {
+			var l = $(this).position().left;
+			var t = $(this).position().top;
+			// scroll 보정
+			l += $(this).parent().scrollLeft();
+			t += $(this).parent().scrollTop();			
+			var w = $(this).width()+4;
+			var h = $(this).height()+4;
+			
+			var html = '<div class=sel style="position:absolute;left:'+l+'px;top:'+t+'px;width:'+w+'px;height:'+h+'px;">'+txt+'</div>';
+			
+			var nobj = $(html).appendTo($(this).parent());
+			
+			nobj.draggable().resizable();
+			$(this).remove();
+		}
+	});
+	
+	// 데이터셋 로드
+	function loaddataset(loaded_func)
+	{
+		// backup select index;
+		var backup_vals = [];
+		$('select[name=cbdataset]').each(function() {backup_vals.push($(this).val());});
+		
+		$('select[name=cbdataset] option').each(function() { if($(this).val()!="") $(this).remove(); });
+		var cond = {qid:'datasetnames'};
+		$.post("/list", cond).done(function (res) {
+			if(res.success) {
+				for(var i=0; i<res.list.length; i++) $('select[name=cbdataset]').append("<option value='"+res.list[i].datasetname+"'>"+res.list[i].datasetname+"</option>");
+				
+				//restore select index
+				var ri = 0;
+				$('select[name=cbdataset]').each(function() {$(this).val(backup_vals[ri++]);});
+				
+				if(loaded_func!==undefined) loaded_func();
+			}
+		});
+	}
+	
+	// class 로드
+	function loadclass(datasetname)
+	{
+		// backup select index;
+		$('select[name=cbclass] option').each(function() { if($(this).val()!="") $(this).remove(); });
+		var cond = {qid:'classnames',datasetname:datasetname};
+		$.post("/list", cond).done(function (res) {
+			if(res.success) {
+				for(var i=0; i<res.list.length; i++) $('select[name=cbclass]').append("<option value='"+res.list[i].classname+"'>"+res.list[i].classname+"</option>");
+				//restore select index
+			}
+		});
+	}
+
+	// model 로드
+	function loadmodel(datasetname)
+	{
+		// backup select index;
+		$('select[name=cbmodel] option').each(function(i,e) { if(i>0) $(this).remove(); });
+		var cond = {qid:'modelnames',datasetname:datasetname};
+		$.post("/list", cond).done(function (res) {
+			if(res.success) {
+				for(var i=0; i<res.list.length; i++) $('select[name=cbmodel]').append("<option value='"+res.list[i].modelname+"'>"+res.list[i].modelname+"</option>");
+				//restore select index
+			}
+		});
+	}
+
+	// 데이터셋 목록 그리드
+	function datasetgrid()
+	{
+		var url = "/list?qid=datasetlist&datasetname="+$('#gridModal [name=cbdataset]').val();
+		grid("datasetgrid", url, "get", {}, "json", ["No","데이터셋명","클래스","등록일시"], ["__no__", "datasetname","fileinfo",{orderable:false, className:'dt-body-center',data:"wdate",render:function(data, type, row, obj){ return new Date(data).format("yyyy-MM-dd HH:mm:ss");}}], "360", "list", "", iscreate=true);
+	}
+	// 데이터셋 목록에서 데이터셋 변경시 목록 갱신
+	$('#gridModal [name=cbdataset]').change(datasetgrid);
+	
+	// 데이터셋 입력
+	$('.step1').click(function() {
+		loaddataset();
+		$('#gridModal').modal({backdrop:'static'}).draggable();
+		setTimeout(datasetgrid, 150);
+	});
+	
+	
+	// 데이터셋 변경
+	$('#updatedatasetModal [name=cbdataset]').change(function() {
+		$('#updatedatasetModal [name=datasetname]').val($(this).val());
+		// 데이터셋선택..
+		loadclass($(this).val());
+	});
+
+	// 클래스 변경
+	$('#updatedatasetModal [name=cbclass]').change(function() {
+		$('#updatedatasetModal [name=updateclassname]').val($(this).val());
+	});
+	
+	
+	// 데이터셋 수정
+	$('#gridModal button.updatedataset').click(function () {
+		var d = $('#datasetgrid table').DataTable().rows('.selected').data();
+		if(d.length<1) 
+		{
+			alert('선택된데이터가 없습니다.');
+			return;
+		}
+		
+		$('#updatedatasetModal').modal({backdrop:'static'}); //.draggable();
+		
+		$('div.sel').remove();
+		loaddataset(function() { 
+			$('#updatedatasetModal [name=cbdataset]').val(d[0].datasetname);
+			$('#updatedatasetModal [name=cbdataset]').change();
+		});
+
+		$('#annotation_work2 img').attr('src', '/getfile?path='+d[0].filepath);
+		// annotation class 추가...
+		$('#updatedatasetModal [name=updateclassname]').val('');
+		
+		
+		$.post("/list", {qid:"annotationlist", fid:d[0].id}).done(function (res) {
+			if(res.success) {
+				for(var i=0; i<res.list.length; i++)
+				{
+					var pos = res.list[i].annotationinfo;
+					pos = pos.split(',');
+					var html = '<div class=sel style="position:absolute;left:'+pos[0]+'px;top:'+pos[1]+'px;width:'+pos[2]+'px;height:'+pos[3]+'px;">'+res.list[i].classname+'</div>';
+					var nobj = $(html).appendTo($('#annotation_work2'));
+					nobj.draggable().resizable();
+				}
+				
+			}
+		});
+
+		$('#updatedatasetModal .addclass').off('click').on('click', function() {
+			var classname = $('#updatedatasetModal [name=updateclassname]').val();
+			if(classname=="")
+			{
+				alert('클래스명을 입력하지 않았습니다.');
+				return;
+			}
+		
+			var html = '<div class=sel style="position:absolute;left:0px;top:0px;width:100px;height:100px;">'+classname+'</div>';
+			var nobj = $(html).appendTo($('#annotation_work2'));
+			nobj.draggable().resizable();
+			
+		});
+
+		$('#updatedatasetModal .savedataset').off('click').on('click', function() {
+			var annotations = [];
+			annotations.push({url:"/delete",data:{qid:"annotationdelete",fid:d[0].id}});
+			$('div.sel').each(function(i, e) {
+				var l = $(e).position().left;
+				var t = $(e).position().top;
+				// scroll 보정
+				l += $(e).parent().scrollLeft();
+				t += $(e).parent().scrollTop();			
+				var w = $(e).width()+4;
+				var h = $(e).height()+4;
+				annotations.push({url:"/insert",data:{qid:"annotationadd",fid:d[0].id,classname:$(e).text(),annotationinfo:l+","+t+","+w+","+h}});
+			});
+			// annotation기록
+			multi_post(annotations,function(){
+				$('#updatedatasetModal').modal('hide');
+			});
+			
+		});
+	
+	});
+	
+	// 데이터셋 삭제
+	$('#gridModal button.deldataset').click(function () {
+		var d = $('#datasetgrid table').DataTable().rows('.selected').data();
+		if(d.length<1) 
+		{
+			alert('선택된데이터가 없습니다.');
+			return;
+		}
+		if(!confirm(d[0].datasetname+'/'+d[0].filepath+' 를 삭제할까요?')) return;
+		var cond = {qid:'datasetdelete_id',id:d[0].id};
+		$.post("/delete", cond).done(function (res) {
+			if(res.success && res.result>0) {
+				datasetgrid();
+//				$('#datasetgrid table').DataTable().fnDeleteRow(0);
+			} else {
+				alert('삭제 실패하였습니다.');
+			}
+		}).fail( function () {
+			alert('삭제 실패 하였습니다.');
+		});	
+
+	});
+	
+	// 데이터셋 모델 그리드
+	function modelgrid()
+	{
+		var url = "/list?qid=modellist&datasetname="+$('#modelcreateModal [name=cbdataset]').val();
+		grid("modellist", url, "get", {}, "json", ["No","데이터셋명","모델명","정확도","재현율","mAP", "상태", "학습일시", "완료시간"], ["__no__", "datasetname","modelname", "precision","recall","map","state",{orderable:false, className:'dt-body-center',data:"stime",render:function(data, type, row, obj){ return new Date(data).format("yyyy-MM-dd HH:mm:ss");}},{orderable:false, className:'dt-body-center',data:"wdate",render:function(data, type, row, obj){ return new Date(data).format("HH:mm:ss");}}], "360", "list", "", iscreate=true);
+	}
+
+	$(document).on('dblclick', '#modellist table tr', function () {
+		var d = $('#modellist table').DataTable().row( this ).data();
+		
+		$('#txtview').text('');
+		if(d.info!==undefined && d.info!=null){
+			var txt = d.info;
+			var sp = txt.indexOf('\n');
+			if(sp) txt = txt.substring(sp+1);
+			txt = "               Class     Images    Targets          P          R     mAP@.5 mAP@.5:.95:\n"+txt;
+			$('#txtview').text(txt);
+		}
+		$('#viewModal').modal({backdrop:'static'}).draggable();
+	});
+
+
+	// 모델생성에서 데이터셋 변경시 목록 갱신
+	$('#modelcreateModal [name=cbdataset]').change(function() { modelgrid(); loadmodel($(this).val());});
+	
+	// 모델 생성
+	$('.step2').click(function() {
+		loaddataset();
+		
+		$('#modelcreateModal').modal({backdrop:'static'}).draggable();
+		setTimeout(modelgrid, 150);
+		
+		$('#modelcreateModal .createmodel').off('click').on('click', function() {
+		
+			var modelname = $('#modelcreateModal [name=modelname]').val();
+			var datasetname  = $('#modelcreateModal [name=cbdataset]').val();
+			var datasetname  = $('#modelcreateModal [name=cbdataset]').val();
+			var epoch  = $('#modelcreateModal [name=epoch]').val();
+			var batch  = $('#modelcreateModal [name=batch]').val();
+			var weights  = $('#modelcreateModal [name=cbmodel]').val();
+
+			if(datasetname=="")
+			{
+				alert('데이터셋명을 입력하지 않았습니다.');
+				return;
+			}				
+			if(modelname=="")
+			{
+				alert('모델명을 입력하지 않았습니다.');
+				return;
+			}				
+			if(epoch=="")
+			{
+				alert('epoch를 입력하지 않았습니다.');
+				return;
+			}				
+			if(batch=="")
+			{
+				alert('batch를 입력하지 않았습니다.');
+				return;
+			}
+			
+			if(weights.indexOf(".pt")<0) weights = "/root/datasets/models/"+weights+".pt";
+			var cmds = ["/python/modelling_tool/create.sh", datasetname, modelname, epoch, batch, weights];
+			
+			loading_start("모델생성중입니다...", 1000);
+
+			$.post("/shell", {cmd:cmds.join("@"),deli:"@"}).done(function(res) {
+				console.log('modelcreate', res);
+				loading_stop();
+				if(res.success)
+				{
+					modelgrid();
+//					alert('모델 생성이 완료되었습니다.');
+				}
+				else alert('실행 오류');
+			});
+		});
+
+		$('#modelcreateModal .refreshmodel').off('click').on('click', function() {modelgrid();});
+		
+		$('#modelcreateModal .delmodel').off('click').on('click', function() {
+
+			var d = $('#modellist table').DataTable().rows('.selected').data();
+			if(d.length<1) 
+			{
+				alert('선택된데이터가 없습니다.');
+				return;
+			}
+			if(!confirm(d[0].modelname+' 를 삭제할까요?')) return;
+			var cond = {qid:'modeldelete_id',id:d[0].id};
+			$.post("/delete", cond).done(function (res) {
+				if(res.success && res.result>0) {
+					modelgrid();
+				} else {
+					alert('삭제 실패하였습니다.');
+				}
+			}).fail( function () {
+				alert('삭제 실패 하였습니다.');
+			});	
+			
+			
+		});
+		
+	});
+	
+	// 모델 테스트
+	$('.step3').click(function() {
+		loaddataset();
+		//loadmodel();
+		$('#modeltestModal').modal({backdrop:'static'}).draggable();
+		
+		$('#modeltestModal [name=cbdataset').off('change').on('change', function() {
+			var datasetname = $(this).val();
+			loadmodel(datasetname);
+		});
+		
+		$('#modeltestModal .execmodel').off('click').on('click', function() {
+		
+			var dataset = $('#modeltestModal [name=cbdataset').val();
+			var model = $('#modeltestModal [name=cbmodel').val();
+			
+			if(dataset=="")
+			{
+				alert('데이터셋을 선택하세요');
+				return;
+			}
+			if(model=="")
+			{
+				alert('모델을 선택하세요');
+				return;
+			}
+			
+			var files = $('#testfile')[0].files;
+
+			if(files.length<=0)
+			{
+				alert('파일을 선택하지 않았습니다.');
+				return;
+			}
+			
+			var formData = new FormData();
+		
+			for(var i=0; i<files.length; i++) formData.append('filename', files[i]);
+
+			formData.append('path', "pred");
+
+			loading_start("모델실행중입니다...", 1000);
+			$('#test_work img').attr('src', "");
+		
+			$.ajax({
+			  type: "POST",
+			  url: '/uploadfile',
+			  data: formData,
+	//          enctype: 'multipart/form-data',
+			  contentType: false,
+			  processData: false,
+			  cache: false,
+			  complete: function(res) {
+					var obj = JSON.parse(res.responseText);
+					console.log(obj);
+					var file = obj.path;
+					
+					var cmds = ["/python/modelling_tool/detect.sh", file, model];
+
+					$.post("/shell", {cmd:cmds.join("@"),deli:"@"}).done(function(res) {
+						console.log('modeldetect', res);
+						if(res.success)
+						{
+							var filename = file;
+							var sp = filename.lastIndexOf('/');
+							if(sp>0) filename = filename.substring(sp+1);
+							$('#test_work img').attr('src', "/getfile?path="+"/root/coco/yolov5/runs/detect/exp/"+filename);
+//							alert('모델 실행이 완료되었습니다.');
+						}
+						else alert('실행 오류');
+						loading_stop();
+					});
+			  },
+			  error: function(jqXHR, textStatus, errorThrown) {
+					loading_stop();
+					alert('데이터 업로드가 실패 하였습니다.');
+			  }
+			});	
+		});		
+		
+		
+	});
+	
+	// 데이터셋 변경
+	$('#adddatasetModal [name=cbdataset]').change(function() {
+		$('#adddatasetModal [name=datasetname]').val($(this).val());
+		// 데이터셋선택..
+		loadclass($(this).val());
+	});
+
+	// 클래스 변경
+	$('#adddatasetModal [name=cbclass]').change(function() {
+		$('#adddatasetModal [name=addclassname]').val($(this).val());
+	});
+
+	// 데이터셋 추가
+	$('.adddataset').click(function() {
+		loaddataset(function() { 
+			$('#adddatasetModal [name=cbdataset]').val($('#gridModal [name=cbdataset]').val());
+			$('#adddatasetModal [name=cbdataset]').change();
+		});
+		$('#annotation_files').val('');
+		filecnt = 0;
+		filepos = 0;
+		$('#annotation_work').html('<img>');
+		$('.imgpos').text("0/0");
+		$('#adddatasetModal').modal({backdrop:'static'}); //.draggable();
+	});
+	
+	// 데이터셋저장
+	$('.savedataset').click(function() {
+		// 파일업로드, dataset추가,annotation 정보추가, 
+		var datasetname = $('[name=datasetname').val();
+		if(datasetname=="")
+		{
+			alert('데이터셋명을 입력하지 않았습니다.');
+			return;
+		}
+		
+		var datasetfiles = $('#annotation_files')[0].files;
+
+		if(datasetfiles.length<=0)
+		{
+			alert('파일을 선택하지 않았습니다.');
+			return;
+		}
+		
+		if($('div.sel').length<=0)
+		{
+			alert('클래스를 추가하지 않았습니다.');
+			return;
+		}
+		
+		var formData = new FormData();
+		
+		for(var i=0; i<datasetfiles.length; i++) formData.append('filename', datasetfiles[i]);
+
+		formData.append('path', "dataset");
+		
+		var posinfos = [];
+		$('div.sel').each(function(i, e) {
+			var l = $(e).position().left;
+			var t = $(e).position().top;
+			// scroll 보정
+			l += $(e).parent().scrollLeft();
+			t += $(e).parent().scrollTop();			
+			var w = $(e).width()+4;
+			var h = $(e).height()+4;
+			posinfos.push({qid:"annotationadd",fid:null,classname:$(e).text(),annotationinfo:l+","+t+","+w+","+h});
+		});
+		
+		loading_start('데이터셋을 업로드중입니다.', 1000);
+
+		$.ajax({
+      	  type: "POST",
+      	  url: '/uploadfiles',
+      	  data: formData,
+//          enctype: 'multipart/form-data',
+      	  contentType: false,
+      	  processData: false,
+      	  cache: false,
+      	  complete: function(res) {
+                var obj = JSON.parse(res.responseText);
+                console.log(obj);
+				var files = obj.path;
+
+				var datasetposts = [];
+				var annotations = [];
+				
+				var dataset_callcack_func = function(success, res, item) {
+					if(success) {
+						for(var i=0; i<posinfos.length; i++) {
+							var info = posinfos[i];
+							annotations.push({url:"/insert",data:{qid:"annotationadd",fid:res.data.id,classname:info.classname,annotationinfo:info.annotationinfo}});
+						};
+					}
+					if(item.idx>=files.length-1) // 마지막 데이터 기록이 완료되면 annotation 기록 
+					{
+						// annotation기록
+						multi_post(annotations, function() {
+							loading_stop();
+							$('#adddatasetModal').modal('hide');
+							$('#gridModal').modal('hide');
+							setTimeout(function() { $('.step1').click(); }, 1000);
+						});
+					}
+				};
+				
+				for(var i=0; i<files.length; i++) {
+					datasetposts.push({idx:i,callback:dataset_callcack_func, url:"/insert",data:{qid:"datasetadd",datasetname:datasetname,filepath:files[i]}});
+				}
+				// upload후 실행 스크립트..
+				datasetposts.push({idx:-1, url:"/shell",data:{cmd:"/python/modelling_tool/uploaded.sh",deli:","}});
+				// dataset 기록
+				multi_post(datasetposts);
+				
+//              alert('제조 AI 데이터셋을 업로드 하였습니다. AI 모델을 생성하여 주세요.');
+
+      	  },
+      	  error: function(jqXHR, textStatus, errorThrown) {
+				loading_stop();
+                alert('데이터 업로드가 실패 하였습니다.');
+      	  }
+      	});		
+
+/*
+	- 데이터셋명
+    - 클래스 유무
+	- 저장...
+
+	datasetadd
+	annotationadd
+	*/
+	
+	});
+
+	var reader = new FileReader();
+	var filecnt = 0;
+	var filepos = 0;
+	
+	function readURL(input, i) {
+		if (input.files && input.files[i]) {
+			reader.onload = function(e) {
+				$('#annotation_work img').attr('src', e.target.result); 
+//				console.log(e, $('#annotation_work img').width(),$('#annotation_work img').height());
+			}
+			reader.readAsDataURL(input.files[i]);
+			$('.imgpos').text((i+1)+"/"+filecnt);
+		}
+	}	
+	
+	$('#annotation_files').change(function() {
+		filecnt = $('#annotation_files')[0].files.length;
+		console.log(filecnt+'file selected');
+		$('#annotation_work img').attr('src', ''); 
+	
+		filepos = 0;
+		readURL($('#annotation_files')[0], filepos);
+	
+	});
+	
+	$('.previmg').click(function() {
+		if(filepos>0)
+		{
+			filepos--;
+			readURL($('#annotation_files')[0], filepos);			
+		}
+		else alert('처음입니다.');
+	});
+
+	$('.nextimg').click(function() {
+		if(filepos<(filecnt-1))
+		{
+			filepos++;
+			readURL($('#annotation_files')[0], filepos);			
+		}
+		else alert('마지막입니다.');
+	});
+	
+	$('.addclass').click(function() {
+	
+		var cname = $('#adddatasetModal input[name=addclassname]').val();
+		
+		if(cname=="")
+		{
+			alert('클래스명을 입력하지 않았습니다.');
+			return;
+		}
+		
+		var obj = "<div class='sel' style='left:0px;top:0px;width:100px;height:100px;'>"+cname+"</div>";
+		$('#annotation_work').prepend(obj);
+		$('.sel').draggable().resizable();
+		
+	});
+	
+</script>
+
+</html>
