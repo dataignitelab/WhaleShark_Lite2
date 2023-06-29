@@ -87,7 +87,7 @@ window.App =  {
     // 로딩 애니메이션 보기  
     start_loading : function(txt)
     {
-        loading_obj = $('<div class="modal fade" tabindex="-1" role="dialog"><div class="modal-dialog modal-dialog-centered text-center" role="document"  style="top:50%; right: 4%;"><span class="fa fa-spinner fa-spin fa-3x  w-100"></span><font color="white" style="position:absolute;     top: 28%;"><b>' + txt + '</b></font></div></div>').appendTo(App.body===undefined?'body':App.body);
+        loading_obj = $('<div class="modal fade" tabindex="-1" role="dialog"><div class="modal-dialog modal-dialog-centered text-center" role="document"  style="top:50%;margin-top:-50px"><span class="fa fa-spinner fa-spin fa-3x  w-100"></span><font color="white" style="position:absolute;"><b>' + txt + '</b></font></div></div>').appendTo(App.body===undefined?'body':App.body);
         loading_obj.on('hidden.bs.modal', function () { loading_obj.remove(); });
         loading_obj.modal({backdrop:'static'});
     },

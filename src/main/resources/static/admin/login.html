@@ -430,14 +430,12 @@
                     App.logininfo = "";
                     App.stop_loading();
                     App.msg_alert(lang('login_login','로그인'), lang('login_msg_login_error','로그인에 실패 하였습니다.'));
-					$(".btn-default").focus()
                 }
             })
             .fail(function(e) {
                 App.stop_loading();
                 console.log('error=>',e);
                 App.msg_alert(lang('login_login','로그인'), '로그인에 실패 하였습니다.(예기치 않은 오류)');
-				$(".btn-default").focus()
             }); 
             
         	return false;
@@ -483,7 +481,6 @@
             if($("#user-name").val()=="")
             {
                 App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_name_empty','이름을 입력하지 않았습니다.'));
-				
                 return;
             }
 
@@ -493,15 +490,15 @@
                 return;
             }
             
-            if($("#user-email").val()=="")
-            {
-                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_email_empty','이메일을 입력하지 않았습니다.'));
-                return;
-            }
-
             if($("#user-password").val()=="")
             {
                 App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_pwd_empty','비밀번호를 입력하지 않았습니다.'));
+                return;
+            }
+
+            if($("#user-email").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_email_empty','이메일을 입력하지 않았습니다.'));
                 return;
             }
 
@@ -579,32 +576,24 @@
             if($("#find-user-name").val()=="")
             {
                 App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_name_empty','이름을 입력하지 않았습니다.'));
-				
-				$(".btn-default").focus()
                 return;
             }
 
             if($("#find-user-userid").val()=="")
             {
                 App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_id_empty','아이디를 입력하지 않았습니다.'));
-				
-				$(".btn-default").focus()
                 return;
             }
             
             if($("#find-user-email").val()=="")
             {
                 App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_email_empty','이메일을 입력하지 않았습니다.'));
-				
-				$(".btn-default").focus()
                 return;
             }
 
             if($("#find-send-email").val()=="")
             {
                 App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_return_email_empty','전송용 이메일을 입력하지 않았습니다.'));
-				
-				$(".btn-default").focus()
                 return;
             }
                         
