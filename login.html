@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <title>WhaleShark Lite2</title>
+
+    <meta name="description" content="uAdmin is a Professional, Responsive and Flat Admin Template created by pixelcave and published on Themeforest">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- Stylesheets -->
+    <!-- Bootstrap is included in its original form, unaltered -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    <!-- Related styles of various javascript plugins -->
+    <link rel="stylesheet" href="css/plugins.css">
+
+    <!-- The main stylesheet of this template. All Bootstrap overwrites are defined in here -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- END Stylesheets -->
+
+    <!-- Modernizr (browser feature detection library) & Respond.js (Enable responsive CSS code on browsers that don't support it, eg IE8) -->
+    <script src="js/vendor/modernizr-respond.min.js"></script>
+</head>
+<body class="login">
+<!-- Login Container -->
+<div id="login-container">
+    <div id="login-logo">
+        <div id="login-buttons">
+            <h5 class="page-header-sub border-0 p-0 m-0">WhaleShark Lite2</h5>
+            <h5 class="page-header-sub border-0" data-lang="login_title">Data Management Tool</h5>
+        </div>
+        <!-- Login Form -->
+        <form id="login-form"  method="post" class="form-horizontal">
+            <div class="form-group from_email">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <input type="text" id="login-userid" data-lang="login_id" placeholder="사용자id" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group from_pass">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <input type="password" id="login-password" data-lang="login_pwd" placeholder="패스워드" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-lg btn-block" type="button" data-lang="login_login">로그인</button>
+            <div class="clearfix">
+                <div class="btn-group btn-group-sm pull-right">
+                    <button type="button" id="find-button-pass" class="btn btn-warning mr-5 " data-toggle="tooltip" data-lang="login_findpassword,login_findpassword:title" title="비밀번호 찾기"> 비밀번호 찾기</button>
+                    <button id='btnRegist' type="button" class="btn btn-success " data-lang="login_regist">회원가입</button>
+                </div>
+                <!-- <label id="topt-fixed-header-top" class="switch pull-left" data-toggle="tooltip" title="아이디 저장"><input type="checkbox"><span></span></label> -->
+            </div>
+            <p class="mt-20 mb-3 text-muted copyright" data-lang="login_copyright">© Copyright (주)데이터센터릭 All rights reserved.</p>
+        </form>
+        <!-- END Login Form -->
+    </div>
+
+
+</div>
+<!-- END Login Container -->
+
+		<!-- Regist User Modal Form -->
+		<div id="modal-user-regist" class="modal">
+		        <!-- Modal Dialog -->
+		        <div class="modal-dialog">
+		            <!-- Modal Content -->
+		            <div class="modal-content">
+		                <!-- Modal Header -->
+		                <div class="modal-header">
+		                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		                    <h4 data-lang="login_regist">회원가입</h4>
+		                </div>
+		                <!-- END Modal Header -->
+		
+		                <!-- Modal Content -->
+		                <div class="modal-body">
+		                    <!-- Tab links -->
+		                    <ul id="user-tabs" class="nav nav-tabs" data-toggle="tabs">
+		                        <li class="active"><a href="#user-tabs-profile"><i class="fa fa-user"></i> <label data-lang="regist_info">가입자정보</label></a></li>
+		                    </ul>
+		                    <!-- END Tab links -->
+		
+		                    <!-- END Tab Content -->
+		                    <div class="tab-content">
+		                        <!-- first Tab -->
+		                        <div class="tab-pane active" id="user-tabs-profile">
+		                            <form class="form-horizontal">
+		                                <h5 class="page-header-sub" data-lang="regist_account_info">계정정보(*필수)</h5>
+		                                <div class="form-group">
+		                                    <label class="control-label col-md-3" for="user-name" data-lang="regist_name">이름 *</label>
+		                                    <div class="col-md-9">
+		                                        <div class="input-group">
+		                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+		                                            <input type="text" id="user-name" name="user-name" class="form-control" value="">
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                
+		                                <div class="form-group">
+		                                    <label class="control-label col-md-3" for="user-userid" data-lang="regist_id">아이디 *</label>
+		                                    <div class="col-md-9">
+		                                        <div class="input-group">
+		                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+		                                            <input type="text" id="user-userid" name="user-userid" class="form-control" value="">
+		                                        </div>
+		                                    </div>
+		                                </div>
+		
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-3" for="user-email" data-lang="regist_email">이메일 *</label>
+		                                        <div class="col-md-9">
+		                                            <div class="input-group">
+		                                                <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+		                                                <input type="text" id="user-email" name="user-email" class="form-control" value="">
+		                                            </div>
+		                                        </div>
+		                                </div>
+		
+		                                <div class="form-group">
+		                                    <label class="control-label col-md-3" for="user-password" data-lang="regist_pwd">비밀번호 *</label>
+		                                    <div class="col-md-9">
+		                                        <div class="input-group">
+		                                            <span class="input-group-addon"><i class="fa fa-asterisk fa-fw"></i></span>
+		                                            <input type="password" id="user-password" name="user-password" class="form-control" value="">
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-3" for="user-password1" data-lang="regist_pwd_chk">비밀번호(확인) *</label>
+		                                        <div class="col-md-9">
+		                                            <div class="input-group">
+		                                                <span class="input-group-addon"><i class="fa fa-asterisk fa-fw"></i></span>
+		                                                <input type="password" id="user-password1" name="user-password1" class="form-control" value="">
+		                                            </div>
+		                                        </div>
+		                                </div>
+		                                
+		                                <div class="form-group">
+		                                    <label class="control-label col-md-3" for="user-bigo" data-lang="common_bigo">비고</label>
+		                                    <div class="col-md-9">
+		                                        <div class="input-group">
+		                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+		                                            <input type="text" id="user-bigo" name="user-bigo" class="form-control" value="">
+		                                        </div>
+		                                    </div>
+		                                </div>
+		
+										<div class="form-group">
+		                                    <label class="control-label col-md-3" for="user-role" data-lang="regist_permission">권한 *</label>
+		                                    <div class="col-md-9">
+		                                        <label class="checkbox-inline" for="user-role1">
+		                                        <input type="radio" id="user-role1" name="user-role" value="OPERATOR" checked><span data-lang="common_operator">운영자</span>
+		                                        </label>
+		                                        <label class="checkbox-inline" for="user-role5">
+		                                        <input type="radio" id="user-role5" name="user-role" value="USER"><span data-lang="common_user">사용자</span></label>
+		                                                    
+		                                    </div>
+		                                </div>
+		
+		                                <h5 class="page-header-sub" data-lang="regist_company_info">회사정보</h5>
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-3" for="user-company" data-lang="common_company_name">회사명</label>
+		                                        <div class="col-md-9">
+		                                        	<table width="100%">
+			                                        	<tr><td><input type="text" id="user-company" name="user-company" class="form-control" value=""></td>
+			                                            <td><button id="findCompany" class="btn btn-success" type="button">검색</button><input type="hidden" id="companyid" class="form-control" value=""></td>
+			                                            </tr>
+		                                            </table>
+		                                        </div>
+		                                </div>
+		
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-3" for="user-daepyo" data-lang="common_ceo">대표자</label>
+		                                        <div class="col-md-9">
+		                                            <input type="text" id="user-daepyo" name="user-daepyo" class="form-control" value="" readonly>
+		                                        </div>
+		                                </div>
+		
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-3" for="user-tel" data-lang="common_tel">전화번호</label>
+		                                        <div class="col-md-9">
+		                                            <input type="text" id="user-tel" name="user-tel" class="form-control" value="" readonly>
+		                                        </div>
+		                                </div>
+		
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-3" for="user-fax" data-lang="common_tel">팩스</label>
+		                                        <div class="col-md-9">
+		                                            <input type="text" id="user-fax" name="user-fax" class="form-control" value="" readonly>
+		                                        </div>
+		                                </div>
+		
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-3" for="user-addr" data-lang="common_address">주소</label>
+		                                        <div class="col-md-9">
+		                                            <input type="text" id="user-addr" name="user-addr" class="form-control" value="" readonly>
+		                                        </div>
+		                                </div>
+		                                
+		
+		                            </form>
+		                        </div>
+		                        <!-- END Second Tab -->
+		                    </div>
+		                    <!-- END Tab Content -->
+		                </div>
+		                <!-- END Modal Content -->
+		
+		                <!-- Modal footer -->
+		                <div class="modal-footer remove-margin">
+		                    <button type='button' class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" data-lang="common_cancel_btn"> 취소</i></button>
+		                    <button type='button' disabled class="btn btn-success" id="btnRegistOK" ><i class="fa fa-check" data-lang="regist_btn"> 가입 신청</i></button>
+		                </div>
+		                <!-- END Modal footer -->
+		            </div>
+		            <!-- END Modal Content -->
+		        </div>
+		        <!-- END Modal Dialog -->
+
+				<!-- company find modal form -->
+				<div id="company-find-modal" class="modal">
+			        <!-- Modal Dialog -->
+			        <div class="modal-dialog">
+			            <!-- Modal Content -->
+			            <div class="modal-content">
+			                <!-- Modal Header -->
+			                <div class="modal-header">
+			                    <button type="button" class="close modal-close" aria-hidden="true">×</button>
+			                    <h4 data-lang="regist_find_company">회사 검색</h4>
+			                </div>
+			                <!-- END Modal Header -->
+			
+			                <!-- Modal Content -->
+			                <div class="modal-body">
+	                            <form class="form-horizontal">
+	                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
+	                                <!-- <div class="form-group">
+	                                    <label class="control-label col-md-3">회사명</label>
+	                                    <div class="col-md-9">
+                                            <input type="text" name="name" class="form-control" value="">
+	                                    </div>
+	                                </div> -->
+
+	                                <div class="form-group">
+	                                    <label class="control-label col-md-3" data-lang="regist_select_company">회사선택</label>
+	                                    <div class="col-md-9">
+	                                    	
+                                            <!--  <input type="text" name="sensors" class="form-control" value="" readonly>
+                                            <input type="hidden" name="sensorids" class="form-control" value="" readonly> -->
+                                            <div class='companys' style='border:1px solid lightgray; overflow:auto; height:200px;'>
+                                            <input type=radio name='company' id=c1><label for=c1>회사1()</label><br>
+                                            </div>
+	                                    </div>
+	                                </div>
+	
+	                            </form>
+			                </div>
+			                <!-- END Modal Content -->
+			                <!-- Modal footer -->
+			                <div class="modal-footer remove-margin">
+			                    <button type="button" class="btn btn-danger modal-close"><i class="fa fa-times" data-lang="common_close_btn">닫기</i></button>
+			                    <button type="button" class="btn btn-success" id="btnselect" ><i class="fa fa-check"data-lang="common_ok_btn"> 확인</i></button>
+			                </div>
+			                <!-- END Modal footer -->
+			            </div>
+			            <!-- END Modal Content -->
+			        </div>
+			        <!-- END Modal Dialog -->        
+				</div>
+				<!-- END company find modal form -->
+		</div>
+
+		<!-- Find Password Modal Form -->
+		<div id="modal-findpassword" class="modal">
+		        <!-- Modal Dialog -->
+		        <div class="modal-dialog">
+		            <!-- Modal Content -->
+		            <div class="modal-content">
+		                <!-- Modal Header -->
+		                <div class="modal-header">
+		                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		                    <h4 data-lang="common_find_pwd">비밀번호찾기</h4>
+		                </div>
+		                <!-- END Modal Header -->
+		
+		                <!-- Modal Content -->
+		                <div class="modal-body">
+		                    <!-- Tab links -->
+		                    <ul id="user-tabs" class="nav nav-tabs" data-toggle="tabs">
+		                        <li class="active"><a href="#find-tabs-profile"><i class="fa fa-user"></i> <label data-lang="regist_info">가입자정보</label></a></li>
+		                    </ul>
+		                    <!-- END Tab links -->
+		
+		                    <!-- END Tab Content -->
+		                    <div class="tab-content">
+		                        <!-- Second Tab -->
+		                        <div class="tab-pane active" id="find-tabs-profile">
+		                            <form class="form-horizontal">
+		                                <div class="form-group">
+		                                    <label class="control-label col-md-4" data-lang="regist_name">이름 *</label>
+		                                    <div class="col-md-8">
+		                                        <div class="input-group">
+		                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+		                                            <input type="text" id="find-user-name" class="form-control" value="">
+		                                        </div>
+		                                    </div>
+		                                </div>
+
+		                                <div class="form-group">
+		                                    <label class="control-label col-md-4" data-lang="regist_id">아이디 *</label>
+		                                    <div class="col-md-8">
+		                                        <div class="input-group">
+		                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+		                                            <input type="text" id="find-user-userid" class="form-control" value="">
+		                                        </div>
+		                                    </div>
+		                                </div>
+		
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-4" data-lang="regist_email">이메일 *</label>
+		                                        <div class="col-md-8">
+		                                            <div class="input-group">
+		                                                <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+		                                                <input type="text" id="find-user-email" class="form-control" value="">
+		                                            </div>
+		                                        </div>
+		                                </div>
+		
+		                                <div class="form-group">
+		                                        <label class="control-label col-md-4" for="user-email" data-lang="regist_return_email">회신 이메일주소 *</label>
+		                                        <div class="col-md-8">
+		                                            <div class="input-group">
+		                                                <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+		                                                <input type="text" id="find-send-email" class="form-control" value="">
+		                                            </div>
+		                                        </div>
+		                                </div>
+		
+		                            </form>
+		                        </div>
+		                        <!-- END Second Tab -->
+		                    </div>
+		                    <!-- END Tab Content -->
+		                </div>
+		                <!-- END Modal Content -->
+		
+		                <!-- Modal footer -->
+		                <div class="modal-footer remove-margin">
+		                    <button type='button' class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" data-lang="common_close_btn"> 닫기</i></button>
+		                    <button type='button' class="btn btn-success" id="btnFindOK" ><i class="fa fa-check" data-lang="common_find_pwd"> 비밀번호찾기</i></button>
+		                </div>
+		                <!-- END Modal footer -->
+		            </div>
+		            <!-- END Modal Content -->
+		        </div>
+		        <!-- END Modal Dialog -->        
+		</div>
+
+
+<!-- Include Jquery library from Google's CDN but if something goes wrong get Jquery from local file (Remove 'http:' if you have SSL) -->
+<!-- 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>!window.jQuery && document.write(decodeURI('%3Cscript src="js/vendor/jquery-1.11.1.min.js"%3E%3C/script%3E'));</script> -->
+<script src="js/vendor/jquery-1.11.1.min.js"></script>
+
+<!-- Bootstrap.js -->
+<script src="js/vendor/bootstrap.min.js"></script>
+
+<!-- Jquery plugins and custom javascript code -->
+<script src="js/plugins.js"></script>
+<script src="js/main.js"></script>
+<script src="js/baseapp.js"></script>
+<script src="js/language.js"></script>
+<script src="js/sha/sha512.min.js"></script> 
+
+<!-- Javascript code only for this page -->
+<script>
+	var param = location.href;
+	var retfunc = "";
+	var fp = param.indexOf("?retfunc=");
+	if(fp>0) retfunc = param.substring(fp+9);
+	
+	$("#login-password").on('keyup', function(e) { if(e.keyCode == 13) $('button.btn-lg').click(); });
+	$("#login-userid").on('keyup', function(e) { if(e.keyCode == 13) $('#login-password').focus(); });
+	window.onload = function() { $("#login-userid").focus(); }
+	
+    $(function () {
+        var loginButtons = $('#login-buttons');
+        var loginForm = $('#login-form');
+
+//    	setCookie('email', '', -1);
+    	App.islogin = false;
+//      var loginButtons = $('#login-buttons');
+	    var loginForm = $('#login-form');
+        
+        loginForm.show();
+        
+        $('button.btn-lg').off('click').on('click',function() {
+            
+            var data = {};
+            data.userid = $('#login-userid').val();
+            data.password = hex_sha512($("#login-password").val());
+
+            App.start_loading(lang('login_msg_ing','로그인중'));                    
+            $.post(App.baseurl+"/login", data)
+            .done(function(data) {
+                console.log(data);
+                if(data.success)
+                {
+					if(retfunc!="")
+					{
+						eval(retfunc);
+						window.close();
+						return;
+					}
+                    App.islogin = true;
+
+                    location.href="./index.html";
+                    App.stop_loading();
+                }
+                else {
+                    App.logininfo = "";
+                    App.stop_loading();
+                    App.msg_alert(lang('login_login','로그인'), lang('login_msg_login_error','로그인에 실패 하였습니다.'));
+					$(".btn-default").focus()
+                }
+            })
+            .fail(function(e) {
+                App.stop_loading();
+                console.log('error=>',e);
+                App.msg_alert(lang('login_login','로그인'), '로그인에 실패 하였습니다.(예기치 않은 오류)');
+				$(".btn-default").focus()
+            }); 
+            
+        	return false;
+        });
+
+        $('#btnRegist').off('click').on('click',function() {
+
+        	$('#user-name,#user-userid,#user-email,#user-password,#user-password1,#user-bigo').val('');
+			$('#user-daepyo,#user-tel,#user-fax,#user-addr').val('').attr('readonly', true);
+			$('#user-company,#companyid').val('');
+        	
+			$("#user-userid").css('background-color','');
+			$("#user-userid").attr('placeholder', '');
+        	$('#btnRegistOK').prop("disabled", true);
+        	
+        	$("#user-userid").off('change').on('change', function() {
+        		
+        		var qry = {qid:"finduserid",userid:$(this).val()};
+        		$.post(App.baseurl+"/list", qry, function(res) {
+        			if(res.success)
+        			{
+        				if(res.list.length>0) { // 이미등록
+        					$('#btnRegistOK').prop("disabled", true);
+        					$("#user-userid").attr('placeholder', lang('login_msg_id_using','{1} 는 이미 사용중입니다.', qry.userid));
+        					$("#user-userid").css('background-color','yellow');
+        					$("#user-userid").val('');
+        				}
+        				else {//사용가능
+        					$("#user-userid").css('background-color','');
+        					$('#btnRegistOK').prop("disabled", false);
+        				}
+        			
+        			}
+        		});
+        		
+        	});
+        	
+            $('#modal-user-regist').modal({backdrop:'static'});//.draggable({ handle: ".modal-header" });
+        });
+        
+        $('#btnRegistOK').off('click').on('click',function() {
+
+            if($("#user-name").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_name_empty','이름을 입력하지 않았습니다.'));
+				
+                return;
+            }
+
+            if($("#user-userid").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_id_empty','아이디를 입력하지 않았습니다.'));
+                return;
+            }
+            
+            if($("#user-email").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_email_empty','이메일을 입력하지 않았습니다.'));
+                return;
+            }
+
+            if($("#user-password").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_pwd_empty','비밀번호를 입력하지 않았습니다.'));
+                return;
+            }
+
+            if($("#user-password").val()!=$("#user-password1").val())
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_pwd_not_match','비밀번호가 일치하지 않습니다.'));
+                return;
+            }
+
+            if($("#user-company").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_company_empty','회사명을 입력하지 않았습니다.'));
+                return;
+            }
+            
+            var data = {qid:"useradd"};
+        	var uid = hashcode('usr_');
+            var url = App.baseurl+"/insert";
+            
+           	data.qid = "useradd";
+           	data.id = uid;
+            data.userid = $("#user-userid").val();
+            data.name = $("#user-name").val();
+            data.email = $("#user-email").val();
+           	data.password = hex_sha512($("#user-password").val());
+            
+            data.bigo = $("#user-bigo").val();
+            data.state = 'ACTIVE';
+            data.company = $('#companyid').val();
+            if(data.company=="") data.company = hashcode('cmp_'); 
+            data.role = $('[name=user-role]:checked').val();
+            
+            App.start_loading(lang('common_msg_saving','정보저장중'));
+            $.post(url, data).done(function(res) {
+                console.log(res);
+                if(res.success)
+                {
+                    App.stop_loading();
+                    
+                    $('#modal-user-regist').modal('hide');
+                    App.msg_alert(lang('login_regist','회원가입'), lang('regist_msg_regist_ok','회원가입이 처리되었습니다.'));
+                    
+                    if($('#companyid').val()=="")
+                    {
+                        var cdata = {qid:"companyadd"};
+
+                        // 신규회사 등록 ...
+            			cdata.cid = data.company;
+            			cdata.name = $('#user-company').val();
+            			cdata.daepyo = $('#user-daepyo').val();
+            			cdata.tel = $('#user-tel').val();
+            			cdata.fax = $('#user-fax').val();
+            			cdata.addr = $('#user-addr').val();
+            			
+            			$.post(url, cdata).done(function(res) {});
+                    }
+                }
+                else {
+                    App.stop_loading();
+                    App.msg_alert(lang('login_regist','회원가입'), lang('regist_msg_regist_fail','회원가입에 실패 하였습니다.'));
+                }
+            }).fail(function(e) {
+                App.stop_loading();
+                console.log('error=>',e);
+                App.msg_alert(lang('login_regist','회원가입'), lang('regist_msg_regist_fail','회원가입에 실패 하였습니다.'));
+            }); 
+
+        });
+    });
+    
+    $('#find-button-pass').off('click').on('click',function() {
+
+    	$('#btnFindOK').off('click').on('click',function() {
+
+            if($("#find-user-name").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_name_empty','이름을 입력하지 않았습니다.'));
+				
+				$(".btn-default").focus()
+                return;
+            }
+
+            if($("#find-user-userid").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_id_empty','아이디를 입력하지 않았습니다.'));
+				
+				$(".btn-default").focus()
+                return;
+            }
+            
+            if($("#find-user-email").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_email_empty','이메일을 입력하지 않았습니다.'));
+				
+				$(".btn-default").focus()
+                return;
+            }
+
+            if($("#find-send-email").val()=="")
+            {
+                App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_return_email_empty','전송용 이메일을 입력하지 않았습니다.'));
+				
+				$(".btn-default").focus()
+                return;
+            }
+                        
+            var tmppwd = ""+Math.floor(Math.random()*1000000);
+            
+        	$.post(App.baseurl+'/list', {qid:"finduser", name:$("#find-user-name").val(),userid:$("#find-user-userid").val(),email:$("#find-user-email").val()}).done(function(data) {
+                if(data.success)
+                {
+                	if(data.list.length>0)
+                	{
+                		var id = data.list[0].id;
+                        App.start_loading(lang('regist_msg_init_pwd','비밀번호 초기화중입니다.'));                    
+                		$.post(App.baseurl+'/update', {qid:"passwordreset",password:tmppwd, id:id}).done(function(ret) {
+                			if(ret.success)
+                			{
+                    			var to = $("#find-send-email").val();
+                    			var  subject = lang('findpwd_email_subject',"WhaleShark 비밀번호 찾기 안내");
+                    			var body = lang('findpwd_email_body', "회원님 안녕하세요 .<br>회원님의 비밀번호는 [<b>{1}</b>] 로  초기화 되었습니다.<br> 로그인후 비밀번호를 변경하여 주시기 바랍니다.",tmppwd);
+                    			
+                    			var cmds = ["/lite2/shell/sendmail.sh", to, subject, body];
+
+            					$.post("/shell", {cmd:cmds.join("~"),deli:"~"}).done(function(res) {
+            						App.stop_loading();
+            						console.log('send pwd reset', res);
+            						if(res.success)
+            						{
+	           							App.msg_alert(lang('find_sendmail','메일발송'), lang('findpwd_msg_sendmail','{1}로 메일을 발송하였습니다.',to));
+	           							$('#modal-findpassword').modal('hide');
+            						}
+            						else App.msg_alert(lang('findpwd_sendmail','메일발송'), lang('findpwd_msg_sendmail_fail','{1}로 메일을 발송에 실패하였습니다.',mail.to));
+            					}).fail(function() {
+            						App.stop_loading();
+            						App.msg_alert(lang('findpwd_sendmail','메일발송'), lang('findpwd_msg_sendmail_fail','{1}로 메일을 발송에 실패하였습니다.',mail.to));
+            					});
+                				
+                			}
+                		});
+                		
+                	}
+                	else
+                	{
+                		App.msg_alert(lang('findpwd_notfound','정보없음'), lang('findpwd_msg_notfound','회원정보가 없습니다.'));
+                		return;
+                	}
+                }
+        	}); 
+            
+        });
+    	$('#modal-findpassword input').val('');
+        $('#modal-findpassword').modal({backdrop:'static'});//.draggable({ handle: ".modal-header" });
+    });
+        
+    $('#findCompany').click(function() {
+    	
+    	var find = $('#user-company').val();
+    	if(find=="")
+    	{
+    		App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_company_empty','회사명을 입력하지 않았습니다.'));
+    		return;
+    	}
+    	
+    	$.post(App.baseurl+'/list', {qid:"findcompany", name:find}).done(function(data) {
+            if(data.success)
+            {
+            	if(data.list.length>0)
+            	{
+            		$('.companys').empty();
+            		for(var i=0; i<data.list.length; i++)
+            		{
+						var c = data.list[i];
+            			$('.companys').append("&nbsp;&nbsp;<input type=radio name='company' id=c"+i+" value='"+c.cid+"|"+c.name+"|"+c.daepyo+"|"+c.tel+"|"+c.fax+"|"+c.addr+"'>&nbsp;&nbsp;<label for=c"+i+"> "+c.name+"("+c.daepyo+")</label><br>");
+            		}
+            	}
+            	else $('.companys').empty().append("&nbsp;&nbsp;<input type=radio name='company' id=c1 value=''>&nbsp;&nbsp;<label for=c1> '"+find+"' <font color=red>"+lang('regist_find_company_notfound','검색데이터없음(직접등록)')+"</font></label><br>");
+            		
+            }
+    	});
+
+		$('button.modal-close').click(function() { $('#company-find-modal').modal('hide'); } );
+    	
+    	// 선택 완료...
+    	$('#company-find-modal #btnselect').click(function() {
+    		var v = $('input[name=company]:checked').val();
+    		
+    		if(v===undefined) return;
+    		
+    		if(v==""){
+    			$('#user-daepyo,#user-tel,#user-fax,#user-addr').val('').attr('readonly', false);
+    			$('#companyid').val('');
+    		}
+    		else
+    		{
+    			var vals = v.split('|'); 
+    			$('#companyid').val(vals[0]);
+    			$('#user-company').val(vals[1]);
+    			$('#user-daepyo').val(vals[2]);
+    			$('#user-tel').val(vals[3]);
+    			$('#user-fax').val(vals[4]);
+    			$('#user-addr').val(vals[5]);
+    			$('#user-daepyo,#user-tel,#user-fax,#user-addr').attr('readonly', true);
+    		}
+    		
+    		$('#company-find-modal').modal('hide');
+    	});
+    	
+    	$('#company-find-modal').modal({backdrop:'static'});
+    	$('#company-find-modal .modal-content').draggable();
+    });
+    
+</script>
+</body>
+</html>
