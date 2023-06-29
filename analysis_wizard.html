@@ -1,0 +1,463 @@
+<style>
+	.dataframe {margin-left:10px;width:700px;border-collapse: collapse;border:1px solid black;font-size:12.0pt;}
+	.dataframe th {border:1px solid black;background-color:lightgray;font-size:12.0pt;vertical-align: middle}
+	.dataframe td {border:1px solid black;font-size:12.0pt;vertical-align: middle}
+	.ctxt {text-align:center !important}
+	.ltxt {text-align:left !important}
+	.num {text-align:right !important}
+	button:focus {outline: none;}
+	.table-list-type th {font-size:12.0pt !important;}
+	.table-list-type td {font-size:12.0pt !important}
+	input::placeholder {font-style: italic;}
+</style>
+
+                    <!-- Navigation info -->
+                    <ul id="nav-info" class="clearfix">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li><a href="javascript:void(0)" data-lang="main_menu_data_analysis">분석</a></li>
+                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_auto_analysis">자동분석</a></li>
+                    </ul>
+                    <!-- END Navigation info -->
+
+                    <!-- Editable Datatables -->
+                    <h3 class="page-header page-header-top" data-lang="ana_title">자동분석</h3>
+
+                    <!-- Toolbar -->
+                    <div class="push">
+                    	<div style='display:flex'>
+                        <span  data-lang="common_metadata_select">통합데이터선택</span>:<select id='mtype' class='-form-control'><option value='' data-lang='common_msg_select_metadata'>통합데이터를 선택해주세요.</option></select>
+                        </div>
+                        <div class=hide  style='display:flex'>
+                        <span  data-lang="common_file_select">파일선택</span>:<select id='filename' class='-form-control'><option value='' data-lang='common_msg_select_file'>파일을 선택해주세요.</option></select>
+                        </div>
+                        <div class=hide  style='display:flex'>
+                        <span data-lang="common_period">기간</span>:<select id='range' class='-form-control' style='width:100px'>
+                        <option value='' data-lang='common_input_manual'>직접입력</option>
+                        <option value='1d' data-lang='ana_cond_recent_1day'>최근1일</option>
+                        <option value='3d' data-lang='ana_cond_recent_3day'>최근3일</option>
+                        <option value='7d' data-lang='ana_cond_recent_7day'>최근7일</option>
+                        </select>
+                        <span class=hide>
+                        <span data-lang="common_from_day">시작일</span>:<input type=text id=sdate class='input-datepicker' data-lang="common_from_day" placeholder='시작일' style='width:100px'>
+                        <span data-lang="common_to_day">종료일</span>:<input type=text id=edate class='input-datepicker' data-lang="common_to_day" placeholder='종료일' style='width:100px'>
+                        </div>
+                        <div class='hide columns'  style='display:flex'>
+                        <span data-lang="common_column_select">컬럼선택</span>:<input type=text id='columns' class='-form-control' style='width:400px' readonly>
+                        </span> 
+                        </div>
+                        <div class='hide columns'>
+                        <button class="btn btn-success" id='btnExec' title="자동분석실행" data-lang="ana_exec_auto,ana_exec_auto:title"><i class="fa fa-plus"></i>자동분석실행</button>
+                        </div>
+                        <br><br>
+                        <p data-lang="ana_intro">※ 자동분석에서는 선택한 데이터를 이용하여 모든알고리즘을 배치분석하여 분석결과를 제공합니다.<br>
+                        ※ 데이터에따라 실행 되지 않는 알고리즘도 있을수 있습니다.</br>
+                        ※ 분석을위한 알고리즘 파라미터는 초기값을 사용하고 종속변수/기준레이블 은 마지막컬럼을 사용합니다.</p>
+                        <button type="button" class="btn btn-success btn-refresh" data-lang="ana_refresh"><i class="fa fa-refresh"></i> Refresh</button>
+                         
+                    </div>
+                    <!-- END Toolbar -->
+
+                    <!-- Table -->
+                    <table id="datatables" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="cell-small text-center">#</th>
+                                <th data-lang="ana_algorithm_name"><i class="fa fa-user"></i> 알고리즘명</th>
+                                <th data-lang="common_description" class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 설명</th>
+                                <th data-lang="common_state" class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
+                                <th data-lang="ana_exec_stime" class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 실행일시</th>
+                                <th data-lang="ana_exec_etime" class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 종료일시</th>
+                                <th data-lsng="common_action" class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- END Table -->
+                    <!-- END Editable Datatables -->
+                    
+                    
+        <!-- Javascript code only for this page -->
+        <script>
+        	var initcolumncnt = 5;
+	       	var info_columnnames = null;
+	       	var info_encoding = "";
+        	var editableTable = null;
+        	
+            $.post(App.baseurl+'/list', {qid:'metafind',column:'mtype',value:'csv',value1:'xls',value2:'rdb',value3:'tsdb',mowner:App.loginuserid}, function(res) {
+            	if(res.success)
+            	{
+                	$('#mtype').empty().append("<option data-lang='common_msg_select_metadata' value=''>"+lang("common_msg_select_metadata", "통합데이터를 선택해주세요.")+"</option>");
+                	for(var i=0; i<res.list.length; i++)
+                	{
+                		var item = res.list[i];
+                    	$('#mtype').append("<option value='"+item.mname+"' mid='"+item.id+"' path='"+item.mpath+"' mtype='"+item.mtype+"' mtable='"+item.mtable+"' url='"+item.ourl+"' otable='"+item.otable+"' odatabase='"+item.odatabase+"'>"+item.mdesc+"</option>");
+                	}
+            	}
+            });
+            
+            $('#mtype').change(function() {
+            	var mtype = $('#mtype option:selected').attr('mtype');
+            	var path = $('#mtype option:selected').attr('path');
+            	if(mtype=="csv"|| mtype=="xls")
+            	{
+            		$('#filename').empty().append("<option data-lang='common_msg_select_file' value=''>"+lang("common_msg_select_file","파일을 선택해주세요.")+"</option>");
+            		$.post(App.baseurl+'/filelist', {path:path,mowner:App.loginuserid}, function(res) {
+            			if(res.success) {
+            				for(var i=0; i<res.list.length; i++){
+            					$('#filename').append("<option value='"+res.list[i].filename+"'>"+res.list[i].filename+"</option>");
+            				}	
+            			}
+            		});
+            		$('#range').parent().addClass('hide');
+            		$('#sdate').parent().addClass('hide');
+            		$('#edate').parent().addClass('hide');
+            		$('#filename').parent().removeClass('hide');
+            		$('.columns').addClass('hide');
+            	}
+            	else if(mtype=="rdb")
+            	{
+                	var table = $('#mtype option:selected').attr('mtable');
+                	gridtotal = "";
+                	gridurl = App.baseurl+'/readrdb';
+            		$.post(gridurl, {table:table,length:1},function(res) {
+                		if(res.success)
+                		{
+                        	var filtercolumns = [];
+            				var cnames = [];
+            				info_columnnames = res.columns.split(",");
+            				for(var i=0; i<initcolumncnt && i<info_columnnames.length; i++) cnames.push(info_columnnames[i]);
+            				$('#columns').val(cnames.join(","));
+                    		$('.columns').removeClass('hide');
+                		}
+                	});
+            		$('#range').parent().addClass('hide');
+            		$('#sdate').parent().addClass('hide');
+            		$('#edate').parent().addClass('hide');
+                	$('#filename').parent().addClass('hide');
+            	}
+            	else if(mtype=="tsdb")
+            	{
+            	   	var ourl = $('#mtype option:selected').attr('url');
+                	var odatabase = $('#mtype option:selected').attr('odatabase');
+                	var otable = $('#mtype option:selected').attr('otable');
+                	sql = "select * from "+otable+ " limit 1";
+            		query_lite(ourl, odatabase, sql, function(success, res, param){
+            			if(success)
+            			{
+            				var data = gettsdata(res);
+            				info_columnnames = data.columns;
+            				var cnames = data.columns;
+            				if(cnames.length > initcolumncnt) cnames = info_columnnames.slice(0,5);
+            				$('#columns').val(cnames.join(","));
+                    		$('.columns').removeClass('hide');
+            			}
+            		}, null);
+            		$('#range').parent().removeClass('hide');
+            		$('#sdate').parent().removeClass('hide');
+            		$('#edate').parent().removeClass('hide');
+            		$('#filename').parent().addClass('hide');
+            		$('#columns').val("");
+            		$('.columns').addClass('hide');
+            	}
+            	else {
+            		$('#filename').parent().addClass('hide');
+            		$('.columns').addClass('hide');
+            		$('#range').parent().addClass('hide');
+            	}
+//            	$('#user-datatables').DataTable().ajax.reload(null, false);
+            });
+            
+            $('#range').off('change').on('change',function() {
+            	var range = $(this).val();
+            	var ct = new Date();
+            	if(range!="")
+            	{
+            		range = parseInt(range.replace("d",""));
+            		var st = new Date(ct.getTime()-range*24*60*60*1000);
+            		$('#sdate').val(st.format('yyyy-MM-dd'));	
+            		$('#edate').val(ct.format('yyyy-MM-dd'));	
+            	}
+            	else
+            	{
+            		$('#sdate').val("");	
+            		$('#edate').val("");	
+            	}
+            });    
+            
+            $('#filename').off('change').on('change', function() {
+            	var path = $("#mtype option:selected").attr('path');
+            	var filepath = path+"/"+$("#filename").val();
+            	gridurl = App.baseurl+'/readcsv';
+            	$.post(gridurl, {filepath:filepath,length:1},function(res) {
+            		if(res.success)
+            		{
+            			info_columnnames = res.columns.split(",");
+            			info_encoding = res.encoding;
+            			cnames = info_columnnames;
+            			if(cnames.length > initcolumncnt) cnames = info_columnnames.slice(0,5);
+            			$('#columns').val(cnames.join(","));
+            			$('.columns').removeClass('hide');
+            		}
+            	});
+            });
+            
+            $('#columns').off('click').on('click', function() {
+            	selectcolumn_dlg(info_columnnames, $('#columns').val().split(","), function(checked) {
+            		$('#columns').val(checked.join(","));
+            	});
+            });
+            
+            function execautoshell(mtype, sql, host, port, uid, pwd, db)
+			{
+				App.start_loading(lang('ana_msg_analyzing','데이터 분석중...'));
+				var cmds = ["/lite2/shell/autoanalysis.sh", mtype, App.loginuserid, sql, host, port, uid, pwd, db];
+//				var cmds = ["/python/python","/lite/shell/autoanalysis.py", "-ftype", mtype, "-userid", App.loginuserid, "-q", sql, "-server", host, "-port", port, "-uid", uid, "-pwd", pwd, "-db", db];
+				console.log('cmd===>', cmds)
+				var d = {};
+				d.cmd=cmds.join("@");
+				d.deli= "@";
+				$.post(App.baseurl+'/shell',d).done(function(res){
+					App.stop_loading();
+					if(res.success)
+					{
+						$('#datatables').DataTable().ajax.reload(null, false);
+					}
+					else
+					{
+						console.log(res);
+						App.msg_alert(lang('ana_error','에러'), lang('ana_msg_analysis_failed','데이터 분석에 오류가 발생했습니다.'));
+					}
+				});
+           	}
+			
+			function exec_analysis() {
+        		var mid = $('#mtype option:selected').attr('mid');
+        		var mname = $('#mtype').val();
+        		var cols = $('#columns').val();
+        		var sdate = $('#sdate').val();
+//        		var shour = $('#shour').val();
+//        		var sminute = $('#sminute').val();
+        		var edate = $('#edate').val();
+//        		var ehour = $('#ehour').val();
+//        		var eminute = $('#eminute').val();
+        		var mtype = $('#mtype option:selected').attr('mtype');
+        		if(mname=="")
+        		{
+        			App.msg_alert(lang('ana_error','에러'), lang('ana_msg_metadata_empty','통합데이터를 선택하지 않았습니다.'));
+        			return;
+        		}
+        		if(sdate=="" && mtype=="tsdb")
+        		{
+        			App.msg_alert(lang('ana_error','에러'), lang('ana_msg_start_empty','시작일 선택하지 않았습니다.'));
+        			return;
+        		}
+        		if(edate=="" && mtype=="tsdb")
+        		{
+        			App.msg_alert(lang('ana_error','에러'), lang('ana_msg_end_empty','종료일을 선택하지 않았습니다.'));
+        			return;
+        		}
+        		var configstr = "";
+        		if(mtype=="tsdb"){
+//    				cols = "*";
+    				cols = "\""+cols.split(",").join("\",\"")+"\"";
+    		    	var ourl = $('#mtype option:selected').attr('url');
+    		    	var odatabase = $('#mtype option:selected').attr('odatabase');
+    		    	var otable = $('#mtype option:selected').attr('otable');
+    				var ftime = sdate + " 00:00:00";
+    				var ttime = edate + " 23:59:59.9999";
+    				var sql = "select "+cols+ " from "+otable+" "; 
+    				sql += "where time >='"+ftime+"' and time <='"+ttime+"'";
+    				sql += " order by time limit 10000";
+    		    	var p0 = ourl.indexOf('://'); //account
+    		    	var p1 = ourl.indexOf(':',p0+3); // password
+    		    	var p2 = ourl.lastIndexOf('@'); //host
+    		    	var p3 = ourl.lastIndexOf(':'); //port
+    		    	var p4 = ourl.lastIndexOf('/');
+    		    	var uid="";
+    		    	var pwd="";
+    		    	var host="";
+    		    	var port="";
+    				if(p0>=0 && p1>=0&& p2>=0&& p3>=0 && p4>=0)
+    		    	{
+    					uid = ourl.substring(p0+3,p1);
+    					pwd = ourl.substring(p1+1,p2);
+    					host = ourl.substring(p2+1,p3);
+    					port = ourl.substring(p3+1,p4);
+    		    	}
+    				execautoshell('influxdb', sql, host, port, uid, pwd, odatabase, mname+" 데이터");
+    				var configstr = JSON.stringify({'mid':mid, 'mtype':mname, 'sdate':sdate, 'edate':edate, 'columns':$('#columns').val()});
+    			}
+    			// rdb
+    			else if(mtype=="rdb"){
+    				var table = $('#mtype option:selected').attr('mtable');
+    				var sql = mtype+"#select "+cols+" from `"+table+"` limit 10000";
+    				execautoshell('influxdb', sql, "-","-","-","-","-", mname+" 데이터");
+    				var configstr = JSON.stringify({'mid':mid, 'mtype':mname, 'sdate':'', 'edate':'', 'columns':$('#columns').val()});
+    			}
+    			// csv sql = filepath@encoding@columns
+    			else if(mtype=="csv"||mtype=="xls"){
+    				var path = $("#mtype option:selected").attr('path');
+    	        	var filepath = App.loginuserid+"/"+path+"/"+$("#filename").val();
+    				var sql = mtype+"#"+filepath+"#"+info_encoding+"#"+cols;
+    				execautoshell('influxdb', sql, "-","-","-","-","-", mname+" 데이터");
+    				var configstr = JSON.stringify({'mid':mid, 'mtype':mname, 'sdate':'', 'edate':'', filename:$("#filename").val(), 'columns':$('#columns').val()});
+    			}
+        		
+        		// 최종 선택 저장
+        		if(configstr!="")
+        		{
+        			var cond = {qid:"configput", key:App.loginuserid+'_autoanalysis', value:configstr};
+        			$.post(App.baseurl+'/update',cond).done(function(res){ });
+        		}
+            }			
+            
+            $('#btnExec').off('click').on('click', function() {
+				App.msg_confirm(lang('ana_auto_analysis','자동분석 '), lang('ana_msg_analysis_confirm','분석을 실행할까요?'), exec_analysis);
+			});
+            
+            $(function () {
+                editableTable = initgrid('#datatables',{
+                ajax: {
+                    url: App.baseurl+'/list', 
+                    type: 'POST',
+                    dataFilter: function(data){
+                        var jdata = jQuery.parseJSON( data );
+                        var json = {};
+                        json.recordsTotal = jdata.total;
+                        json.recordsFiltered = jdata.total;
+                        json.data = jdata.list;
+                        return JSON.stringify( json ); // return JSON string
+                    },
+                    data: function (d) {
+                    	d.qid = "algorunlist";
+                    	d.userid = App.loginuserid
+                    	d.lang = getLanguage();
+                    	if(d.lang!="ko") d.lang = "en";
+//                    	var fld = "name";
+//                    	d.column = fld;
+                    	d.find =  $('.dataTables_filter input').val();
+                    	return d;
+    				},
+                },
+                columns: [
+                    {orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
+                    {data: "name"},
+                    {data: "adesc"},
+                    {data: "state", render : function(data, type, row, obj) {
+                    	if(row.state==null) return "";
+                    	else return data;
+                    	var stat = "";
+                    	if(row.run_log!=null && row.run_log!="") {
+                    		var stats = row.run_log.trim().split("\n");
+                    		if(stats.length>0) stat = stats.pop();
+                    	}
+                    	var state = data+"("+stat+")";
+                    	if(data==null && stat!="") state = "("+stat+")";
+                    	return state;
+                    }}, 
+                    {data: "run_stime", render : function(data, type, row, obj) {
+                    	
+                    	if(row.state==null) return "";
+                    	var ret = (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); 
+                		var dur = (new Date()).getTime()-(new Date(row.run_stime)).getTime();
+                		if(row.run_etime==null) ret += "("+dur_fmt(dur/1000)+")";
+                    	return ret; 
+                    }},
+                    {data: "run_etime", render : function(data, type, row, obj) {
+                    	if(row.state==null) return "";
+                    	var ret = new Date(data).format("yyyy-MM-dd HH:mm:ss");
+                    	if(data!=null) {
+                    		var dur = (new Date(row.run_etime)).getTime()-(new Date(row.run_stime)).getTime();
+                    		ret += "("+dur_fmt(dur/1000)+")";
+                    	}
+                    	return ret;}},
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) {
+                    	var html = '<button title="'+lang('ana_result_view','결과보기')+'" data-lang="ana_result_view,ana_result_view:title" data-id="' + data + '" class="btn btn-xs btn-default viewRow"><i class="fa fa-file"></i>결과보기</button>';
+                    	
+                    	if(row.state!="분석완료" && row.state!="Analyzed") html = '';
+//                    	html += '<button title="삭제" data-id="' + data + '" class="btn btn-xs btn-default delRow"><i class="fa fa-times"></i></button>';
+                    	return html; 
+                    	}},
+                ],
+                paging: true,
+                pageLength: 25,
+                serverSide: true,
+                processing: true, 
+                });
+                
+                $('.dataTables_filter input').attr('placeholder', lang('common_search_btn','검색'));
+                
+                $('.input-datepicker').datepicker({format:"yyyy-mm-dd"});
+                
+				setTimeout(lastcond, 500)
+				
+            });
+
+			function lastcond()
+			{
+    			var cond = {qid:"configget", key:App.loginuserid+'_autoanalysis'};
+    			$.post(App.baseurl+'/list',cond).done(function(res){
+    				console.log('last', res);
+    				if(res.success && res.list.length>0)
+    				{
+    					var last = res.list[0].value;
+    					if(last!=null && last!="") last = JSON.parse(last);
+    					
+    					$('#mtype').val(last.mtype).change();
+    					$('#sdate').val(last.sdate);
+    					$('#edate').val(last.edate);
+						setTimeout(function() {if(last.filename !== undefined) $('#filename').val(last.filename).change();}, 500)
+						setTimeout(function() {$('#columns').val(last.columns);}, 1000)
+    				}
+    			});
+			}
+                        			
+			$(document).off('click','.btn-refresh').on('click','.btn-refresh',function() {
+				$('#datatables').DataTable().ajax.reload(null, false);
+			});            
+            // view button...
+            $('body').off('click', '.viewRow').on('click', '.viewRow', function () {
+            	var row = $(this).parent().parent().index();
+            	var d = editableTable.fnGetData(row);
+            	
+            	result_dlg('['+d.name+'] '+lang('ana_result_view', '결과보기'), d.run_result);
+            });
+            
+         	// column 선택창
+            function result_dlg(title, content)
+            {
+            	if(content===undefined || content==null) content = "";
+            	
+            	if(content.indexOf("success:")==0) content = content.substring(8);
+            	else if(content.indexOf("error:")==0) content = content.substring(6);            	
+            	
+            	var html = '';
+            	html += '<div class="modal result-modal">';
+            	html += '<div class="modal-dialog modal-lg"  style="width:1000px">';
+            	html += '	<div class="modal-content">';
+            	html += '		<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
+            	html += '		<h4>'+title+'</h4>';
+            	html += '		</div>';
+            	html += '		<div class="modal-body"><form class=form-horizontal>';
+//            	html += '			<div class="form-group">';
+            	html += '			<div style="height:400px;overflow:auto">';
+            	html += content;
+            	html += '			</div>';
+            	html += '		</form></div>';
+            	html += '		<div class="modal-footer remove-margin">';
+            	html += '			<button type="button" class="btn btn-default" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i>'+lang('common_close_btn','닫기')+'</button>';
+            	html += '		</div>';
+            	html += '	</div>';
+            	html += '</div>';
+            	html += '</div>';
+            	
+            	if($('.result-modal').length>0) $('.result-modal').remove();
+            	
+            	$(html).appendTo('body')
+            	$('.result-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
+            }  
+         	
+            updatelang();
+            
+        </script>

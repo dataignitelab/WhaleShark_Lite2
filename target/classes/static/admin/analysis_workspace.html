@@ -1,0 +1,448 @@
+<!-- Navigation info -->
+<ul id="nav-info" class="clearfix">
+    <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+    <li><a href="javascript:void(0)" data-lang="main_menu_data_analysis">분석</a></li>
+    <li class="active"><a href="javascript:void(0)" data-lang="main_menu_analysis_env">개인분석환경</a></li>
+</ul>
+<!-- END Navigation info -->
+
+<!-- modal form -->
+<div id="data-modal" class="modal">
+        <!-- Modal Dialog -->
+        <div class="modal-dialog">
+            <!-- Modal Content -->
+            <div class="modal-content"  style='width:800px'>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4>데이터 선택</h4>
+                </div>
+                <!-- END Modal Header -->
+
+                <!-- Modal Content -->
+                <div class="modal-body">
+                      <form class="form-horizontal">
+                      
+						  <div class="form-group">
+                              <label class="control-label col-md-3" data-lang="common_metadata_select">통합데이터선택 </label>
+                              <div class="col-md-9">
+                                     <select id="mtype" class="form-control">
+                                     <option value="" data-lang="common_metadata_select">통합데이터선택</option>
+                                     </select>
+                               </div>
+                          </div>                      
+                          <div class="form-group hide">
+                              <label class="control-label col-md-3" data-lang="common_file_select">file</label>
+                              <div class="col-md-9">
+                                     <select id="filename" class="form-control">
+                                     <option value="" data-lang="common_file_select">파일선택</option>
+                                     </select>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="control-label col-md-3" data-lang="common_column_select">컬럼선택</label>
+                              <div class="col-md-9">
+                                     <input type="text" id="columns" class="form-control" readonly>
+                                     
+                              </div>
+                          </div>
+                          
+                          <div class="form-group hide">
+                              <label class="control-label col-md-3" dta-lang="anatool_data_dur">데이터 기간</label>
+                              <div class="col-md-9">
+                          		<select id='range'><option value="" data-lang="anatool_manual_select">직접선택</option><option value='1d' data-lang="anatool_cond_recent_1day">최근1일</option><option value='3d' data-lang="anatool_cond_recent_3day">최근3일</option><option value='7d' data-lang="anatool_cond_recent_7day">최근7일</option></select>
+                          		
+                          		<div class='range'>
+									<input type="text" id="sdate" class="input-datepicker"><select id="shour" class='hour'></select><select id="sminute" class='minute'></select>~
+									<input type="text" id="edate" class="input-datepicker"><select id="ehour" class='hour'></select><select id="eminute" class='minute'></select>
+								</div>
+                          	  </div>
+                          </div>
+                          
+                      </form>
+                </div>
+                <!-- END Modal Content -->
+
+                <!-- Modal footer -->
+                <div class="modal-footer remove-margin">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
+                    <button type="button" class="btn btn-success" id="btnSave" data-lang="common_ok_btn"><i class="fa fa-check"></i> 확인</button>
+                </div>
+                <!-- END Modal footer -->
+            </div>
+            <!-- END Modal Content -->
+        </div>
+        <!-- END Modal Dialog -->      
+              
+</div>
+
+
+<h3 class="page-header page-header-top" data-lang="anatool_env_title">개인분석환경</h3>
+<iframe style='border:0px;width:100%;height:100%' name="workspace" scrolling="no" frameborder="0" vspace="0" hspace="0"></iframe>
+
+<!-- 스크립트 영역 -->
+<script type="text/javascript">
+
+function importdata(callback)
+{
+	$('#btnSave').off('click').on('click',function() {
+		
+		var mname = $('#mtype').val();
+		var cols = $('#columns').val();
+		var sdate = $('#sdate').val();
+		var shour = $('#shour').val();
+		var sminute = $('#sminute').val();
+		var edate = $('#sdate').val();
+		var ehour = $('#ehour').val();
+		var eminute = $('#eminute').val();
+		var mtype = $('#mtype option:selected').attr('mtype');
+		
+		if(mname=="")
+		{
+			App.msg_alert(lang('ana_error','오류'), lang('ana_msg_metadata_empty','통합데이터를 선택하지 않았습니다.'));
+			return;
+		}
+
+		if(sdate=="" && mtype=="tsdb")
+		{
+			App.msg_alert(lang('ana_error','오류'), lang('ana_msg_start_empty','시작일 선택하지 않았습니다.'));
+			return;
+		}
+
+		if(edate=="" && mtype=="tsdb")
+		{
+			App.msg_alert(lang('ana_error','오류'), lang('ana_msg_end_empty','종료일을 선택하지 않았습니다.'));
+			return;
+		}
+		
+		$('#data-modal').modal('hide');
+		if(callback !== undefined)
+		{
+			// tsdb
+			if(mtype=="tsdb"){
+			
+//				cols = "*";
+				cols = "\""+cols.split(",").join("\",\"")+"\"";
+		    	var ourl = $('#mtype option:selected').attr('url');
+		    	var odatabase = $('#mtype option:selected').attr('odatabase');
+		    	var otable = $('#mtype option:selected').attr('otable');
+
+				var ftime = sdate + " "+shour+":"+sminute+":00";
+				var ttime = edate + " "+ehour+":"+eminute+":59.9999";
+				var sql = "select "+cols+ " from "+otable+" "; 
+				sql += "where time >='"+ftime+"' and time <='"+ttime+"'";
+				sql += " order by time limit 10000";
+
+		    	var p0 = ourl.indexOf('://'); //account
+		    	var p1 = ourl.indexOf(':',p0+3); // password
+		    	var p2 = ourl.lastIndexOf('@'); //host
+		    	var p3 = ourl.lastIndexOf(':'); //port
+		    	var p4 = ourl.lastIndexOf('/');
+		    	 
+		    	var uid="";
+		    	var pwd="";
+		    	var host="";
+		    	var port="";
+				if(p0>=0 && p1>=0&& p2>=0&& p3>=0 && p4>=0)
+		    	{
+					uid = ourl.substring(p0+3,p1);
+					pwd = ourl.substring(p1+1,p2);
+					host = ourl.substring(p2+1,p3);
+					port = ourl.substring(p3+1,p4);
+		    	}
+				callback('influxdb', sql, host, port, uid, pwd, odatabase, mname+" 데이터");
+			}
+			// rdb
+			else if(mtype=="rdb"){
+				var table = $('#mtype option:selected').attr('mtable');
+				var sql = mtype+"#select "+cols+" from `"+table+"` limit 10000";
+				callback('influxdb', sql, "-","-","-","-","-", mname+" 데이터");
+			}
+			// csv sql = filepath@encoding@columns
+			else if(mtype=="csv"||mtype=="xls"){
+				var path = $("#mtype option:selected").attr('path');
+	        	var filepath = App.loginuserid+"/"+path+"/"+$("#filename").val();
+				var sql = mtype+"#"+filepath+"#"+info_encoding+"#"+cols;
+				callback('influxdb', sql, "-","-","-","-","-", mname+" 데이터");
+			}
+		}
+	});	
+	/*	
+	$('#btnFile').off('click').on('click',function() {
+		$('#data-modal').modal('hide');
+
+		if(callback !== undefined) callback('');
+	});	
+	*/
+	$('#data-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
+}
+
+var gridurl = App.baseurl+'/readrdb';
+var gridtotal = ""; 
+//var initcolumncnt = 5;
+var info_columnnames = [];
+var info_encoding = "";
+
+function colname(str)
+{
+	var sp = str.indexOf('"');
+	if(sp==0) return str.substring(sp+1, str.length-1);
+	else 
+		return str;
+}
+
+$.post(App.baseurl+'/list', {qid:'metafind',column:'mtype',value:'csv',value1:'xls',value2:'rdb',value3:'tsdb',mowner:App.loginuserid}, function(res) {
+	
+	if(res.success)
+	{
+    	$('#mtype').empty().append("<option value='' data-lang='common_msg_select_metadata'>"+lang("common_msg_select_metadata", "통합데이터를 선택해주세요.")+"</option>");
+    	for(var i=0; i<res.list.length; i++)
+    	{
+    		var item = res.list[i];
+        	$('#mtype').append("<option value='"+item.mname+"' path='"+item.mpath+"' mtype='"+item.mtype+"' mtable='"+item.mtable+"' url='"+item.ourl+"' otable='"+item.otable+"' odatabase='"+item.odatabase+"'>"+item.mdesc+"</option>");
+    	}
+		
+	}
+});
+
+$('#mtype').change(function() {
+	
+	var mtype = $('#mtype option:selected').attr('mtype');
+	var path = $('#mtype option:selected').attr('path');
+	$('#columns').val('');
+	
+	if(mtype=="csv"|| mtype=="xls")
+	{
+		$('#filename').empty().append("<option value='' data-lang='common_msg_select_file'>"+lang("common_msg_select_file", "파일을 선택해주세요.")+"</option>");
+		$.post(App.baseurl+'/filelist', {path:path,mowner:App.loginuserid}, function(res) {
+			if(res.success) {
+				for(var i=0; i<res.list.length; i++){
+					$('#filename').append("<option value='"+res.list[i].filename+"'>"+res.list[i].filename+"</option>");
+				}	
+			}
+		})
+		
+		$('#range').parent().parent().addClass('hide');
+//		$('#sdate').parent().addClass('hide');
+//		$('#edate').parent().addClass('hide');
+		$('#filename').parent().parent().removeClass('hide');
+	}
+	else if(mtype=="rdb")
+	{
+    	var table = $('#mtype option:selected').attr('mtable');
+		
+    	gridtotal = "";
+    	gridurl = App.baseurl+'/readrdb';
+		$.post(gridurl, {table:table,length:1},function(res) {
+    		if(res.success)
+    		{
+            	var filtercolumns = [];
+				var cnames = [];
+				info_columnnames = res.columns.split(",");
+				
+//				for(var i=0; i<initcolumncnt && i<info_columnnames.length; i++) cnames.push(info_columnnames[i]);
+				cnames = info_columnnames;
+
+				$('#columns').val(cnames.join(","));
+				
+//				makegrid(cnames);
+    		}
+    	});
+		
+		$('#range').parent().parent().addClass('hide');
+    	$('#filename').parent().parent().addClass('hide');
+	}
+	else if(mtype=="tsdb")
+	{
+    	var ourl = $('#mtype option:selected').attr('url');
+    	var odatabase = $('#mtype option:selected').attr('odatabase');
+    	var otable = $('#mtype option:selected').attr('otable');
+		
+    	sql = "select * from "+otable+ " limit 1";
+		query_lite(ourl, odatabase, sql, function(success, res, param){
+			if(success)
+			{
+				var data = gettsdata(res);
+				info_columnnames = data.columns;
+				$('#columns').val(info_columnnames.join(","));
+			}
+		}, null);
+		
+		
+		$('#range').parent().parent().removeClass('hide');
+//		$('#sdate').parent().removeClass('hide');
+//		$('#edate').parent().removeClass('hide');
+		$('#filename').parent().parent().addClass('hide');
+		$('#range').change();
+		
+		$('#columns').val("");
+		
+	}
+	else {
+		$('#range').parent().parent().addClass('hide');
+		$('#filename').parent().parent().addClass('hide');
+	}
+});
+
+$('#filename').off('change').on('change', function() {
+	
+	var path = $("#mtype option:selected").attr('path');
+	var filepath = path+"/"+$("#filename").val();
+	
+	gridurl = App.baseurl+'/readcsv';
+	$.post(gridurl, {filepath:filepath,length:1},function(res) {
+		if(res.success)
+		{
+			info_columnnames = res.columns.split(",");
+			info_encoding = res.encoding;
+			
+//			for(var i=0; i<initcolumncnt && i<info_columnnames.length; i++) cnames.push(info_columnnames[i]);
+			cnames = info_columnnames;
+
+			$('#columns').val(cnames.join(","));
+			
+//			makegrid(cnames);
+		}
+	});
+
+});        	
+
+$('#range').off('change').on('change',function() {
+	var range = $(this).val();
+	
+	var ct = new Date();
+	
+	if(range!="")
+	{
+		range = parseInt(range.replace("d",""));
+		var st = new Date(ct.getTime()-range*24*60*60*1000);
+		$('#sdate').val(st.format('yyyy-MM-dd'));
+		$("#shour,#sminute").val('00');
+		$('#edate').val(ct.format('yyyy-MM-dd'));	
+		$("#ehour").val('23');
+		$("#eminute").val('59');
+//		$('.range').addClass('hide');
+	}
+	else
+	{
+		$('#sdate').val("");	
+		$('#edate').val("");
+//		$('.range').removeClass('hide');
+	}
+});
+
+$('#columns').off('click').on('click', function() {
+	
+	selectcolumn_dlg(info_columnnames, $('#columns').val().split(","), function(checked) {
+		$('#columns').val(checked.join(","));
+	});
+	
+});
+
+
+/*
+$('#range').change(function(){
+	if($('#range').val()=="") $('.range').removeClass('hide');
+	else $('.range').addClass('hide');
+});
+*/
+
+(function init(){
+	$('.input-datepicker').datepicker({format:"yyyy-mm-dd"});
+	for(var i=0; i<24; i++) $('select.hour').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +'시</option>');
+	for(var i=0; i<60; i++) $('select.minute').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +'분</option>');
+	
+})();
+
+
+/*
+$(window).resize(function() {
+	$('iframe').css('width',$('#page-content').width());
+	$('iframe').css('height',$('#page-content').height()-50);
+	
+});
+$(window).resize();
+*/
+
+$('iframe').css('width',$('#page-content').width());
+$('iframe').css('height',$('#page-content').height());
+
+// 배열 공백 값제거
+function ne_array(arr)
+{
+	let ret = [];
+	for(a of arr) if(a!="") ret.push(a);
+	return ret;
+}
+
+var mycname = "jupyterlab_"+App.loginuserid;
+var myport = -1;
+// 컨테이너 목록과 맵핑 포트목록
+var cnames = [];
+var ports = [];
+
+function container_list()
+{
+	// ps -a
+	$.post(App.baseurl+'/shell',{cmd:"/lite2/shell/docker ps -a",deli:" "}, function(res) {
+
+			let lastport = 28887;
+			let log = res.result;
+			for (let l of log.split("\n"))
+			{
+				let portstr = getsubstring(l, ":", "->8888/tcp", 0).trim();
+				let cname = getsubstring(l, "->8888/tcp", "", 0).trim();
+//				console.log("==>port:",ne_array(l.split("  ")));
+				
+				if(portstr!="" && cname!="") {
+					let port = parseInt(portstr);
+					if(lastport<port) lastport = port;
+					cnames.push(cname);
+					ports.push(port);
+					
+					if(mycname==cname) myport = port;
+				}
+			}
+//			console.log("lastport==>",lastport);
+			
+			if(myport<0) // 도커 구동
+			{
+				myport = lastport+1;
+				let cmd = "/lite2/shell/docker run -d -it -p "+myport+":8888 --name "+mycname+" -v /lite2/upload/"+App.loginuserid+":/work jupyterlab jupyter lab --no-browser --allow-root --port=8888 --ip=0.0.0.0 --notebook-dir='/work'";
+				$.post(App.baseurl+'/shell',{cmd:cmd,deli:" "}, function(res) {
+					// 도커 실행 3초후 브라우즈 이동...
+					setTimeout(function() { jupyter_token(mycname);}, 3000);
+				});
+			}
+			else
+			{
+				jupyter_token(mycname);
+			}
+			
+	});
+}
+
+// jupyter lab list
+function jupyter_token(cname) {
+	$.post(App.baseurl+'/shell',{cmd:"/lite2/shell/docker exec "+cname+" jupyter lab list",deli:" "}, function(res) {
+		let log = res.result;
+		if (log=="" && res.errorlog!="") log = res.errorlog;
+		let token = "";
+		for (let l of log.split("\n"))
+		{
+			token = getsubstring(l, ":8888", "::", 0).trim();
+			if(token!="") break;
+		}
+		$('iframe').attr('src','http://whalesharklite2.datacentric.kr:'+myport+token);
+	});
+}		
+
+
+var l = getLanguage();
+if(l!="ko") l="en";
+updatelang();
+
+container_list(); // 컨테이너 조회 및 구동후 url 접속...
+
+</script>
+<!-- 스크립트 영역 -->
