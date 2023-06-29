@@ -1,0 +1,369 @@
+<style>
+	.dataframe {margin:10px;border-collapse: collapse;border:1px solid black;font-size:11.0pt;}
+	.dataframe th {padding:4px; border:1px solid black;background-color:lightgray;font-size:12.0pt;vertical-align: middle; text-align:center}
+	.dataframe td {padding:2px 4px 2px 4px; border:1px solid black;font-size:11.0pt;vertical-align: middle}
+</style>
+<!-- Navigation info -->
+<ul id="nav-info" class="clearfix">
+    <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+    <li><a href="javascript:void(0)">데이터관리</a></li>
+    <li class="active"><a href="javascript:void(0)">센서데이터조회</a></li>
+</ul>
+<!-- END Navigation info -->
+
+<h3 class="page-header page-header-top">센서데이터조회 <small> </small></h3>
+
+<div class="push">
+	<table style='border:1px solid white'>
+	<tr><th>설비</th><td><select id='facilityid'><option>설비선택</option></select></td>
+	<th>센서</th><td><input id='sensors' class="col-md-10" readonly><input type='hidden' id='sensorids'><button id="btnsensor"><i class="fa fa-list"></i></button></td>
+	<td><select id='range'><option value="">직접선택</option><option value='300s'>최근5분</option><option value='600s' selected>최근10분</option></select>
+	</td>
+	<td class='range hide'>
+	<input type="text" name="fdate" class="input-datepicker"><select name="fhour" class='hour'></select><select name="fminute" class='minute'></select>~
+	<input type="text" name="tdate" class="input-datepicker"><select name="thour" class='hour'></select><select name="tminute" class='minute'></select>
+	</td>
+	<td><select id='groupby'><option value="">원시데이터</option><option value='5m_max'>5분최대</option><option value='10m_max'>10분최대</option><option value='30m_max'>30분최대</option><option value='1h_max'>1시간최대</option><option value='5m_min'>5분최소</option><option value='10m_min'>10분최소</option><option value='30m_min'>30분최소</option><option value='1h_min'>1시간최소</option><option value='5m_mean'>5분평균</option><option value='10m_mean'>10분평균</option><option value='30m_mean'>30분평균</option><option value='1h_mean'>1시간평균</option></select><button class="btn btn-success" id='btnFind' title="조회"><i class="fa fa-search"></i> 조회</button> <button class="btn btn-success" id='btnExcel' title="Excel 다운로드"><i class="fa fa-file-excel-o"></i> Excel 다운로드</button></td>
+	</tr>
+    </table>
+    
+</div>
+
+<!-- user modal form -->
+<div id="group-modal" class="modal">
+        <!-- Modal Dialog -->
+        <div class="modal-dialog">
+            <!-- Modal Content -->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4>센서 선택</h4>
+                </div>
+                <!-- END Modal Header -->
+
+                <!-- Modal Content -->
+                <div class="modal-body">
+                      <form class="form-horizontal">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">센서 </label>
+                              <div class="col-md-9">
+                                     <input type="text" name="sensors" class="form-control" value="" readonly>
+                                     <input type="hidden" name="sensorids" class="form-control" value="" readonly>
+                                     <div class='sensors' style='border:1px solid lightgray; overflow:auto; height:400px;'>
+                                     <input type=checkbox id=s1><label for=s1>센서1</label><br>
+                                     <input type=checkbox id=s2><label for=s2>센서2</label><br>
+                                     <input type=checkbox id=s3><label for=s3>센서3</label><br>
+                                     <input type=checkbox id=s4><label for=s4>센서4</label><br>
+                                     </div>
+                              </div>
+                          </div>
+                      </form>
+                </div>
+                <!-- END Modal Content -->
+
+                <!-- Modal footer -->
+                <div class="modal-footer remove-margin">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+                    <button type="button" class="btn btn-success" id="btnSave" ><i class="fa fa-check"></i> 확인</button>
+                </div>
+                <!-- END Modal footer -->
+            </div>
+            <!-- END Modal Content -->
+        </div>
+        <!-- END Modal Dialog -->        
+</div>
+<!-- END user modal form -->
+
+<div id='resultgrid' style='display:none;border: 1px solid black; height:700px; overflow:auto'></div>
+
+<!-- 스크립트 영역 -->
+<script type="text/javascript">
+//http://onsite-monitor.xip.kr:8086/query?db=powermonitor&q=select%20*%20from%20PM0001%20order%20by%20time%20desc%20limit%20100
+
+var dev_hash = {};
+
+// 센서id목록을 이름목록으로...
+function sensor_names(sensors)
+{
+	var names = [];
+	var sids = [];
+	
+	if(sensors===undefined || sensors==null || sensors=="") {
+		$('[name=sensorids]').val("");
+		return "";
+	}
+	
+	var ids = sensors.split(",");
+	for(var i=0; i<ids.length; i++)
+		if(ids[i].length>0) { 
+			names.push(dev_hash[ids[i]].name);
+			sids.push(ids[i]);
+			
+			$('[value='+ids[i]+']').prop('checked', true);
+		}
+	
+	$('[name=sensorids]').val(sids.join(","));
+	
+	return names.length>0?names.join(","):"";
+}
+
+function sensor_cols(sensors)
+{
+	var names = [];
+	
+	var grp = $('#groupby').val();
+	grp = grp.split("_")[1];
+	
+	if(sensors===undefined || sensors==null || sensors=="") return "";
+	
+	var ids = sensors.split(",");
+	for(var i=0; i<ids.length; i++)
+		if(ids[i].length>0) {
+			if(grp=="") names.push('"'+dev_hash[ids[i]].vname+'" as "'+dev_hash[ids[i]].name+'"');
+			else names.push(grp+'("'+dev_hash[ids[i]].vname+'") as "'+dev_hash[ids[i]].name+'"');
+		}
+	
+	return names.length>0?names.join(","):"";
+}
+
+// 센서id목록을 이름목록으로...
+function loadsensor(facilityid, callback)
+{
+    $.post(App.baseurl+"/list",{qid:"facilitysensorlist",facilityid:facilityid}).done(
+        	function(res){
+        		$('.sensors').empty();
+        		if(res.success)
+        		{
+        			for(var i=0; i<res.list.length; i++)
+        			{
+        				var item = res.list[i]; 
+            			$('.sensors').append('&nbsp;<input name="sensor" type="checkbox" id="s'+i+'" value="'+item.deviceid+'"><label for="s'+i+'" style="width:100px">&nbsp;'+item.devicename+'</label><br>');
+        			}
+        			callback();
+        		}
+        	});
+}
+
+$('#btnsensor,#sensors').click(function() {
+	loadsensor($('#facilityid').val(), function() {
+		$('[name=sensors]').val(sensor_names($('#sensorids').val()));
+		$('[name=sensorids]').val($('#sensorids').val());
+		
+		$('#group-modal').modal({backdrop:'static'});
+	});
+});
+
+$(document).off('click','[name=sensor]').on('click','[name=sensor]',function() {
+	var sensors = $('[name=sensorids]').val();
+	var txt = $(this).next().text();
+	
+	if($(this).is(":checked")) // +
+	{
+		sensors += (sensors.length>0?",":"")+ $(this).val();
+	}
+	else // -
+	{
+		sensors = sensors.split($(this).val()).join('');
+	}
+	$('[name=sensors]').val(sensor_names(sensors));
+});
+
+$('#btnSave').click(function() {
+	$('#sensors').val($('[name=sensors]').val());
+	$('#sensorids').val($('[name=sensorids]').val());
+	$('#group-modal').modal('hide');
+});
+
+$('#range').change(function(){
+	if($('#range').val()=="") $('.range').removeClass('hide');
+	else $('.range').addClass('hide');
+});
+
+$('#facilityid').change(function(){
+	$('#sensors').val('');
+	$('#sensorids').val('');
+});
+
+$('#btnFind').click(function() {
+	var facilityid = $('#facilityid option:checked').text();
+	var range = $('#range').val();
+	var ids = $('#sensorids').val();
+	var cols = sensor_cols(ids);
+
+	var grp = $('#groupby').val();
+	grp = grp.split("_")[0];
+	
+	if(facilityid=="") {
+		App.msg_alert('오류', '검색 설비를 선택하지 않았습니다.');
+		return;
+	}
+	if(ids=="")	{
+		App.msg_alert('오류', '검색 센서를 선택하지 않았습니다.');
+		return;
+	}
+	var sql = "select "+cols+ " from "+facilityid+" "; 
+	if(range=="") {
+		var fdate = $('[name=fdate]').val();
+		var tdate = $('[name=tdate]').val();
+		
+		if(fdate=="") {
+			App.msg_alert('오류', '검색 시작일을 입력하지 않았습니다.');
+			return;
+		}
+		if(tdate=="") {
+			App.msg_alert('오류', '검색 종료일을 입력하지 않았습니다.');
+			return;
+		}
+		var ft = fdate + " "+$('[name=fhour]').val()+":"+$('[name=fminute]').val()+":00";
+		var tt = tdate + " "+$('[name=thour]').val()+":"+$('[name=tminute]').val()+":00";
+		sql += "where time >='"+fdate+"' and time <='"+tt+"'";
+		
+	}
+	else
+		sql += "where time >=now()-"+range;
+
+	if(grp=="") sql += " order by time desc";
+	else sql += " group by time("+grp+") order by time";
+	
+    App.start_loading('검색중...');
+	
+	// SQL 처리 결과 목록 로딩
+	query("facility", sql, function(issuccess, result) {
+		App.stop_loading();
+		if(issuccess)
+		{
+			var html = '<table class=dataframe><tr>';
+			// columns info
+			for(var i=0;i<result.results[0].series[0].columns.length; i++)
+			{
+				var item = result.results[0].series[0].columns[i];
+				html += '<th>'+item+'</th>';
+			}
+			html += "</tr>";
+			// values
+			for(var i in result.results[0].series[0].values)
+			{
+				var items = result.results[0].series[0].values[i];
+				html += "<tr>";
+				for(var c=0; c<items.length;c++) {
+					var v = items[c];
+					if(c==0) v = (new Date(v)).format("yyyy-MM-dd HH:mm:ss");
+					html += '<td>'+v+'</td>';
+				}
+				html += "</tr>";
+			}
+			$('#resultgrid').html(html);
+			$('#resultgrid').show();
+			
+			// 저장...
+			var save={};
+			save.facilityid = $('#facilityid').val();
+			save.sensorids = $('#sensorids').val();
+			save.sensors = $('#sensors').val();
+			save.range = $('#range').val();
+			save.fdate = $('[name=fdate]').val();
+			save.fhour = $('[name=fhour]').val();
+			save.fminute = $('[name=fminute]').val();
+			save.tdate = $('[name=tdate]').val();
+			save.thour = $('[name=thour]').val();
+			save.tminute = $('[name=tminute]').val();
+			
+			$.post(App.baseurl+"/update",{qid:"configput",key:App.loginid+"_sensordata.html",value:JSON.stringify(save)});
+		}
+		else
+		{
+			$('#resultgrid').html('');
+			$('#resultgrid').hide();
+			console.log("query", sql);
+		}
+
+	});	
+	
+});
+
+$.datepicker.setDefaults({
+    dateFormat: 'yy-mm-dd',
+    prevText: '이전 달',
+    nextText: '다음 달',
+    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+    dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+    dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+    showMonthAfterYear: true,
+    yearSuffix: '년'
+});
+
+(function init(){
+
+	$('.input-datepicker').datepicker({format:"yy-mm-dd"});
+	for(var i=0; i<24; i++) $('select.hour').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +'시</option>');
+	for(var i=0; i<60; i++) $('select.minute').append('<option value="'+ i.zf(2) +'">'+ i.zf(2) +'분</option>');
+	
+	// 센서 목록 로딩
+    $.post(App.baseurl+"/list",{qid:"devicelist",column:"name"}).done(
+        	function(res){
+        		$('.sensors').empty();
+        		if(res.success)
+        		{
+        			dev_hash = {};
+        			for(var i=0; i<res.list.length; i++)
+        			{
+        				dev_hash[res.list[i].id] = res.list[i]; 
+            			$('.sensors').append('&nbsp;<input name=sensor type=checkbox id=s'+i+' value="'+res.list[i].id+'"><label for=s'+i+'>&nbsp;'+res.list[i].name+'</label><br>');
+        			}
+        		}
+        	});
+
+	// 설비목록 로딩
+    $.post(App.baseurl+"/list",{qid:"facilitylist",column:"name"}).done(
+        	function(res){
+        		$('#facilityid').empty().append('<option value="">설비선택</option>');;
+        		if(res.success)
+        		{
+        			facility_hash = {};
+        			for(var i=0; i<res.list.length; i++)
+        			{
+        				facility_hash[res.list[i].id] = res.list[i]; 
+            			$('#facilityid').append('<option value="'+res.list[i].id+'">'+res.list[i].name+'</option>');
+        			}
+        			
+        			$.post(App.baseurl+"/list",{qid:"configget",key:App.loginid+"_sensordata.html"}).done(function(res) {
+        				if(res.success && res.list.length>0)
+        				{
+        					if(res.list[0].value!="")
+        					{
+        						var save = JSON.parse(res.list[0].value);
+        						$('#facilityid').val(save.facilityid);
+        						$('#sensorids').val(save.sensorids);
+        						$('#sensors').val(save.sensors);
+        						$('#range').val(save.range);
+        						$('[name=fdate]').val(save.fdate);
+        						$('[name=fhour]').val(save.fhour);
+        						$('[name=fminute]').val(save.fminute);
+        						$('[name=tdate]').val(save.tdate);
+        						$('[name=thour]').val(save.thour);
+        						$('[name=tminute]').val(save.tminute);
+        						$('#range').change();
+        					}
+        				}
+        				
+        			});
+
+        			
+        		}
+        	});
+	
+	
+})();
+
+
+$('#btnExcel').off('click').on('click', function() {
+	
+	fnExcelDownload('#resultgrid table', "다운로드_"+$('[name=fdate]').val()+"_"+$('[name=tdate]').val());
+});
+
+	
+</script>
+<!-- 스크립트 영역 -->

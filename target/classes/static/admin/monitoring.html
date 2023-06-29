@@ -1,0 +1,457 @@
+<!-- Navigation info -->
+<!--<script src="https://ciprianciurea.github.io/chartjs-plugin-doughnutlabel/chartjs-plugin-doughnutlabel.js"></script>-->
+<ul id="nav-info" class="clearfix">
+	<li><a href="index.html"><i class="fa fa-home"></i></a></li>
+	<li><a href="javascript:void(0)" data-lang="main_menu_monitoring">시스템 모니터링</a></li>
+	<li class="active"><a href="javascript:void(0)" data-lang="main_menu_system_monitoring">시스템모니터링</a></li>
+</ul>
+<!-- END Navigation info -->
+
+<h3 class="page-header page-header-top" data-lang="monitoring_title">시스템모니터링 <small id='dashname'> </small></h3>
+
+<style>
+.push table th {
+	text-align: center;
+	padding: 0px 10px 0px 10px;
+	border: 1px solid white
+}
+
+.push table td, th {
+	padding: 0px 2px 0px 2px;
+	border: 1px solid white
+}
+
+.dashlist th {
+	text-align: center;
+	padding: 0px 10px 0px 10px;
+	border: 1px solid lightgray
+}
+
+.dashlist td {
+	padding: 0px 10px 0px 10px;
+	border: 1px solid lightgray
+}
+
+.text,.sensortext {
+	text-align: center;
+	display:table-cell;
+	vertical-align:middle;
+}
+
+</style>
+
+
+<div style='display:none;font-size:20px; font-weight:bold; font-family:Arial'>
+
+CPU사용율:  <label class='cpu'></label><br>
+Memory사용양: <label class='mem'></label><br>
+Disk사용률: <label class='disk'></label><br>
+Network 초당트래픽:<br>
+- IN:<label class='nw_in'></label><br>
+- OUT:<label class='nw_out'></label><br>
+UpTime(초):<label class='uptime'></label><br>
+</div>
+
+<div id='chart_cpu' style='display:inline-block; box-shadow:3px 3px 3px 3px gray'>
+<span data-lang="monitoring_cpu_usage">cpu사용률</span>
+<canvas style='width:200px;height:200px'></canvas>
+</div>&nbsp;&nbsp;&nbsp;&nbsp;
+<div id='chart_mem' style='display:inline-block; box-shadow:3px 3px 3px 3px gray'>
+<span data-lang="monitoring_memory_usage">메모리사용량</span>
+<canvas style='width:200px;height:200px'></canvas>
+</div>
+<br>
+<br>
+<div id='chart_disk' style='display:inline-block;box-shadow:3px 3px 3px 3px gray'>
+<span data-lang="monitoring_disk_usage">disk사용율</span>
+<canvas style=' width:600px;height:200px;'></canvas>
+</div>
+<br>
+<br>
+<div id='chart_network' style='display:inline-block; box-shadow:3px 3px 3px 3px gray'>
+<span data-lang="monitoring_network_usage">network트래픽</span>
+<canvas style=' width:600px;height:200px;'></canvas>
+</div>
+<br>
+<br>
+<div  style='display:inline-block; box-shadow:3px 3px 3px 3px gray'>
+운영시간:<label class='uptime'></label><br>
+</div>
+
+
+<!--
+<pre id="log" style='border:1px solid black'></pre>
+<button onclick='loadsysinfo();'>loadinfo</button>-->
+
+
+<!-- 스크립트 영역 -->
+<script type="text/javascript">
+
+var loadsysinfo_time = null; 
+var last_ous = null;
+var last_ins = null;
+var out_vals = new Array(30).fill(0);
+var in_vals = new Array(30).fill(0);
+
+colors = [
+	'255, 99, 132',
+	'54, 162, 235',
+	'255, 206, 86',
+	'75, 192, 192',
+	'153, 102, 255',
+	'255, 159, 64'];
+
+for(var i=0; i<100; i++) colors.push(""+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255));
+
+var cpuchart = new Chart($('#chart_cpu canvas'), {
+	type: "pie", //그래프 형태 지정하기
+	data: {
+		labels: [lang('monitoring_used',"사용"), lang('monitoring_free',"여유")], //X축 제목
+		datasets: [{
+		legend: true,
+		tooltips: true,
+		label: lang('monitoring_cpu_usage',"cpu 사용율"),
+		data: [0, 100],
+		backgroundColor:["rgba("+colors[0]+",0.2)","white"],
+//		borderColor:["rgba("+colors[0]+",1)","rgba("+colors[i]+",1)"],
+		borderColor: "rgba("+colors[0]+",1)",
+		borderWidth: 1, //선굵기
+		pointRadius: 2,
+		pointHoverRadius: 2,
+		fill:true
+	 }
+	 ],
+	},
+	options: {
+		plugins: {
+			datalabels: {
+				display: true
+			}
+		},
+		responsive: true,
+		maintainAspectRatio: false,
+		/*scales: { //X,Y축 옵션
+		yAxes: [{
+			ticks: {
+					beginAtZero: true //Y축의 값이 0부터 시작
+				}
+			}],
+		},*/
+		legend: {
+			display: false
+		},
+		animation: {
+			duration: 0
+		}
+		,tooltips: {
+			callbacks: {
+				label: function(item, obj) {
+//					console.log(item,obj);
+					var v = obj.datasets[0].data[item.index];
+					v = Math.floor(v*10)/10+"%";
+                return v;
+            }
+        }
+	}	
+		
+	}
+});
+
+var memchart = new Chart($('#chart_mem canvas'), {
+	type: "pie", //그래프 형태 지정하기
+	data: {
+		labels: [lang('monitoring_used',"사용"), lang('monitoring_free',"여유")], //X축 제목
+		datasets: [{
+		legend: true,
+		tooltips: true,
+		label: lang('monitoring_memory_usage',"메모리 사용"),
+		data: [0, 100],
+		backgroundColor:["rgba("+colors[1]+",0.2)","white"],
+//		borderColor:["rgba("+colors[i]+",1)","white"],
+		borderColor: "rgba("+colors[1]+",1)",
+		borderWidth: 1, //선굵기
+		pointRadius: 2,
+		pointHoverRadius: 2,
+		fill:true
+	 }
+	 ],
+	},
+	options: {
+		responsive: true,
+		maintainAspectRatio: false,
+		/*scales: { //X,Y축 옵션
+		yAxes: [{
+			ticks: {
+					beginAtZero: true //Y축의 값이 0부터 시작
+				}
+			}],
+		},*/
+		legend: {
+			display: false
+		},
+		animation: {
+			duration: 0
+		},tooltips: {
+        callbacks: {
+            label: function(item, obj) {
+					var v = obj.datasets[0].data[item.index];
+                return human_byte(v, "");
+            }
+        }
+    }
+		
+		
+	}
+});
+var diskchart = new Chart($('#chart_disk canvas'), {
+	type: "bar", //그래프 형태 지정하기
+	data: {
+		labels: ["/", "/home"], //X축 제목
+		datasets: [{
+		legend: true,
+		tooltips: true,
+		label: lang('monitoring_disk_usage',"디스크 사용량"),
+		data: [10, 5],
+		backgroundColor:"rgba("+colors[i]+",0.2)",
+		borderColor: "rgba("+colors[i]+",1)",
+		borderWidth: 1, //선굵기
+		pointRadius: 2,
+		pointHoverRadius: 2,
+		fill:true,
+	 }
+	 ],
+	},
+	options: {
+		responsive: true,
+		maintainAspectRatio: false,
+		scales: { //X,Y축 옵션
+		yAxes: [{
+			ticks: {
+					min: 0,
+					max: 100,
+					fontSize : 14,
+					userCallback: function(value, index, values) { return value+'%'; }
+				}
+			}],
+		},
+		legend: {
+			display: true
+		},
+		animation: {
+			duration: 0
+		}
+	}
+});
+
+var nwchart = new Chart($('#chart_network canvas'), {
+	type: "line", //그래프 형태 지정하기
+	data: {
+		labels: in_vals, //X축 제목
+		datasets: [{
+		legend: true,
+		tooltips: true,
+		label: lang('monitoring_network_in',"네트워크In"),
+		data: in_vals,
+		backgroundColor:"rgba("+colors[0]+",0.2)",
+		borderColor: "rgba("+colors[0]+",1)",
+		borderWidth: 1, //선굵기
+		steppedLine: true,
+		pointRadius: 1,
+		pointHoverRadius: 1,
+		fill:false,
+		lineTension:0.1,
+	 },
+	 {
+		legend: true,
+		tooltips: true,
+		label: lang('monitoring_network_out',"네트워크Out"),
+		data: out_vals,
+		backgroundColor:"rgba("+colors[1]+",0.2)",
+		borderColor: "rgba("+colors[1]+",1)",
+		borderWidth: 1, //선굵기
+		steppedLine: true,
+		pointRadius: 1,
+		pointHoverRadius: 1,
+		fill:false,
+		lineTension:0.1,
+	 }],
+	},
+	options: {
+		responsive: true,
+		maintainAspectRatio: false,
+		scales: { //X,Y축 옵션
+		yAxes: [{
+			ticks: {
+				beginAtZero: true,
+				userCallback: function(value, index, values) { return human_byte(value,'');}
+			}
+			}],
+		xAxes: [{
+			ticks: {display: false}
+			}]
+		},
+		legend: {
+			display: true
+		},
+		animation: {
+			duration: 0
+		}
+	}
+});
+
+function fromtostr(str, from, to)
+{
+	var sp = str.indexOf(from);
+	var ep = str.indexOf(to, sp+from.length+1);
+	if(sp>0 && ep >0) return str.substring(sp, ep);
+	else return"";
+}
+
+function tokens(str)
+{
+	var tk = str.trim().split(" ");
+	var tks = [];
+	for(var i=0; i<tk.length; i++) if(tk[i]!="") tks.push(tk[i]);
+	return tks;
+
+}
+
+function loadsysinfo()
+{
+	if($('.cpu').length<=0 && App.loadsysinfo_timer!==undefined) clearInterval(App.loadsysinfo_timer);
+	
+	$.post(App.baseurl+'/shell',{cmd:"/lite2/shell/monitoring.sh"}, function(res) {
+//		console.log(res);
+//		$('#log').text(res.result);
+		
+		var memtotal = fromtostr(res.result,"MemTotal:","\n").replace(/[^0-9]/g,'');
+		var memfree = fromtostr(res.result,"MemFree:","\n").replace(/[^0-9]/g,'');
+		var memavail = fromtostr(res.result,"MemAvailable:","\n").replace(/[^0-9]/g,'');
+		var uptime = fromtostr(res.result,"uptime <==\n","\n");
+		var loadavg = fromtostr(res.result,"loadavg <==\n","\n");
+		var filenr = fromtostr(res.result,"file-nr <==\n","\n");
+		var df = fromtostr(res.result,"Filesystem","\n==");
+		var who = fromtostr(res.result,"who <==\n","\n==");
+		var stat = fromtostr(res.result,"==\ncpu ","\n");
+		var dev = fromtostr(res.result,"dev <==\n","\n==");
+
+/*		
+		console.log('memtotal',memtotal);
+		console.log('memfree',memfree);
+		console.log('memavail',memavail);
+		console.log('uptime',uptime);
+		console.log('loadavg',loadavg);
+		console.log('filenr',filenr);
+		console.log('df',df);
+		console.log('who',who);
+		console.log('stat',stat);
+		console.log('dev',dev);
+*/		
+		memused = parseInt(memtotal)/*-parseInt(memfree)*/-parseInt(memavail);
+		
+		$('.mem').text(human_byte(memused*1024));
+		
+		memchart.data.datasets[0].data = [memused, parseInt(memavail)];
+//		chart.data.labels = keys;
+		memchart.update();
+
+		
+		stat = stat.replace("  ", " ").split(" ");
+		
+//		console.log('stat==>', stat);
+		tcpu = parseInt(stat[1])+parseInt(stat[2])+parseInt(stat[3])+parseInt(stat[4]);
+		idle = parseInt(stat[4])*100 / tcpu; 
+		using = 100-idle;
+		$('.cpu').text(Math.floor(using*10)/10+" %");
+		
+//			chart.options.title.text = title+"("+value+")";
+		cpuchart.data.datasets[0].data = [using, idle];
+//		chart.data.labels = keys;
+		cpuchart.update();
+		
+		var dinfo = "";
+		dfs = df.split("\n");
+		var mnts = [];
+		var useds = [];
+		for(var i=0; i<dfs.length; i++)
+		{
+			var d = dfs[i];
+			if(d.indexOf("/dev/sd")!=0) continue;
+//			dinfo += d+"<br>";
+			
+			di = d.trim().split(' ');
+			if(dinfo.length>0) dinfo += ",";
+			dinfo += di[di.length-1]+" "+di[di.length-2];
+			mnts.push(di[di.length-1]);
+			useds.push(di[di.length-2].replace("%","").trim());
+		}
+		
+		diskchart.data.labels = mnts;
+		diskchart.data.datasets[0].data = useds;
+		diskchart.update();
+		
+		$('.disk').text(dinfo);
+		
+		uptime = uptime.split("\n")[1];
+		uptime = uptime.split(" ")[0];
+		$('.uptime').text(dur_fmt(parseInt(uptime)));
+		
+		var ins = 0;
+		var ous = 0;
+		var devs = dev.split('\n');
+		for(var i=0; i<devs.length; i++)
+		{
+			d = devs[i];
+			if(d.indexOf(":")<0 || d.indexOf("lo:")>0) continue;
+			
+			var dts = tokens(d);
+//			ins += d+"--"+dts[1]+","+dts[8]+"<br>";
+			ins += parseInt(dts[1]);
+			ous += parseInt(dts[9]);
+		}
+		
+		if(loadsysinfo_time!=null)
+		{
+			inss=ous-last_ous;
+			ouss=ins-last_ins;
+			dur = ((new Date()).getTime()-loadsysinfo_time)/1000;
+		
+			$('.nw_in').text(human_byte(inss/dur));
+			$('.nw_out').text(human_byte(ouss/dur));
+			
+//			console.log('dur==>', dur);
+
+			out_vals.push(inss/dur);
+			in_vals.push(ouss/dur);
+			
+			if(out_vals.length>30)
+			{
+				out_vals = out_vals.slice(out_vals.length-30);
+				in_vals = in_vals.slice(in_vals.length-30);
+			}
+
+			nwchart.data.labels = out_vals;
+			nwchart.data.datasets[0].data = in_vals;
+			nwchart.data.datasets[1].data = out_vals;
+			nwchart.update();
+		}
+		last_ous = ous;
+		last_ins = ins;
+		loadsysinfo_time = (new Date()).getTime();
+		
+		
+//		dev설명
+//		dev 0~7 token In, 8~15 token out
+		
+//		loadavg
+//		1 5 15분 부하 실행중task수/전체task수 최근 pid
+	}).fail(function(e) { console.log(e); alert('fail');});
+}
+
+if(App.loadsysinfo_timer!==undefined) clearInterval(App.loadsysinfo_timer);
+App.loadsysinfo_timer = setInterval(loadsysinfo, 1000);
+
+updatelang();
+
+</script>
+<!-- 스크립트 영역 -->

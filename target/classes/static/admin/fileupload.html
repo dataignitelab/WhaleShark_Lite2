@@ -1,0 +1,280 @@
+                    <!-- Navigation info -->
+                    <ul id="nav-info" class="clearfix">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li><a href="javascript:void(0)" data-lang="main_menu_datamgr">데이터 통합</a></li>
+                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_file_upload">파일업로드</a></li>
+                    </ul>
+                    <!-- END Navigation info -->
+
+                    <!-- Editable Datatables -->
+                    <h3 class="page-header page-header-top" data-lang="main_menu_file_upload">파일업로드</h3>
+
+                    <!-- Toolbar -->
+                    <div class="push" style='display: flex'>
+                        <div data-lang="common_metadata_select">통합데이터선택</div>:<select id='mtype' class='form-control' style='width:200px'><option value='' data-lang="common_msg_select_metadata">통합데이터를 선택해주세요..</option></select>&nbsp;&nbsp;
+                        <button class="btn btn-success" id='btnAdd' title="파일업로드"  data-lang="main_menu_file_upload,main_menu_file_upload:title"><i class="fa fa-plus"></i>파일 업로드</button>
+                        <!--
+                        <div style='display:flex'>
+                        파일업로드:<input type='file' id='files' multiple > <br>
+                        </div>
+                        중복파일처리:<select ><option>덮어쓰기 </option><option>건너뛰기 </option></select><br>
+                        <button type=button id='btnupload'>파일업로드</button>
+                        --> 
+                    </div>
+                    <!-- END Toolbar -->
+
+                    <!-- Table -->
+                    <table id="user-datatables" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="cell-small text-center">#</th>
+                                <th data-lang="common_directory"><i class="fa fa-envelope-o"></i> 디렉토리</th>
+                                <th data-lang="common_filename"><i class="fa fa-envelope-o"></i> 파일명</th>
+                                <th data-lang="common_filesize"><i class="fa fa-user"></i> 파일크기</th>
+                                <th data-lang="common_wdate"><i class="fa fa-file"></i> 등록일시</th>
+                                <th data-lang="common_action" class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- END Table -->
+                    <!-- END Editable Datatables -->
+                    
+                    
+                   <!-- user modal form -->
+					<div id="upload-modal" class="modal">
+					        <!-- Modal Dialog -->
+					        <div class="modal-dialog">
+					            <!-- Modal Content -->
+					            <div class="modal-content">
+					                <!-- Modal Header -->
+					                <div class="modal-header">
+					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					                    <h4 data-lang='common_file_upload'>파일 업로드</h4>
+					                </div>
+					                <!-- END Modal Header -->
+					
+					                <!-- Modal Content -->
+					                <div class="modal-body">
+			                            <form class="form-horizontal">
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3" data-lang="fileupload_select">* 파일선택</label>
+			                                    <div class="col-md-9">
+		                                            <input type="file" id="files" class="form-control" multiple>
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3"data-lang="fileupload_dup_process">중복처리</label>
+			                                    <div class="col-md-9">
+		                                            <select class='form-control' id='overwrite' >
+		                                            <option value='Y' data-lang="common_overwrite">덮어쓰기</option>
+		                                            <option value='N' data-lang="common_skip">건너뛰기</option>
+		                                            </select>
+			                                    </div>
+			                                </div>
+			                            </form>
+					                </div>
+					                <!-- END Modal Content -->
+					
+					                <!-- Modal footer -->
+					                <div class="modal-footer remove-margin">
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" data-lang="common_upload_btn"><i class="fa fa-check"></i> 업로드</button>
+					                </div>
+					                <!-- END Modal footer -->
+					            </div>
+					            <!-- END Modal Content -->
+					        </div>
+					        <!-- END Modal Dialog -->        
+					</div>
+					<!-- END user modal form -->                    
+                    
+                    
+        <!-- Javascript code only for this page -->
+        <script>
+        
+        $.post(App.baseurl+'/list', {qid:'metafind',column:'mtype',value:'csv',value1:'xls',value2:'file',/*company:App.company,*/ mowner:App.loginuserid}, function(res) {
+        	if(res.success)
+        	{
+            	$('#mtype').empty().append("<option value='' data-lang='common_msg_select_metadata'>"+lang('common_msg_select_metadata','통합데이터를 선택해주세요.')+"</option>");
+            	for(var i=0; i<res.list.length; i++)
+            	{
+            		var item = res.list[i];
+                	$('#mtype').append("<option value='"+item.mname+"' mtype='"+item.mtype+"' path='"+item.mpath+"'>"+item.mdesc+"</option>");
+            	}
+        		
+        	}
+        	console.log(res);
+        });
+        
+        $('#mtype').change(function() {
+        	
+        	$('#user-datatables').DataTable().ajax.reload(null, false);
+        });
+        
+        $(document).off('click','[name=pbtndel]').on('click','[name=pbtndel]',function() {
+        	$(this).parent().remove();
+        });
+        	
+       	var editableTable = null;
+        	
+            $(function () {
+                
+                editableTable = initgrid('#user-datatables',{
+                ajax: {
+                    url: App.baseurl+'/filelist', 
+                    type: 'POST',
+                    dataFilter: function(data){
+                        var jdata = jQuery.parseJSON( data );
+                        
+                        var json = {};
+                        if(jdata.success)
+                        {
+	                        json.recordsTotal = jdata.total;
+	                        json.recordsFiltered = jdata.total;
+	                        json.data = jdata.list;
+                        }
+                        else
+                        {
+	                        json.recordsTotal = 0;
+	                        json.recordsFiltered = 0;
+	                        json.data = [];
+                        }
+                        return JSON.stringify( json ); // return JSON string
+                    },
+                    data: function (d) {
+                    	var path = $("#mtype option:selected").attr('path');
+                    	d.path = path;
+                    	d.find = $('.dataTables_filter input').val();
+                    	
+                    	console.log(d);
+    				},
+                },
+                columns: [
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
+                    {data: "isdirectory"}, 
+                    {data: "filename"},
+                    {data: "size", render : function(data, type, row, obj) { return human_byte(data); }}, 
+                    {data: "time", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a>'; }},
+                ],
+                paging: true,
+                serverSide: false,
+                processing: true, 
+                });
+                
+                $('.dataTables_filter input').attr('placeholder', lang('common_search_btn','검색'));
+                
+                /* Column별 검색기능 추가 */
+//                $('#user-datatables_filter').prepend('<select id="field" class="form-control"><option value="name" selected>이름</option><option value="userid">아이디</option><option value="email">이메일</option></select>');
+
+//                addHandle();
+//                delHandle();
+//                editHandle();
+
+            });
+            
+            $("#btnAdd").off('click').on('click',function () {
+            	var path = $("#mtype option:selected").attr('path');
+            	if(path === undefined) path = "";
+            	if(path=="csv") $('#files').attr('accept', ".csv");
+            	else if(path=="xls") $('#files').attr('accept', ".xls,.xlsx");
+            	else if(path=="") {
+            		App.msg_alert(lang('common_metadata_select','통합데이터선택'), lang('fileupload_msg_metadata_empty','통합데이터를 선택후 업로드 해주세요.'));
+    				return;
+            	}
+            	else {
+            		$('#files').attr('accept', "");
+            	}
+            	$('#upload-modal form')[0].reset();
+
+            	$('#upload-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
+            	
+                $('#upload-modal #btnSave').off('click').on('click',function() {
+
+                	App.msg_confirm(lang('common_fileupload','파일업로드'), lang('fileupload_msg_upload_confirm','파일을 업로드 할까요 ?'), function() {
+
+            			var files = $('#files')[0].files;
+
+            			if(files.length<=0)
+            			{
+            				App.msg_alert(lang('common_fileupload','파일업로드'), lang('fileupload_file_empty','파일을 선택하지 않았습니다.'));
+            				return;
+            			}
+                		
+                        App.start_loading(lang('fileupload_msg_uploading','파일 업로드중입니다.'));
+            			
+            			var formData = new FormData();
+            		
+            			for(var i=0; i<files.length; i++) formData.append('filename', files[i]);
+
+            			formData.append('path', App.loginuserid+"/"+path);
+            			formData.append('overwrite', $('#overwrite').val());
+
+            			$.ajax({
+            			  type: "POST",
+            			  url: App.baseurl+'/uploadfiles',
+            			  data: formData,
+            	//          enctype: 'multipart/form-data',
+            			  contentType: false,
+            			  processData: false,
+            			  cache: false,
+            			  complete: function(res) {
+            					var obj = JSON.parse(res.responseText);
+            					console.log(obj);
+                                App.stop_loading();
+                                
+                               	$('#upload-modal').modal('hide');
+                                App.msg_alert(lang('common_fileupload','파일업로드'), lang('fileupload_msg_success','파일업로드가 완료되었습니다.'), function() {  $('#user-datatables').DataTable().ajax.reload(null, false);});
+            					
+              			  },
+            			  error: function(jqXHR, textStatus, errorThrown) {
+            					loading_stop();
+            					alert(lang('fileupload_msg_failed','데이터 업로드가 실패 하였습니다.'));
+            			  }
+            			});	
+            		});		
+
+                });
+                                	
+            });
+            
+            // del button...
+            $('body').off('click', 'a.delRow').on('click', 'a.delRow', function () {
+//            	var id = $(this).data("id");
+            	var row = $(this).parent().parent().index();
+            	var d = editableTable.fnGetData(row);
+        		App.msg_confirm(lang('fileupload_delete','파일삭제'), lang('fileupload_msg_delete_confirm','{1} 파일을  삭제 할까요?',d.filename), function() {
+        			App.start_loading(lang('fileupload_msg_deleting','파일 삭제중'));
+        			
+        			var path = $("#mtype option:selected").attr('path');
+        			var cond = {filename:App.loginuserid+"/"+path+"/"+d.filename};
+        			console.log('delete==>', cond);
+                    $.post(App.baseurl+"/deletefile", cond).done(function (res) {
+                    	App.stop_loading();
+                    	if(res.success) {
+                    		$('#user-datatables').DataTable().ajax.reload(null, false);
+                    	}
+                    	else {
+                        	App.msg_alert(lang('fileupload_delete','파일삭제'), lang('fileupload_msg_delete_failed','파일 삭제에 실패하였습니다.'));
+                    	}
+                    }).fail( function () {
+                    	App.stop_loading();
+                    	App.msg_alert(lang('fileupload_delete','파일삭제'), lang('fileupload_msg_delete_failed','파일 삭제에 실패하였습니다.'));
+                    });
+        		} );
+            });
+            
+			// W 권한 없을때...
+			var delbtnclass = "";
+			if(App.menus[App.curpage] !== undefined)
+			{
+				if(App.menus[App.curpage].rwtype!="W") {
+					$('button.W').hide();
+					delbtnclass = 'hide';
+				}
+			}
+            updatelang();
+            
+        </script>

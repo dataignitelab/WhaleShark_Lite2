@@ -1,0 +1,140 @@
+<h5>사용자 관리</h5>
+
+<!-- Table -->
+<table id="user-datatables" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th class="cell-small text-center">#</th>
+            <th>아이디</th>
+            <th class="hidden-xs hidden-sm">이름</th>
+            <th class="hidden-xs hidden-sm">이메일</th>
+            <th class="hidden-xs hidden-sm">비고</th>
+            <th class="hidden-xs hidden-sm">상태</th>
+            <th class="hidden-xs hidden-sm">가입일시</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+</table>
+<!-- END Table -->
+                   
+<script>
+$(function () {
+
+    var delHandle = function () {
+
+        // When the user clicks on a delete button
+        $('body').off('click', 'a.delRow').on('click', 'a.delRow', function () {
+        	var uid = $(this).data("id");
+        	var row = $(this).parent().parent().index();
+        	var d = editableTable.fnGetData(row);
+    		App.msg_confirm('삭제', '['+d.name+'] 정보를  삭제 할까요?', function() {
+    			App.start_loading('회원정보 삭제중');
+    			var cond = {conds:'id', cond_id:uid};
+    			console.log('delete==>', cond);
+                $.post(App.baseurl+"/api/tb_member/delete", cond).done(function () {
+                	editableTable.fnDeleteRow(row);
+                	App.stop_loading();
+                }).fail( function () {
+                	App.stop_loading();
+                	App.msg_alert('삭제', '회원정보 삭제  실패 하였습니다.');
+                });
+    		} );
+        });
+    };
+
+    var addHandle = function () {
+
+        // When the user clicks on the 'Add New User' button
+        $("#btnAdd").click(function () {
+        	
+        	$('#modal-user-form .modal-header h4').text('회원 등록');
+        	$('input[type=text]').val('');
+        	$('#user-password').val('');
+        	$('#user-id').val('');
+        	$('#user-state').val('ACTIVE');
+        	$('#modal-user-form').modal({backdrop:'static'});
+
+        });
+    };
+    
+    var editHandle = function () {
+
+        // When the user clicks on a delete button
+        $('body').off('click', 'a.editRow').on('click', 'a.editRow', function () {
+
+        	var uid = $(this).data("id");
+        	var row = $(this).parent().parent().index();
+        	var d = editableTable.fnGetData(row);
+        	
+        	$('#modal-user-form .modal-header h4').text('회원 정보수정');
+        	
+        	$('#user-id').val(d.id);
+        	$('#user-name').val(d.name);
+        	$('#user-email').val(d.email);
+        	$('#user-tel1').val(d.tel1);
+        	$('#recv_category').val(d.recv_category);
+        	$('#user-state').val(d.state);
+        	
+        	$("#modal-user-form input[name ='user-role']").each(function () {
+            		$(this).prop('checked', (','+d.roles+',').indexOf(','+this.value+',')>=0);
+        		} );
+        	
+        	
+        	$('#modal-user-form').modal({backdrop:'static'});
+        	
+        });
+    };
+    
+
+    // Initialize Datatables
+    /*
+    var editableTable = exampleDatatable.dataTable({
+        order: [[1, 'desc']],
+        columnDefs: [{orderable: false, targets: [0]}]
+    });
+    */
+    
+    editableTable = initgrid('#user-datatables',{
+    ajax: {
+        url: App.baseurl+'/list', 
+        type: 'POST',
+        dataFilter: function(data){
+            var jdata = jQuery.parseJSON( data );
+            var json = {};
+            json.recordsTotal = jdata.total;
+            json.recordsFiltered = jdata.total;
+            json.data = jdata.list;
+            return JSON.stringify( json ); // return JSON string
+        },
+        data: function (d) {
+        	d.qid = "list001";
+        	d.name = $('.dataTables_filter input').val();
+		},
+    },
+    columns: [
+        {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
+        {data: "userid"},
+        {data: "name"},
+        {data: "email"}, 
+        {data: "bigo"}, 
+        {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
+        {data: "wdate"}, 
+        {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { if(row.roles=='ADMIN') return ''; else return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+    ],
+    paging: true,
+    serverSide: true,
+    processing: true, 
+    });
+    
+    $('.dataTables_filter input').attr('placeholder', 'Search');
+    
+    /* Column별 검색기능 추가 */
+//    $('#user-datatables_filter').prepend('<select id="roles" class="form-control"><option value="" selected>전체참가부문</option><option value="USER">개인부문</option><option value="TEAM">팀부문</option></select><select id="field" class="form-control"><option value="name" selected>이름</option><option value="findwdate">가입일시</option><option value="findemail">이메일</option></select>');
+
+//    addHandle();
+    delHandle();
+//    editHandle();
+
+});
+            
+        </script>                   
