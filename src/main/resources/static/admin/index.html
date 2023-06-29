@@ -258,6 +258,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script src="js/sha/sha512.min.js"></script> 
+<script src="js/language.js"></script>
+<script src="js/baseapp.js"></script>
 <script src="js/main.js"></script>
     
 <!-- Javascript code only for this page -->
@@ -386,8 +388,7 @@ $(function init() {
 							if(App.menus[menu.parent]!==undefined) pmenu = App.menus[menu.parent].name;
 							if(prevpmenu!=pmenu)
 							{
-
-								menuhtml+= (menuhtml.length>0?'</ul></li>':"")+'<li class="tmenu"><a href="#" class="titledd" data-lang="'+menu.parent+'" title=""><i class="fa fa-th-list"></i>'+pmenu+'</a><ul>';
+								menuhtml+= (menuhtml.length>0?'</ul></li>':"")+'<li class="tmenu"><a href="#" data-lang="'+menu.parent+'"><i class="fa fa-th-list"></i>'+pmenu+'</a><ul>';
 								prevpmenu = pmenu;
 							}
 							menuhtml+= '<li><a href="#" class="menu" data-link="'+menu.link+'" data-lang="'+menu.id+'"><i class="gi gi-sort"></i>'+menu.name+'</a></li>';
@@ -399,15 +400,7 @@ $(function init() {
 					$('#primary-nav ul').append(menuhtml);
 //					$('a.menu').parent().hide();
 
-					updatelang()
 					menu_init(); 
-					$('#primary-nav li a ').mouseover(function(){
-						let text= $(this).text();
-						$(".titledd").attr("title", text)
-					})
-
-
-
 					
 				}
 			});
@@ -477,7 +470,5 @@ $(document).mousedown(function() {
 });
 	
 </script>
-
-<script src="js/language.js"></script>
-<script src="js/baseapp.js"></script>
+</body>
 </html>
