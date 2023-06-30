@@ -1,42 +1,42 @@
                     <!-- Navigation info -->
                     <ul id="nav-info" class="clearfix">
                         <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-                        <li><a href="javascript:void(0)">데이터 브라우즈</a></li>
-                        <li class="active"><a href="javascript:void(0)">데이터그리드</a></li>
+                        <li><a href="javascript:void(0)" data-lang="main_menu_databrowse">데이터 브라우즈</a></li>
+                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_data_grid">데이터그리드</a></li>
                     </ul>
                     <!-- END Navigation info -->
 
                     <!-- Editable Datatables -->
-                    <h3 class="page-header page-header-top">데이터그리드 <small> </small></h3>
+                    <h3 class="page-header page-header-top" data-lang="datagrid_title">데이터그리드</h3>
 
                     <!-- Toolbar -->
                     <div class="push" style='display:flex'>
                     	<div>
-                        통합데이터선택:<select id='mtype' class='form-control' style='width:300px'><option value=''>통합데이터를 선택해주세요.</option></select>
+                        <span data-lang="common_metadata_select">통합데이터선택</span>:<select id='mtype' class='form-control' style='width:300px'><option value='' data-lang="common_msg_select_metadata">통합데이터를 선택해주세요.</option></select>
                         </div>
                         <div class=hide>
-                        파일선택:<select id='filename' class='form-control' style='width:400px'><option value=''>파일을 선택해주세요.</option></select>
+                        <span data-lang="common_file_select">파일선택</span>:<select id='filename' class='form-control' style='width:400px'><option value='' data-lang="common_msg_select_file">파일을 선택해주세요.</option></select>
                         </div>
                         <div class=hide>
                         기간:<select id='range' class='form-control' style='width:100px'>
-                        <option value=''>직접입력</option>
-                        <option value='1d'>최근1일</option>
-                        <option value='3d'>최근3일</option>
-                        <option value='7d'>최근7일</option>
+                        <option value='' data-lang="common_input_manual">직접입력</option>
+                        <option value='1d' data-lang="datagrid_cond_recent_1day">최근1일</option>
+                        <option value='3d' data-lang="datagrid_cond_recent_3day">최근3일</option>
+                        <option value='7d' data-lang="datagrid_cond_recent_7day">최근7일</option>
                         </select>
                         </div>
                         <div class=hide>
                         시작일:
-                        <input type=text id=sdate class='form-control' placeholder='시작일' style='width:100px'>
+                        <input type=text id=sdate class='form-control' placeholder='시작일' data-lang="common_from_day" style='width:100px'>
                         </div>
                         <div class=hide>
                         종료일:
-                        <input type=text id=edate class='form-control' placeholder='종료일' style='width:100px'>
+                        <input type=text id=edate class='form-control' placeholder='종료일' data-lang="common_to_day" style='width:100px'>
                         </div>
                         <div>
                         컬럼선택:<input type=text id='columns' class='form-control' style='width:400px' readonly>
                         </div> 
-                        <button type='button' class='btn btn-success btn-search'>검색</button>
+                        <button type='button' class='btn btn-success btn-search' data-lang="common_search_btn">검색</button>
                     </div>
                     <!-- END Toolbar -->
 
@@ -45,11 +45,11 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
-                                <th><i class="fa fa-envelope-o"></i> 디렉토리</th>
-                                <th><i class="fa fa-envelope-o"></i> 파일명</th>
-                                <th><i class="fa fa-user"></i> size</th>
-                                <th ><i class="fa fa-file"></i> 등록일시</th>
-                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                                <th data-lang="common_directory"><i class="fa fa-envelope-o"></i> 디렉토리</th>
+                                <th data-lang="common_filename"><i class="fa fa-envelope-o"></i> 파일명</th>
+                                <th data-lang="common_filesize"><i class="fa fa-user"></i> size</th>
+                                <th data-lang="common_wdate" ><i class="fa fa-file"></i> 등록일시</th>
+                                <th data-lang="common_action" class="text-center"><i class="fa fa-bolt"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,7 +58,7 @@
                     <!-- END Table -->
                     <!-- END Editable Datatables -->
 					<br>
-                    <button class='form-control datainfoload hide'>데이터 상세 정보조회</button>
+                    <button class='form-control datainfoload hide' data-lang="datagrid_data_detail_view">데이터 상세 정보조회</button>
                     <div id='datainfo' style='max-height:400px; overflow:auto'>
                     </div>
 		<style>
@@ -130,7 +130,7 @@
         	
         	if(res.success)
         	{
-            	$('#mtype').empty().append("<option value=''>통합데이터를 선택해주세요.</option>");
+            	$('#mtype').empty().append("<option value='' data-lang='common_msg_select_metadata'>"+lang("common_msg_select_metadata","통합데이터를 선택해주세요.")+"</option>");
             	for(var i=0; i<res.list.length; i++)
             	{
             		var item = res.list[i];
@@ -149,7 +149,7 @@
         	
         	if(mtype=="csv"|| mtype=="xls")
         	{
-        		$('#filename').empty().append("<option value=''>파일을 선택해주세요.</option>");
+        		$('#filename').empty().append("<option value='' data-lang='common_msg_select_file'>"+lang("common_msg_select_file","파일을 선택해주세요.")+"</option>");
         		$.post(App.baseurl+'/filelist', {path:path,mowner:App.loginuserid}, function(res) {
         			if(res.success) {
         				for(var i=0; i<res.list.length; i++){
@@ -353,7 +353,7 @@
                 processing: true, 
                 });
                 
-                $('.dataTables_filter input').attr('placeholder', '검색');       		
+                $('.dataTables_filter input').attr('placeholder', lang('common_search_btn','검색'));       		
 			
 		}
        	
@@ -478,31 +478,6 @@
         	$(this).parent().remove();
         });
         */
-            // del button...
-            $('body').off('click', 'a.delRow').on('click', 'a.delRow', function () {
-//            	var id = $(this).data("id");
-            	var row = $(this).parent().parent().index();
-            	var d = editableTable.fnGetData(row);
-        		App.msg_confirm('삭제', '['+d.filename+'] 파일을  삭제 할까요?', function() {
-        			App.start_loading('파일 삭제중');
-        			
-        			var path = $("#mtype option:selected").attr('path');
-        			var cond = {filename:App.loginuserid+"/"+path+"/"+d.filename};
-        			console.log('delete==>', cond);
-                    $.post(App.baseurl+"/deletefile", cond).done(function (res) {
-                    	App.stop_loading();
-                    	if(res.success) {
-                    		$('#user-datatables').DataTable().ajax.reload(null, false);
-                    	}
-                    	else {
-                        	App.msg_alert('파일삭제', '파일 삭제에 실패하였습니다.');
-                    	}
-                    }).fail( function () {
-                    	App.stop_loading();
-                    	App.msg_alert('파일삭제', '파일 삭제에  실패 하였습니다.');
-                    });
-        		} );
-            });
             
             $('#sdate,#edate').datepicker({format:"yy-mm-dd"});
             
@@ -518,7 +493,7 @@
 			
 			$('.datainfoload').off('click').on('click', function() {
 
-				App.msg_confirm('상세정보조회', '상세 정보조회를 실행할까요? (데이터의 크기에따라 수분이 소요될수도 있습니다.)', function() {
+				App.msg_confirm(lang('datagrid_detail_view','상세정보조회'), lang('datagrid_msg_detail_view_confirm','상세 정보조회를 실행할까요? (데이터의 크기에따라 수분이 소요될수도 있습니다.)'), function() {
 					datadetailinfo();
 				});
 				
@@ -529,7 +504,7 @@
 				var path = $('#mtype option:selected').attr('path');
 				var filename = $("#filename").val();
 				var realpath = "/lite2/upload/"+App.loginuserid+"/"+path+"/"+filename;
-				App.start_loading('데이터 상세 정보분석중...');
+				App.start_loading(lang('datagrid_msg_detail_analyzing','데이터 상세 정보분석중...'));
 				var cmds = ["/python/python", "/python/datainfo_v2.py", "-input_path", realpath, "-detailview", "Y", "-encoding",info_encoding];
 //				console.log('cmd===>', cmds)
 				var d = {};
@@ -539,7 +514,7 @@
 					App.stop_loading();
 					if(res.success)
 					{
-						App.msg_alert('분석완료', '분석이 완료되었습니다.');
+						App.msg_alert(lang('datagrid_analyzed','분석완료'), lang('datagrid_msg_analyzed','분석이 완료되었습니다.'));
 						var jstr = res.result.replaceAll(": nan", ": null");
 						var jobj = eval(jstr);
 						var html = '<ul id="result-tabs" class="nav nav-tabs" data-toggle="tabs">';
@@ -551,13 +526,13 @@
 						for(var i=0; i<jobj.length; i++)
 						{
 							var item = jobj[i];
-							html += "<div class='tab-pane' id='col"+i+"'><b class='lbl'>컬럼명:</b><label class=val>"+item.column+"</label><br><b class='lbl'>type:</b><label class=val>"+item.types.join(",")+"</label><br><b class='lbl'>데이터수:</b><label class=val>"+item.cnt+"</label><br><b class='lbl'>결측데이터수(비율%):</b><label class=val>"+item.nullcnt+"("+fmtstr(item.nullcnt*100/(item.cnt+item.nullcnt),1)+"%)</label><br>";
-							if(item.type!="object") html += "<b class='lbl'>최댓값:</b><label class=val>"+fmtstr(item.max)+"</label><br><b class='lbl'>최솟값:</b><label class=val>"+fmtstr(item.min)+"</label><br><b class='lbl'>평균:</b><label class=val>"+fmtstr(item.avg)+"</label><br><b class='lbl'>분산:</b><label class=val>"+fmtstr(item.var)+"</label><br><b class='lbl'>합:</b><label class=val>"+fmtstr(item.sum)+"</label><br>";
-							else html += "<b class='lbl'>최대길이:</b><label class=val>"+item.maxlen+"</label><br>";
+							html += "<div class='tab-pane' id='col"+i+"'><b class='lbl'>"+lang("datagrid_col_name","컬럼명")+":</b><label class=val>"+item.column+"</label><br><b class='lbl'>type:</b><label class=val>"+item.types.join(",")+"</label><br><b class='lbl'>"+lang("datagrid_data_cnt","데이터수")+":</b><label class=val>"+item.cnt+"</label><br><b class='lbl'>"+lang("datagrid_missing_data_cnt","결측데이터수(비율%)")+":</b><label class=val>"+item.nullcnt+"("+fmtstr(item.nullcnt*100/(item.cnt+item.nullcnt),1)+"%)</label><br>";
+							if(item.type!="object") html += "<b class='lbl'>"+lang("datagrid_max_val","최댓값")+":</b><label class=val>"+fmtstr(item.max)+"</label><br><b class='lbl'>"+lang("datagrid_min_val","최솟값")+":</b><label class=val>"+fmtstr(item.min)+"</label><br><b class='lbl'>"+lang("datagrid_avg","평균")+":</b><label class=val>"+fmtstr(item.avg)+"</label><br><b class='lbl'>"+lang("datagrid_dist","분산")+":</b><label class=val>"+fmtstr(item.var)+"</label><br><b class='lbl'>"+lang("datagrid_sum","합")+":</b><label class=val>"+fmtstr(item.sum)+"</label><br>";
+							else html += "<b class='lbl'>"+lang("datagrid_max_length","최대길이")+":</b><label class=val>"+item.maxlen+"</label><br>";
 							var vars = item.value_counts.trim().split("\n");
-							var nvalstr = fmtstr(item.value_counts_cnt)+"개";
-							if(item.value_counts_cnt>=item.cnt) nvalstr = "Uniq 데이터, 상위"+fmtstr(vars.length-1)+"개만 출력";
-							html += "<b class='lbl'>데이터빈도수:</b>"+nvalstr+"<br><label class=val><table style='display:inline-block'><tr><th>"+item.column+"</th><th>개수</th></tr>";
+							var nvalstr = lang('datagrid_cnt','{1}개',fmtstr(item.value_counts_cnt));
+							if(item.value_counts_cnt>=item.cnt) nvalstr = lang('datagrid_top_n','Uniq 데이터, 상위{1}개만 출력',fmtstr(vars.length-1));
+							html += "<b class='lbl'>"+lang("datagrid_freq_cnt","데이터빈도수")+":</b>"+nvalstr+"<br><label class=val><table style='display:inline-block'><tr><th>"+item.column+"</th><th>"+lang('datagrid_cnts','개수')+"</th></tr>";
 							for(var j=1; j<vars.length; j++)
 							{
 								vals = vars[j].split(",");
@@ -575,8 +550,11 @@
 					else
 					{
 						console.log(res);
-						App.msg_alert('에러', '데이터 분석에 오류가 발생했습니다.');
+						App.msg_alert(lang('datagrid_error','에러'), lang('datagrid_msg_analyze_error','데이터 분석에 오류가 발생했습니다.'));
 					}
 				});
 			}
+			
+            updatelang();
+			
         </script>

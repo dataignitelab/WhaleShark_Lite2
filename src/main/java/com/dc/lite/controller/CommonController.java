@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,17 +15,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import org.springframework.core.io.Resource;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
-
+import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -76,7 +70,9 @@ public class CommonController {
 
 	@Value("${appbase-dir}")
 	private String app_basedir;
-	
+		
+	@Value("${datainfo-shell}")
+	private String datainfo_shell;
 	
 	@CrossOrigin("*")
 	@RequestMapping(value = "/login")
@@ -108,7 +104,7 @@ public class CommonController {
 		pwd = pwd.replaceAll("'", "");
 		
 		HashMap<String, String> sql = new HashMap<String, String>();
-		sql.put("sql", "select id,userid,name,password,company,role from tb_user where userid='"+uid+"' AND (password='' OR password='"+pwd+"')");
+		sql.put("sql", "select id,userid,name,password,company,role,lang from tb_user where userid='"+uid+"' AND (password='' OR password='"+pwd+"')");
 		List<Object> lst = commonservice.selectsql(sql);
 		for (Object i :lst) {
 			Map item =	(Map)i;
@@ -122,6 +118,7 @@ public class CommonController {
 				session.putValue("name", item.get("name"));
 				session.putValue("company", item.get("company"));
 				session.putValue("role", item.get("role"));
+				session.putValue("lang", item.get("lang"));
 				return ret;
 			}
 		}
@@ -145,6 +142,7 @@ public class CommonController {
 		String userid = (String) session.getValue("userid");
 		String company = (String) session.getValue("company");
 		String role = (String) session.getValue("role");
+		String lang = (String) session.getValue("lang");
 		if(name==null || name=="")
 		{
 			ret.put("success", false);
@@ -155,13 +153,14 @@ public class CommonController {
 		ret.put("loginuserid", userid);
 		ret.put("company", company);
 		ret.put("role", role);
+		ret.put("lang", lang);
 		return ret;
 	}
 
 	@CrossOrigin("*")
 	@RequestMapping(value = "/update_myinfo")
 	@ResponseBody
-	public Map update_myinfo(HttpServletRequest request, @RequestParam Map<String, String> map) throws Exception {
+	public Map update_myinfo(HttpServletRequest request, HttpSession session, @RequestParam Map<String, String> map) throws Exception {
 		
 		Map ret = new HashMap();
 		ret.put("success", true);
@@ -169,18 +168,21 @@ public class CommonController {
 		String oldpwd = (String)map.get("oldpassword");
 		String newpwd = (String)map.get("password");
 		String name = (String)map.get("name");
-
-		HttpSession session = request.getSession();
+		String lang = (String)map.get("lang");
 		
 		String id = (String) session.getValue("loginid");
 		
-		oldpwd = oldpwd.replaceAll("'", "");
-		
 		HashMap<String, String> sql = new HashMap<String, String>();
 		
-		String qry = String.format("update tb_user set password='%s', name='%s' where id='%s' and password='%s'", newpwd, name, id, oldpwd);
-		if(newpwd==null || newpwd=="")
-			qry = String.format("update tb_user set name='%s' where id='%s' and password='%s'", name, id, oldpwd);
+		String qry = "";
+		
+		if(lang!=null && lang!="") qry = String.format("update tb_user set lang='%s' where id='%s'", lang, id);
+		else
+		{
+			oldpwd = oldpwd.replaceAll("'", "");
+			qry = String.format("update tb_user set password='%s', name='%s' where id='%s' and password='%s'", newpwd, name, id, oldpwd);
+			if(newpwd==null || newpwd=="") qry = String.format("update tb_user set name='%s' where id='%s' and password='%s'", name, id, oldpwd);
+		}
 		
 		sql.put("sql", qry);
 		int res = commonservice.updatesql(sql);
@@ -189,7 +191,10 @@ public class CommonController {
 		{
 			ret.put("success", false);
 		}
-		else session.putValue("name", name);
+		else {
+			if(lang!=null && lang!="") session.putValue("lang", lang);
+			else session.putValue("name", name);
+		}
 		
 		return ret;
 	}
@@ -1457,6 +1462,109 @@ public class CommonController {
 	}	
 	
 	@CrossOrigin("*")
+	@RequestMapping(value = "/fileinfo")
+	@ResponseBody
+	public Map fileinfo(@RequestParam Map<String, String> form) throws Exception {
+		Map ret = new HashMap();
+		ret.put("success", true);
+
+		String filename = form.get("filename");
+			
+		File file = new File(uploadPath+filename);
+		if(file.exists()){
+			ret.put("filename", uploadPath+filename);
+			ret.put("size", ""+file.length());
+			ret.put("directory", ""+file.isDirectory());
+		}
+		else ret.put("success", false);
+		
+		return ret;
+	}
+		
+	@CrossOrigin("*")
+	@RequestMapping(value = "/readtext")
+	@ResponseBody
+	public Map convert(HttpServletRequest request, @RequestParam Map<String, String> map) throws Exception {
+		
+		HttpSession session = request.getSession();
+		String userid = (String) session.getValue("userid");
+
+		
+		String path = (String)map.get("path");
+		String maxline = (String)map.get("maxline");
+		if(maxline==null) maxline="201";
+		int lc = Integer.parseInt(maxline);
+
+		File f = new File(path);
+		if(!f.exists())
+		{
+			path = uploadPath+userid+"/"+path;
+		}
+		
+   		Map ret = new HashMap();
+
+		java.io.FileInputStream fis = new java.io.FileInputStream(path); 
+		UniversalDetector detector = new UniversalDetector(null);
+		byte[] buf = new byte[4096];
+		int nread;
+		while ((nread = fis.read(buf)) > 0 && !detector.isDone()) 
+		{ 
+			detector.handleData(buf, 0, nread); 
+		}
+		fis.close();
+		detector.dataEnd();
+
+		String encoding = detector.getDetectedCharset();
+		
+		if(encoding==null) encoding="UTF-8";
+
+		try {
+			String cmd = String.format("%s@%s@%s@%s", datainfo_shell, path, maxline, encoding); 
+			String[] cmdp = cmd.split("@");
+			String[] log = exec_shell(cmdp);
+           
+			String result = log[0];
+			String columninfo = "", readdata = "", readcnt = "0", recordcount="0";
+			
+			int sp1 = result.indexOf("<datacount>");
+			int sp2 = result.indexOf("<datainfos>");
+			int sp3 = result.indexOf("<datapreview>");
+			
+			if(sp1>=0 && sp2>=0 && sp3>=0)
+			{
+				readcnt = recordcount = result.substring(sp1+12,sp2-1);
+				int sp = recordcount.indexOf("/");
+				if(sp>=0)
+				{
+					readcnt = readcnt.substring(0, sp);
+					recordcount = recordcount.substring(sp+1);
+				}
+				columninfo = result.substring(sp2+12,sp3-1);
+				readdata = result.substring(sp3+14);
+			}
+			else {
+				readdata = result;
+			}
+			
+			// <datacount> <datainfos> <datapreview>
+			
+			ret.put("errorlog", log[1]);
+			ret.put("encoding", encoding);
+			ret.put("text", readdata);
+			ret.put("columninfo",columninfo);
+			ret.put("linecount", recordcount);
+			ret.put("readcount", readcnt);
+			ret.put("success", true);
+	    } catch (Exception e) {
+	           ret.put("success", false);
+	           ret.put("errormsg", e.getMessage());
+		}
+
+		return ret;
+	}
+	
+	
+	@CrossOrigin("*")
 	@RequestMapping(value = "/sessiontest")
 	@ResponseBody
 	public Map sessiontest(HttpServletRequest request, @RequestParam("id") String id) { //throws Exception {
@@ -1538,7 +1646,7 @@ public class CommonController {
 	@CrossOrigin("*")
 	@RequestMapping(value="/svc/{svcid}", method=RequestMethod.POST)
 	@ResponseBody
-	public Map runsvc(MultipartHttpServletRequest request, @PathVariable("svcid") String svcid, @RequestParam Map<String,Object> param) {
+	public Map runsvc(HttpServletRequest request, @PathVariable("svcid") String svcid, @RequestParam Map<String,Object> param) {
 		Map ret = new HashMap();
 		ret.put("success", true);
 		ret.put("svcid", svcid);
@@ -1569,23 +1677,27 @@ public class CommonController {
 			System.out.printf("paramcnt=%d\n", pnames.length);
 			
 			for(String pname:pnames) {
-				String value = ""; 
-				MultipartFile file = request.getFile(pname);
-				if(file!=null) {
-					String filename = file.getOriginalFilename();
-					String ext = "";
-					int pos = filename.lastIndexOf( "." );
-					if(pos>=0) ext = filename.substring( pos );
-					File tempfile = File.createTempFile("temp_", ext, new File(app_basedir+"tmp/"));
-//					File tempfile = new File(app_basedir+"tmp/"+filename);
-					file.transferTo(tempfile);
-					value = tempfile.getAbsolutePath();
-					// Delete temp flie            
-					tempfile.deleteOnExit();
-				} else {
-					value = request.getParameter(pname);
+				String value = (String) param.get(pname);
+				if(value==null)
+				{
+					MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
+					MultipartFile file = mrequest.getFile(pname);
+					if(file!=null) {
+						String filename = file.getOriginalFilename();
+						String ext = "";
+						int pos = filename.lastIndexOf( "." );
+						if(pos>=0) ext = filename.substring( pos );
+						File tempfile = File.createTempFile("temp_", ext, new File(app_basedir+"tmp/"));
+	//					File tempfile = new File(app_basedir+"tmp/"+filename);
+						file.transferTo(tempfile);
+						value = tempfile.getAbsolutePath();
+						// Delete temp flie            
+						tempfile.deleteOnExit();
+					} else {
+						value = request.getParameter(pname);
+					}
 				}
-				System.out.printf("param=[%s],value=[%s/%s]\n", pname, value, file);
+				System.out.printf("param=[%s],value=[%s]\n", pname, value);
 				cmds.add("-"+pname);
 				cmds.add(value);
 			}

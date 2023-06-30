@@ -14,47 +14,45 @@
                     <!-- Navigation info -->
                     <ul id="nav-info" class="clearfix">
                         <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-                        <li><a href="javascript:void(0)">분석</a></li>
-                        <li class="active"><a href="javascript:void(0)">자동분석</a></li>
+                        <li><a href="javascript:void(0)" data-lang="main_menu_data_analysis">분석</a></li>
+                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_auto_analysis">자동분석</a></li>
                     </ul>
                     <!-- END Navigation info -->
 
                     <!-- Editable Datatables -->
-                    <h3 class="page-header page-header-top">자동분석<small> </small></h3>
+                    <h3 class="page-header page-header-top" data-lang="ana_title">자동분석</h3>
 
                     <!-- Toolbar -->
                     <div class="push">
                     	<div style='display:flex'>
-                        통합데이터선택:<select id='mtype' class='-form-control'><option value=''>통합데이터를 선택해주세요.</option></select>
+                        <span  data-lang="common_metadata_select">통합데이터선택</span>:<select id='mtype' class='-form-control'><option value='' data-lang='common_msg_select_metadata'>통합데이터를 선택해주세요.</option></select>
                         </div>
                         <div class=hide  style='display:flex'>
-                        파일선택:<select id='filename' class='-form-control'><option value=''>파일을 선택해주세요.</option></select>
+                        <span  data-lang="common_file_select">파일선택</span>:<select id='filename' class='-form-control'><option value='' data-lang='common_msg_select_file'>파일을 선택해주세요.</option></select>
                         </div>
                         <div class=hide  style='display:flex'>
-                        기간:<select id='range' class='-form-control' style='width:100px'>
-                        <option value=''>직접입력</option>
-                        <option value='1d'>최근1일</option>
-                        <option value='3d'>최근3일</option>
-                        <option value='7d'>최근7일</option>
+                        <span data-lang="common_period">기간</span>:<select id='range' class='-form-control' style='width:100px'>
+                        <option value='' data-lang='common_input_manual'>직접입력</option>
+                        <option value='1d' data-lang='ana_cond_recent_1day'>최근1일</option>
+                        <option value='3d' data-lang='ana_cond_recent_3day'>최근3일</option>
+                        <option value='7d' data-lang='ana_cond_recent_7day'>최근7일</option>
                         </select>
                         <span class=hide>
-                        시작일:
-                        <input type=text id=sdate class='input-datepicker' placeholder='시작일' style='width:100px'>
-                        종료일:
-                        <input type=text id=edate class='input-datepicker' placeholder='종료일' style='width:100px'>
+                        <span data-lang="common_from_day">시작일</span>:<input type=text id=sdate class='input-datepicker' data-lang="common_from_day" placeholder='시작일' style='width:100px'>
+                        <span data-lang="common_to_day">종료일</span>:<input type=text id=edate class='input-datepicker' data-lang="common_to_day" placeholder='종료일' style='width:100px'>
                         </div>
                         <div class='hide columns'  style='display:flex'>
-                        컬럼선택:<input type=text id='columns' class='-form-control' style='width:400px' readonly>
+                        <span data-lang="common_column_select">컬럼선택</span>:<input type=text id='columns' class='-form-control' style='width:400px' readonly>
                         </span> 
                         </div>
                         <div class='hide columns'>
-                        <button class="btn btn-success" id='btnExec' title="자동분석실행"><i class="fa fa-plus"></i>자동분석실행</button>
+                        <button class="btn btn-success" id='btnExec' title="자동분석실행" data-lang="ana_exec_auto,ana_exec_auto:title"><i class="fa fa-plus"></i>자동분석실행</button>
                         </div>
                         <br><br>
-                        <p>※ 자동분석에서는 선택한 데이터를 이용하여 모든알고리즘을 배치분석하여 분석결과를 제공합니다.<br>
+                        <p data-lang="ana_intro">※ 자동분석에서는 선택한 데이터를 이용하여 모든알고리즘을 배치분석하여 분석결과를 제공합니다.<br>
                         ※ 데이터에따라 실행 되지 않는 알고리즘도 있을수 있습니다.</br>
                         ※ 분석을위한 알고리즘 파라미터는 초기값을 사용하고 종속변수/기준레이블 은 마지막컬럼을 사용합니다.</p>
-                        <button type="button" class="btn btn-success btn-refresh"><i class="fa fa-refresh"></i> Refresh</button>
+                        <button type="button" class="btn btn-success btn-refresh" data-lang="ana_refresh"><i class="fa fa-refresh"></i> Refresh</button>
                          
                     </div>
                     <!-- END Toolbar -->
@@ -64,12 +62,12 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
-                                <th><i class="fa fa-user"></i> 알고리즘명</th>
-                                <th class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 설명</th>
-                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
-                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 실행일시</th>
-                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 종료일시</th>
-                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                                <th data-lang="ana_algorithm_name"><i class="fa fa-user"></i> 알고리즘명</th>
+                                <th data-lang="common_description" class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 설명</th>
+                                <th data-lang="common_state" class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
+                                <th data-lang="ana_exec_stime" class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 실행일시</th>
+                                <th data-lang="ana_exec_etime" class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 종료일시</th>
+                                <th data-lsng="common_action" class="text-center"><i class="fa fa-bolt"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,7 +87,7 @@
             $.post(App.baseurl+'/list', {qid:'metafind',column:'mtype',value:'csv',value1:'xls',value2:'rdb',value3:'tsdb',mowner:App.loginuserid}, function(res) {
             	if(res.success)
             	{
-                	$('#mtype').empty().append("<option value=''>통합데이터를 선택해주세요.</option>");
+                	$('#mtype').empty().append("<option data-lang='common_msg_select_metadata' value=''>"+lang("common_msg_select_metadata", "통합데이터를 선택해주세요.")+"</option>");
                 	for(var i=0; i<res.list.length; i++)
                 	{
                 		var item = res.list[i];
@@ -103,7 +101,7 @@
             	var path = $('#mtype option:selected').attr('path');
             	if(mtype=="csv"|| mtype=="xls")
             	{
-            		$('#filename').empty().append("<option value=''>파일을 선택해주세요.</option>");
+            		$('#filename').empty().append("<option data-lang='common_msg_select_file' value=''>"+lang("common_msg_select_file","파일을 선택해주세요.")+"</option>");
             		$.post(App.baseurl+'/filelist', {path:path,mowner:App.loginuserid}, function(res) {
             			if(res.success) {
             				for(var i=0; i<res.list.length; i++){
@@ -212,7 +210,7 @@
             
             function execautoshell(mtype, sql, host, port, uid, pwd, db)
 			{
-				App.start_loading('데이터 분석중...');
+				App.start_loading(lang('ana_msg_analyzing','데이터 분석중...'));
 				var cmds = ["/lite2/shell/autoanalysis.sh", mtype, App.loginuserid, sql, host, port, uid, pwd, db];
 //				var cmds = ["/python/python","/lite/shell/autoanalysis.py", "-ftype", mtype, "-userid", App.loginuserid, "-q", sql, "-server", host, "-port", port, "-uid", uid, "-pwd", pwd, "-db", db];
 				console.log('cmd===>', cmds)
@@ -228,7 +226,7 @@
 					else
 					{
 						console.log(res);
-						App.msg_alert('에러', '데이터 분석에 오류가 발생했습니다.');
+						App.msg_alert(lang('ana_error','에러'), lang('ana_msg_analysis_failed','데이터 분석에 오류가 발생했습니다.'));
 					}
 				});
            	}
@@ -246,17 +244,17 @@
         		var mtype = $('#mtype option:selected').attr('mtype');
         		if(mname=="")
         		{
-        			App.msg_alert('오류', '통합데이터를 선택하지 않았습니다.');
+        			App.msg_alert(lang('ana_error','에러'), lang('ana_msg_metadata_empty','통합데이터를 선택하지 않았습니다.'));
         			return;
         		}
         		if(sdate=="" && mtype=="tsdb")
         		{
-        			App.msg_alert('오류', '시작일 선택하지 않았습니다.');
+        			App.msg_alert(lang('ana_error','에러'), lang('ana_msg_start_empty','시작일 선택하지 않았습니다.'));
         			return;
         		}
         		if(edate=="" && mtype=="tsdb")
         		{
-        			App.msg_alert('오류', '종료일을 선택하지 않았습니다.');
+        			App.msg_alert(lang('ana_error','에러'), lang('ana_msg_end_empty','종료일을 선택하지 않았습니다.'));
         			return;
         		}
         		var configstr = "";
@@ -315,7 +313,7 @@
             }			
             
             $('#btnExec').off('click').on('click', function() {
-				App.msg_confirm('자동분석 ', '분석을 실행할까요?', exec_analysis);
+				App.msg_confirm(lang('ana_auto_analysis','자동분석 '), lang('ana_msg_analysis_confirm','분석을 실행할까요?'), exec_analysis);
 			});
             
             $(function () {
@@ -334,6 +332,8 @@
                     data: function (d) {
                     	d.qid = "algorunlist";
                     	d.userid = App.loginuserid
+                    	d.lang = getLanguage();
+                    	if(d.lang!="ko") d.lang = "en";
 //                    	var fld = "name";
 //                    	d.column = fld;
                     	d.find =  $('.dataTables_filter input').val();
@@ -373,9 +373,9 @@
                     	}
                     	return ret;}},
                     {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) {
-                    	var html = '<button title="결과보기" data-id="' + data + '" class="btn btn-xs btn-default viewRow"><i class="fa fa-file"></i>결과보기</button>';
+                    	var html = '<button title="'+lang('ana_result_view','결과보기')+'" data-lang="ana_result_view,ana_result_view:title" data-id="' + data + '" class="btn btn-xs btn-default viewRow"><i class="fa fa-file"></i>결과보기</button>';
                     	
-                    	if(row.state!="분석완료") html = '';
+                    	if(row.state!="분석완료" && row.state!="Analyzed") html = '';
 //                    	html += '<button title="삭제" data-id="' + data + '" class="btn btn-xs btn-default delRow"><i class="fa fa-times"></i></button>';
                     	return html; 
                     	}},
@@ -386,7 +386,7 @@
                 processing: true, 
                 });
                 
-                $('.dataTables_filter input').attr('placeholder', '검색');
+                $('.dataTables_filter input').attr('placeholder', lang('common_search_btn','검색'));
                 
                 $('.input-datepicker').datepicker({format:"yyyy-mm-dd"});
                 
@@ -412,66 +412,7 @@
     				}
     			});
 			}
-            
-            $('#btnSave').off('click').on('click',function() {
-
-            	var formvalid = [];
-            	var formdata = {};
-            	$('#metaform-modal form input,#metaform-modal form select').each(function(i, e) {
-            		var lbl = $(this).parent().parent().find('label:first').text();
-            		var val = $(this).val();
-            		var name = $(this).attr('name');
-            		formdata[name] = val;
-            		console.log(lbl,val,name);
-            		if(lbl.indexOf("*")==0 && val=="" && name!="id")
-            		{
-            			formvalid.push(lbl);
-            			return;
-            		}
-//            		else formdata[$(this).attr('name')] = $(this).val();
-            	});
-            	
-                if(formvalid.length>0)
-                {
-                	App.msg_alert('입력오류', formvalid[0]+'값을 입력해주세요!');
-                    return;
-                }
-
-                var url = "";
-                console.log('formdata',formdata);
-                if(formdata.id=="")
-                {
-                	formdata.mowner = App.loginuserid;
-                	formdata.qid = "metaadd";
-                	url = App.baseurl+"/insert";
-                }
-                else
-                {
-                	formdata.qid = "metaupdate";
-                	formdata.mowner = 'mowner';
-                	url = App.baseurl+"/update";
-                }
-                
-                App.start_loading('정보저장중');
-                $.post(url, formdata).done(function(res) {
-                    console.log(res);
-                    if(res.success)
-                    {
-                      	App.stop_loading();
-                      	$('#metaform-modal').modal('hide');
-                       	App.msg_alert('데이터 메타정보', '저장되었습니다.', function() { $('#datatables').DataTable().ajax.reload(null, false); });
-                    }
-                    else {
-                        App.stop_loading();
-                        App.msg_alert('데이터 메타정보', '저장에 실패 하였습니다.');
-                    }
-                }).fail(function(e) {
-                    App.stop_loading();
-                    console.log('error=>',e);
-                    App.msg_alert('데이터 메타정보', '저장에 실패 하였습니다.');
-                });
-            }); 
-			
+                        			
 			$(document).off('click','.btn-refresh').on('click','.btn-refresh',function() {
 				$('#datatables').DataTable().ajax.reload(null, false);
 			});            
@@ -480,7 +421,7 @@
             	var row = $(this).parent().parent().index();
             	var d = editableTable.fnGetData(row);
             	
-            	result_dlg('['+d.name+'] 결과보기', d.run_result);
+            	result_dlg('['+d.name+'] '+lang('ana_result_view', '결과보기'), d.run_result);
             });
             
          	// column 선택창
@@ -505,7 +446,7 @@
             	html += '			</div>';
             	html += '		</form></div>';
             	html += '		<div class="modal-footer remove-margin">';
-            	html += '			<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>';
+            	html += '			<button type="button" class="btn btn-default" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i>'+lang('common_close_btn','닫기')+'</button>';
             	html += '		</div>';
             	html += '	</div>';
             	html += '</div>';
@@ -515,6 +456,8 @@
             	
             	$(html).appendTo('body')
             	$('.result-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
-            }            
+            }  
+         	
+            updatelang();
             
         </script>

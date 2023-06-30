@@ -2,14 +2,12 @@
 <!--<script src="https://ciprianciurea.github.io/chartjs-plugin-doughnutlabel/chartjs-plugin-doughnutlabel.js"></script>-->
 <ul id="nav-info" class="clearfix">
 	<li><a href="index.html"><i class="fa fa-home"></i></a></li>
-	<li><a href="javascript:void(0)">시스템 모니터링</a></li>
-	<li class="active"><a href="javascript:void(0)">시스템모니터링</a></li>
+	<li><a href="javascript:void(0)" data-lang="main_menu_monitoring">시스템 모니터링</a></li>
+	<li class="active"><a href="javascript:void(0)" data-lang="main_menu_system_monitoring">시스템모니터링</a></li>
 </ul>
 <!-- END Navigation info -->
 
-<h3 class="page-header page-header-top">
-	시스템모니터링 <small id='dashname'> </small>
-</h3>
+<h3 class="page-header page-header-top" data-lang="monitoring_title">시스템모니터링 <small id='dashname'> </small></h3>
 
 <style>
 .push table th {
@@ -55,23 +53,23 @@ UpTime(초):<label class='uptime'></label><br>
 </div>
 
 <div id='chart_cpu' style='display:inline-block; box-shadow:3px 3px 3px 3px gray'>
-cpu사용률
+<span data-lang="monitoring_cpu_usage">cpu사용률</span>
 <canvas style='width:200px;height:200px'></canvas>
 </div>&nbsp;&nbsp;&nbsp;&nbsp;
 <div id='chart_mem' style='display:inline-block; box-shadow:3px 3px 3px 3px gray'>
-메모리사용량
+<span data-lang="monitoring_memory_usage">메모리사용량</span>
 <canvas style='width:200px;height:200px'></canvas>
 </div>
 <br>
 <br>
 <div id='chart_disk' style='display:inline-block;box-shadow:3px 3px 3px 3px gray'>
-disk사용율
+<span data-lang="monitoring_disk_usage">disk사용율</span>
 <canvas style=' width:600px;height:200px;'></canvas>
 </div>
 <br>
 <br>
 <div id='chart_network' style='display:inline-block; box-shadow:3px 3px 3px 3px gray'>
-network트래픽
+<span data-lang="monitoring_network_usage">network트래픽</span>
 <canvas style=' width:600px;height:200px;'></canvas>
 </div>
 <br>
@@ -108,11 +106,11 @@ for(var i=0; i<100; i++) colors.push(""+Math.floor(Math.random()*255)+","+Math.f
 var cpuchart = new Chart($('#chart_cpu canvas'), {
 	type: "pie", //그래프 형태 지정하기
 	data: {
-		labels: ["사용", "여유"], //X축 제목
+		labels: [lang('monitoring_used',"사용"), lang('monitoring_free',"여유")], //X축 제목
 		datasets: [{
 		legend: true,
 		tooltips: true,
-		label: "cpu 사용율",
+		label: lang('monitoring_cpu_usage',"cpu 사용율"),
 		data: [0, 100],
 		backgroundColor:["rgba("+colors[0]+",0.2)","white"],
 //		borderColor:["rgba("+colors[0]+",1)","rgba("+colors[i]+",1)"],
@@ -162,11 +160,11 @@ var cpuchart = new Chart($('#chart_cpu canvas'), {
 var memchart = new Chart($('#chart_mem canvas'), {
 	type: "pie", //그래프 형태 지정하기
 	data: {
-		labels: ["사용", "여유"], //X축 제목
+		labels: [lang('monitoring_used',"사용"), lang('monitoring_free',"여유")], //X축 제목
 		datasets: [{
 		legend: true,
 		tooltips: true,
-		label: "메모리 사용",
+		label: lang('monitoring_memory_usage',"메모리 사용"),
 		data: [0, 100],
 		backgroundColor:["rgba("+colors[1]+",0.2)","white"],
 //		borderColor:["rgba("+colors[i]+",1)","white"],
@@ -212,7 +210,7 @@ var diskchart = new Chart($('#chart_disk canvas'), {
 		datasets: [{
 		legend: true,
 		tooltips: true,
-		label: "디스크 사용량",
+		label: lang('monitoring_disk_usage',"디스크 사용량"),
 		data: [10, 5],
 		backgroundColor:"rgba("+colors[i]+",0.2)",
 		borderColor: "rgba("+colors[i]+",1)",
@@ -252,7 +250,7 @@ var nwchart = new Chart($('#chart_network canvas'), {
 		datasets: [{
 		legend: true,
 		tooltips: true,
-		label: "네트워크In",
+		label: lang('monitoring_network_in',"네트워크In"),
 		data: in_vals,
 		backgroundColor:"rgba("+colors[0]+",0.2)",
 		borderColor: "rgba("+colors[0]+",1)",
@@ -266,7 +264,7 @@ var nwchart = new Chart($('#chart_network canvas'), {
 	 {
 		legend: true,
 		tooltips: true,
-		label: "네트워크Out",
+		label: lang('monitoring_network_out',"네트워크Out"),
 		data: out_vals,
 		backgroundColor:"rgba("+colors[1]+",0.2)",
 		borderColor: "rgba("+colors[1]+",1)",
@@ -453,6 +451,7 @@ function loadsysinfo()
 if(App.loadsysinfo_timer!==undefined) clearInterval(App.loadsysinfo_timer);
 App.loadsysinfo_timer = setInterval(loadsysinfo, 1000);
 
+updatelang();
 
 </script>
 <!-- 스크립트 영역 -->
