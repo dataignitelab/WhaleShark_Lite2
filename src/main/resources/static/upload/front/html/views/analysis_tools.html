@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Expires" content="-1"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="cache-control" content="no-cache"/>
+<title>타이틀</title>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/jquery.bxslider.css">
+
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/module.global.css">
+    <link rel="stylesheet" type="text/css" href="../../css/page.orders.css">
+    <script type="text/javascript" src="../../js/module.all.js"></script>
+    <script type="text/javascript" src="../../js/module.bui.js"></script>
+    <script type="text/javascript" defer src="../../js/module.bui.template.js"></script>
+
+<style>
+	.dataframe {margin-left:10px;width:700px;border-collapse: collapse;border:1px solid black;font-size:12.0pt;}
+	.dataframe th {border:1px solid black;background-color:lightgray;font-size:12.0pt;vertical-align: middle}
+	.dataframe td {border:1px solid black;font-size:12.0pt;vertical-align: middle}
+	.ctxt {text-align:center !important}
+	.ltxt {text-align:left !important}
+	.num {text-align:right !important}
+	button:focus {outline: none;}
+	.table-list-type th {font-size:12.0pt !important;}
+	.table-list-type td {font-size:12.0pt !important}
+	input::placeholder {font-style: italic;}
+</style>
+</head>
+<body>
+    <!-- container -->
+    <div class="container pt">
+        <!-- 상단 네비게이터-->
+        <div class="path">
+            <ul>
+                <li>분석지원도구</li>
+            </ul>
+        </div>
+		
+        <!-- // 상단 네비게이터 -->
+        <div class="section-visual">
+            <div class="item">
+                <h2 class="h2-title">
+                    <span class="f-eng"> KAMP</span>의 <br>
+                    제조 <span class="f-eng"> AI</span> 분석도구를
+                    활용해 보세요.
+                </h2>
+                <div class="sub-text">
+                    현재 8종의 분석 알고리즘이 준비되어 있으며,<br>
+                    향후 제조 특화 전처리 및 AI 분석 알고리즘들을<br>
+                    지속해서 추가할 예정입니다.
+                </div>
+            </div>
+        </div>
+		 
+        <div class="analysis-step">
+            <div class="step-menu">
+                <ul>
+                    <li class='active'><button id='step7' type="button" class="step icon01">기술통계 <span>Descriptive Statistics</span></button></li>
+                    <li><button id='step5' type="button" class="step icon02">상관분석 <span>Correlation Analysis</span></button></li>
+                    <li><button id='step1' type="button" class="step icon03">회귀분석 <span>Regression Analysis</span></button></li>
+                    <li><button id='step4' type="button" class="step icon04">계층적 군집분석 <span>Hierarchial Clustering</span></button></li>
+                    <li><button id='step9' type="button" class="step icon05">K-평균 군집분석 <span>K-Means Clustering</span></button></li>
+                    <li><button id='step2' type="button" class="step icon06">랜덤 포레스트 <span>Randomforest</span></button></li>
+                    <li><button id='step3' type="button" class="step icon07">합성곱 신경망 <span>CNN</span></button></li>
+                    <li><button id='step8' type="button" class="step icon16">다층 퍼셉트론 <span>Multi-Layer Perceptron</span></button></li>
+                </ul>
+            </div>
+            <div class="result-box">
+                <!-- 최초 화면 -->
+                <!-- //최초 화면 -->
+				<!-- 회귀 분석 -->
+                <div id="flow1" class="item-flex" style="display:none">
+                    <ul>
+                        <li><button id='step11' type="button"><div class="item icon08">데이터 입력</div></button></li>
+                        <li><button id='step13' type="button"><div class="item icon03">회귀분석</div></button></li>
+                        <li><button id='step12' type="button"><div class="item icon14">결과보기</div></button></li>
+                    </ul>
+                </div>
+				
+				<!-- 랜덤포레스트 -->
+                <div id="flow2" class="item-flex" style="display:none">
+                    <ul>
+                        <li><button id='step21' type="button"><div class="item icon08">데이터 입력</div></button></li>
+                        <li><button id='step22' type="button"><div class="item icon06">랜덤포레스트</div></button></li>
+                        <li><button id='step23' type="button"><div class="item icon14">학습<br>결과보기</div></button></li>
+                        <li><button id='step24' type="button"><div class="item icon17">예측 실행</div></button></li>
+                        <li><button id='step25' type="button"><div class="item icon14">예측<br>결과보기</div></button></li>
+                    </ul>
+                </div>
+
+				<!-- 합성곱신경망 -->
+                <div id="flow3" class="item-flex" style="display:none">
+                    <ul>
+                        <li><button id='step30' type="button"><div class="item icon09">제조 AI<br>데이터셋업로드</div></button></li>
+                        <li><button id='step301' type="button"><div class="item icon07">AI 모델 생성</div></button></li>
+                        <li><button id='step31' type="button"><div class="item icon10">검사대상<br>제조데이터<br>업로드</div></button></li>
+                        <li><button id='step32' type="button"><div class="item icon13">AI 검사 실행</div></button></li>
+                        <li><button id='step33' type="button"><div class="item icon14">AI 검사<br>결과보기</div></button></li>
+                    </ul>
+                </div>
+
+				<!-- 계층적 군집분석 -->
+                <div id="flow4" class="item-flex" style="display:none">
+                    <ul>
+                        <li><button id='step41' type="button"><div class="item icon08">데이터 입력</div></button></li>
+                        <li><button id='step42' type="button"><div class="item icon04">계층적 군집분석</div></button></li>
+                        <li><button id='step43' type="button"><div class="item icon14">결과보기</div></button></li>
+                    </ul>
+                </div>
+
+				<!-- K-평균 군집분석 -->
+                <div id="flow9" class="item-flex" style="display:none">
+                    <ul>
+                        <li><button id='step91' type="button"><div class="item icon08">데이터 입력</div></button></li>
+                        <li><button id='step92' type="button"><div class="item icon05">K-평균 군집분석</div></button></li>
+                        <li><button id='step93' type="button"><div class="item icon14">결과보기</div></button></li>
+                    </ul>
+                </div>
+
+				<!-- 상관 군집분석 -->
+                <div id="flow5" class="item-flex" style="display:none">
+                    <ul>
+                        <li><button id='step51' type="button"><div class="item icon08">데이터 입력</div></button></li>
+                        <li><button id='step53' type="button"><div class="item icon02">상관분석</div></button></li>
+                        <li><button id='step52' type="button"><div class="item icon14">결과보기</div></button></li>
+                    </ul>
+                </div>
+
+				<!-- 기술통계 -->
+                <div id="flow7" class="item-flex" style="display:block">
+                    <ul>
+                        <li><button id='step71' type="button"><div class="item icon08">데이터 입력</div></button></li>
+                        <li><button id='step72' type="button"><div class="item icon01">기술통계</div></button></li>
+                        <li><button id='step73' type="button"><div class="item icon14">결과보기</div></button></li>
+                    </ul>
+                </div>
+
+				<!-- MLP -->
+                <div id="flow8" class="item-flex" style="display:none">
+                    <ul>
+                        <li><button id='step81' type="button"><div class="item icon08">데이터 입력</div></button></li>
+                        <li><button id='step82' type="button"><div class="item icon16">다층 퍼셉트론</div></button></li>
+                        <li><button id='step83' type="button"><div class="item icon14">결과보기</div></button></li>
+                    </ul>
+                </div>
+				
+				
+            </div>
+			<button onclick="viewdata();"><a id="dataviewbtn" class="btn" style='display:none'><span class="btn-text">데이터보기</span></a></button>
+        </div>
+    </div>
+    <!-- container -->
+
+<!-- 합성곱신경망 데이터셋 입력 -->
+<div class="layer-popup module-a system-pop" id="cnndataset" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:700px">
+            <div class="pop-title">
+                <h2>제조 AI 데이터셋업로드</h2>
+            </div>
+            <div class="pop-container">
+                <div class="pop-table">
+                    <table>
+                        <colgroup>
+                            <col width="130px">
+                            <col width="auto">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>모델명</th>
+                            <td><input type="text" name="modelname" placeholder="예) CNN-01" value=""></td>
+                        </tr>
+                        <tr class="m_clsname">
+                            <th>클래스명1</th>
+							<td><input type="text" name="classname" placeholder="예) 정상" value=""></td>
+                        </tr>
+                        <tr class="m_filename">
+                            <th>데이터셋1</th>
+                            <td><div class="box-file-input">
+                                    <label><input type="file" accept=".zip" name="dataset" class="file-input" onchange="onChangeFile(this)"></label>
+                                    <span style='vertical-align: middle' class="filename">선택된 파일이 없습니다.<br>(파일첨부형식: zip 파일)</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="m_clsname">
+                            <th>클래스명2</th>
+							<td><input type="text" name="classname" placeholder="예) 결함" value=""></td>
+                        </tr>
+                        <tr class="m_filename">
+                            <th>데이터셋2</th>
+                            <td><div class="box-file-input">
+                                    <label><input type="file" accept=".zip" name="dataset" class="file-input" onchange="onChangeFile(this)"></label>
+                                    <span style='vertical-align: middle' class="filename">선택된 파일이 없습니다.<br>(파일첨부형식: zip 파일)</span>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="pop-btn-area">
+				<div class="btn-area">
+					<!--<button type="button" class="button addclass">클래스추가</button>
+					<button type="button" class="button delclass">클래스삭제</button>-->
+					<button type="button" class="button primary">업로드</button>
+					<button type="button" class="button" data-bui-toggle-inactive="cnndataset">다음</button>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 합성곱신경망 학습알고리즙 셋팅-->
+<div class="layer-popup module-a system-pop" id="cnnsetting" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:600px">
+        <div class="pop-title">
+            <h2>AI 모델 생성</h2>
+        </div>
+        <div class="pop-container">
+            <div class="pop-table">
+                <table>
+                    <colgroup>
+                        <col width="130px">
+                        <col width="auto">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>학습모델명</th>
+                        <td><select name="modelname"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Epochs</th>
+                        <td><input type="text" name="epochs"  value=20>
+							*전체 훈련데이터를 모두 학습시키는 횟수</td>
+                    </tr>
+                    <tr>
+                        <th>Batch Size</th>
+                        <td><input type="text" name="batchsize" value=16>
+							* 각 Epoch마다 학습시키는 훈련데이터 수</td>
+                    </tr>
+                    <tr>
+                        <th>Leaning Rate</th>
+                        <td><input type="text" name="learnrate" value=0.001>
+							* 학습될 때마다 주요 학습 변수를 갱신하는 정도</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pop-btn-area">
+            <div class="btn-area">
+                <button type="button" class="button primary">AI 모델 생성</button>
+                <button type="button" class="button" data-bui-toggle-inactive="cnnsetting">다음</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- 합성곱신경망 분류데이터 입력 -->
+<div class="layer-popup module-a system-pop" id="cnntest" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:800px">
+            <div class="pop-title">
+                <h2>검사대상 제조데이터 업로드</h2>
+            </div>
+            <div class="pop-container">
+                <div class="pop-table">
+                    <table>
+                        <colgroup>
+                            <col width="130px">
+                            <col width="auto">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>모델명 <a id='delmodel' style='display:none' href="javascript:delmodel()">[모델삭제]</a></th>
+                            <td><select name="modelname"></select></div>
+							</td>
+                        </tr>
+                        <tr>
+                            <th>입력파일<a href="javascript:addtestfile()">[+]</a><a href="javascript:deltestfile()">[-]</a></th>
+                            <td><div id="testfile" class="box-file-input">
+								<div>
+                                    <label><input type="file" accept="image/*" name="filename" class="file-input" onchange="onChangeFile(this)"></label>
+                                    <span class="filename">선택된 파일이 없습니다.</span>
+								</div>
+								<div>
+                                    <label><input type="file" accept="image/*" name="filename" class="file-input" onchange="onChangeFile(this)"></label>
+                                    <span class="filename">선택된 파일이 없습니다.</span>
+								</div>
+								<div>
+                                    <label><input type="file" accept="image/*" name="filename" class="file-input" onchange="onChangeFile(this)"></label>
+                                    <span class="filename">선택된 파일이 없습니다.</span>
+								</div>
+								<div>
+                                    <label><input type="file" accept="image/*" name="filename" class="file-input" onchange="onChangeFile(this)"></label>
+                                    <span class="filename">선택된 파일이 없습니다.</span>
+								</div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="pop-btn-area">
+				<div class="btn-area">
+					<button type="button" class="button primary">업로드</button>
+					<button type="button" class="button" data-bui-toggle-inactive="cnntest">다음</button>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 기술통계분석 설정-->
+<div class="layer-popup module-a system-pop" id="statistics" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:650px">
+        <div class="pop-title">
+            <h2>기술통계 알고리즘 셋팅</h2>
+        </div>
+        <div class="pop-container">
+            <div class="pop-table">
+                <table>
+                    <colgroup>
+                        <col width="120px">
+                        <col width="auto">
+                    </colgroup>
+                    <tbody>
+					<!-- 기초전처리 start-->
+                    <tr>
+                        <th>
+                            결측치 처리
+                        </th>
+                        <td><select name="null" style='margin-left:0px;'><option value="Y">제거</option><option value="R">치환</option><!--<option value="N">처리안함</option>--></select></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            이상치 처리
+                        </th>
+                        <td><select name="outlier" style='margin-left:0px;'><option value="D">제거</option><option value="N">처리안함</option></select></td>
+                    </tr>
+					<!-- 기초전처리 end-->
+                    <tr>
+                        <th>
+                            변수
+                        </th>
+                        <td>
+							<input type="text" name="x_names" style='padding-left:20px;' placeholder="분석할 변수를 선택하세요." readonly />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            수치형 변환
+                        </th>
+                        <td><input type="text" name="cvtnumeric" class='textonly' style='padding-left:20px;' placeholder="수치형으로 변환할 문자형 컬럼을 선택하세요." readonly /></td>
+                    </tr>
+					<tr><td colspan="2" class=ltxt><b style='float:left'>
+					    * 결측치 제거 : 결측치가 포함되어 있는 행을 제거합니다. <br>
+						* 결측치 치환 : 결측치가 관찰된 셀을 해당 열의 평균값 또는 최빈값으로 대체합니다.<br>
+						* 이상치 제거 : 속성의 값이 일반적인 값보다 편차가 큰 값을 삭제합니다.<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						(3시그마기준 99.7%이상에 포함되는 값을 이상치로 판별)
+						</b></td></tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pop-btn-area">
+            <div class="btn-area">
+                <button type="button" class="button primary">분석</button>
+                <button type="button" class="button" data-bui-toggle-inactive="statistics">다음</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- 산점도 보기 -->
+<div class="layer-popup module-a system-pop" id="visual" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:1200px">
+        <div class="pop-title">
+            <h2>산점도 보기</h2>
+        </div>
+        <div class="pop-container">
+            <div class="pop-table">
+                <table>
+                    <colgroup>
+                        <col width="130px">
+                        <col width="auto">
+                    </colgroup>
+                    <tbody>
+					<!-- 기초전처리 start-->
+                    <tr>
+                        <th>
+                            결측치 처리
+                        </th>
+                        <td><select name="null" style='margin-left:0px;'><option value="Y">제거</option><option value="R">치환</option><!--<option value="N">처리안함</option>--></select></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            이상치 처리
+                        </th>
+                        <td><select name="outlier" style='margin-left:0px;'><option value="D">제거</option><option value="N">처리안함</option></select></td>
+                    </tr>
+					<!-- 기초전처리 end-->
+                    <tr>
+                        <th>X축</th>
+                        <td>
+							<div class="cols">
+                            <select id="v_dep_val" class="cb_column" style='margin-left:0px;'></select>
+							</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Y축</th>
+                        <td>
+							<div class="cols">
+                            <select id="v_ind_val" class="cb_column" style='margin-left:0px;'></select>
+							</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            수치형 변환
+                        </th>
+                        <td><input type="text" name="cvtnumeric" class='textonly' style='padding-left:20px;' placeholder="수치형으로 변환할 문자형 컬럼을 선택하세요." readonly /></td>
+                    </tr>
+					<tr><td colspan="2" class=ltxt><b style='float:left'>
+					    * 결측치 제거 : 결측치가 포함되어 있는 행을 제거합니다. <br>
+						* 결측치 치환 : 결측치가 관찰된 셀을 해당 열의 평균값 또는 최빈값으로 대체합니다.<br>
+						* 이상치 제거 : 속성의 값이 일반적인 값보다 편차가 큰 값을 삭제합니다.<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						(3시그마기준 99.7%이상에 포함되는 값을 이상치로 판별)
+						</b></td></tr>
+					<tr>
+						<td colspan=2>
+							<div class="col-sm-10" id="plot_info" style="width:650px; height:500px;"></div>
+						</td>
+					</tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pop-btn-area">
+            <div class="btn-area">
+                <button type="button" class="button primary viewplot">그래프보기</button>
+                <button type="button" class="button primary saveplot">그래프저장</button>
+                <button type="button" class="button" data-bui-toggle-inactive="visual">다음</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- 회귀분석 알고리즘 셋팅 -->
+<div class="layer-popup module-a system-pop" id="regression" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:650px">
+        <div class="pop-title">
+            <h2>회귀분석 알고리즘셋팅</h2>
+        </div>
+        <div class="pop-container">
+            <div class="pop-table">
+                <table>
+                    <colgroup>
+                        <col width="130px">
+                        <col width="auto">
+                    </colgroup>
+                    <tbody>
+					<!-- 기초전처리 start-->
+                    <tr>
+                        <th>
+                            결측치 처리
+                        </th>
+                        <td><select name="null" style='margin-left:0px;'><option value="Y">제거</option><option value="R">치환</option><!--<option value="N">처리안함</option>--></select></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            이상치 처리
+                        </th>
+                        <td><select name="outlier" style='margin-left:0px;'><option value="D">제거</option><option value="N">처리안함</option></select></td>
+                    </tr>
+					<!-- 기초전처리 end-->
+                    <tr>
+                        <th>독립변수</th>
+                        <td>
+                            <select id="dep_val" class="cb_column"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>종속변수</th>
+                        <td>
+                            <select id="ind_val" class="cb_column"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            수치형 변환
+                        </th>
+                        <td><input type="text" name="cvtnumeric" class='textonly' style='padding-left:20px;' placeholder="수치형으로 변환할 문자형 컬럼을 선택하세요." readonly /></td>
+                    </tr>
+                    <tr>
+                        <th>신뢰구간(%)</th>
+                        <td>
+                            <select id="confidence_interval"></select>
+                        </td>
+                    </tr>
+					<tr><td colspan="2" class=ltxt><b style='float:left'>
+					    * 결측치 제거 : 결측치가 포함되어 있는 행을 제거합니다. <br>
+						* 결측치 치환 : 결측치가 관찰된 셀을 해당 열의 평균값 또는 최빈값으로 대체합니다.<br>
+						* 이상치 제거 : 속성의 값이 일반적인 값보다 편차가 큰 값을 삭제합니다.<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						(3시그마기준 99.7%이상에 포함되는 값을 이상치로 판별)
+						</b></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pop-btn-area">
+            <div class="btn-area">
+                <button type="button" class="button primary">분석</button>
+                <button type="button" class="button" data-bui-toggle-inactive="regression">다음</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- 군집분석 알고리즘 설정-->
+<div class="layer-popup module-a system-pop" id="cluster" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area"  style="width:650px">
+        <div class="pop-title">
+            <h2>군집분석 알고리즘 셋팅</h2>
+        </div>
+        <div class="pop-container">
+            <div class="pop-table">
+                <table>
+                    <colgroup>
+                        <col width="180px">
+                        <col width="auto">
+                    </colgroup>
+                    <tbody>
+					<!-- 기초전처리 start-->
+                    <tr>
+                        <th>
+                            결측치 처리
+                        </th>
+                        <td><select name="null" style='margin-left:0px;'><option value="Y">제거</option><option value="R">치환</option><!--<option value="N">처리안함</option>--></select></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            이상치 처리
+                        </th>
+                        <td><select name="outlier" style='margin-left:0px;'><option value="D">제거</option><option value="N">처리안함</option></select></td>
+                    </tr>
+					<!-- 기초전처리 end-->
+                    <tr>
+                        <th>케이스 레이블 기준변수</th>
+                        <td><select name="target_name" class="cb_column" style='margin-left:0px;'></select></td>
+                    </tr>
+                    <tr>
+                        <th>변수
+						</th>
+                        <td>
+							<input type="text" class="cb_column" name="x_names" style='padding-left:20px;' placeholder="분석할 변수를 선택하세요." readonly />
+							<input type='hidden' id="clustertype" value="">
+							<span style='color:black'>※ 계층적 군집분석은 변수(열) 4개 기준일 때, 
+							<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;행 1,000 개 미만으로 가능합니다.
+							<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(선택된 변수(열) 개수가 증가하면, 분석 가능한
+							<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;행의 개수는 줄어들 수 있습니다.)
+							</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            수치형 변환
+                        </th>
+                        <td><input type="text" name="cvtnumeric" class='textonly' style='padding-left:20px;' placeholder="수치형으로 변환할 문자형 컬럼을 선택하세요." readonly /></td>
+                    </tr>
+                    <tr class="clustertype1">
+                        <th>최소군집수</th>
+						<td><input type="text" name="mink" value=2 style='margin-left:0px;'></td>
+                    </tr>
+                    <tr class="clustertype1">
+                        <th>최대군집수</th>
+						<td><input type="text" name="maxk" value=6 style='margin-left:0px;'></td>
+                    </tr>
+                    <tr class="clustertype2">
+                        <th>최대반복계산</th>
+						<td><input type="text" name="max_iter" value=10 style='margin-left:0px;'></td>
+                    </tr>
+                    <tr class="clustertype2">
+                        <th>수렴기준</th>
+						<td><input type="text" name="converge" value=0 style='margin-left:0px;'></td>
+                    </tr>
+                    <tr class="clustertype2">
+                        <th>군집수(k)</th>
+						<td><input type="text" name="k" value=2 style='margin-left:0px;'></td>
+                    </tr>
+					<tr><td colspan="2" class=ltxt><b style='float:left'>
+					    * 결측치 제거 : 결측치가 포함되어 있는 행을 제거합니다. <br>
+						* 결측치 치환 : 결측치가 관찰된 셀을 해당 열의 평균값 또는 최빈값으로 대체합니다.<br>
+						* 이상치 제거 : 속성의 값이 일반적인 값보다 편차가 큰 값을 삭제합니다.<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						(3시그마기준 99.7%이상에 포함되는 값을 이상치로 판별)<br>
+						* 알고리즘 특성상 데이터 용량이 많을수록 분석 시간이 길어집니다.</b></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pop-btn-area">
+            <div class="btn-area">
+                <button type="button" class="button primary">분석</button>
+                <button type="button" class="button" data-bui-toggle-inactive="cluster">다음</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- 랜덤 포레스트 알고리즘 설정-->
+<div class="layer-popup module-a system-pop" id="randomforest" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:650px">
+        <div class="pop-title">
+            <h2>렌덤포레스트 알고리즘 셋팅</h2>
+        </div>
+        <div class="pop-container">
+            <div class="pop-table">
+                <table>
+                    <colgroup>
+                        <col width="130px">
+                        <col width="auto">
+                    </colgroup>
+                    <tbody>
+					<!-- 기초전처리 start-->
+                    <tr>
+                        <th>
+                            결측치 처리
+                        </th>
+                        <td><select name="null" style='margin-left:0px;'><option value="Y">제거</option><option value="R">치환</option><!--<option value="N">처리안함</option>--></select></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            이상치 처리
+                        </th>
+                        <td><select name="outlier" style='margin-left:0px;'><option value="D">제거</option><option value="N">처리안함</option></select></td>
+                    </tr>
+					<!-- 기초전처리 end-->
+                    <tr>
+                        <th>종속변수</th>
+                        <td><select id="rf_target_name" class="cb_column" style='margin-left:0px;'></select></td>
+                    </tr>
+                    <tr>
+                        <th>예측자
+						</th>
+                        <td>
+							<input type="text" class="cb_column" name="x_names" style='padding-left:20px;' placeholder="분석할 예측자를 선택하세요." readonly />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>학습모델명
+						</th>
+                        <td>
+							<input type="text" name="model_name" style='padding-left:20px;' placeholder="모델명을 입력하세요."/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            수치형 변환
+                        </th>
+                        <td><input type="text" name="cvtnumeric" class='textonly' style='padding-left:20px;' placeholder="수치형으로 변환할 문자형 컬럼을 선택하세요." readonly /></td>
+                    </tr>
+                    <tr>
+                        <th>나무수</th>
+						<td><input type="text" id="rf_numoftree" value=500 style='margin-left:0px;'></td>
+                    </tr>
+                    <tr>
+                        <th>R난수시작값:</th>
+						<td><input type="text" id="rf_rand" value=123 style='margin-left:0px;'></td>
+                    </tr>
+					<tr><td colspan="2" class=ltxt><b style='float:left'>
+					    * 결측치 제거 : 결측치가 포함되어 있는 행을 제거합니다. <br>
+						* 결측치 치환 : 결측치가 관찰된 셀을 해당 열의 평균값 또는 최빈값으로 대체합니다.<br>
+						* 이상치 제거 : 속성의 값이 일반적인 값보다 편차가 큰 값을 삭제합니다.<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						(3시그마기준 99.7%이상에 포함되는 값을 이상치로 판별)
+						</b></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pop-btn-area">
+            <div class="btn-area">
+                <button type="button" class="button primary">분석</button>
+                <button type="button" class="button" data-bui-toggle-inactive="randomforest">다음</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<!-- 랜덤포레스트 분류데이터 입력 -->
+<div class="layer-popup module-a system-pop" id="randomforesttest" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:800px">
+            <div class="pop-title">
+                <h2>랜덤포레스트 예측실행</h2>
+            </div>
+            <div class="pop-container">
+                <div class="pop-table">
+                    <table>
+                        <colgroup>
+                            <col width="130px">
+                            <col width="auto">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>모델명 <a id='delrandomforestmodel' style='display:none' href="javascript:delrandomforestmodel()">[모델삭제]</a></th>
+                            <td><select name="modelname"></select></div>
+							</td>
+                        </tr>
+                        <tr>
+                            <th>데이터</th>
+                            <td><div id="randomforest_testfile" class="box-file-input">
+								<div>
+                                    <label><input type="file" accept=".csv,.xls,.xlsx" name="filename" class="file-input" onchange="onChangeFile(this)"></label>
+                                    <span class="filename">선택된 파일이 없습니다.</span>
+								</div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="pop-btn-area">
+				<div class="btn-area">
+					<button type="button" class="button primary">예측실행</button>
+					<button type="button" class="button" data-bui-toggle-inactive="cnntest">다음</button>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상관분석 설정-->
+<div class="layer-popup module-a system-pop" id="corelation" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:650px">
+        <div class="pop-title">
+            <h2>상관분석 알고리즘 셋팅</h2>
+        </div>
+        <div class="pop-container">
+            <div class="pop-table">
+                <table>
+                    <colgroup>
+                        <col width="130px">
+                        <col width="auto">
+                    </colgroup>
+                    <tbody>
+					<!-- 기초전처리 start-->
+                    <tr>
+                        <th>
+                            결측치 처리
+                        </th>
+                        <td><select name="null" style='margin-left:0px;'><option value="Y">제거</option><option value="R">치환</option><!--<option value="N">처리안함</option>--></select></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            이상치 처리
+                        </th>
+                        <td><select name="outlier" style='margin-left:0px;'><option value="D">제거</option><option value="N">처리안함</option></select></td>
+                    </tr>
+					<!-- 기초전처리 end-->
+                    <tr>
+                        <th>
+                            변수
+						</th>
+                        <td>
+							<input type="text" class="cb_column" name="x_names" style="padding-left:20px;" placeholder="분석할 변수를 선택하세요." readonly="">
+							
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            수치형 변환
+                        </th>
+                        <td><input type="text" name="cvtnumeric" class='textonly' style='padding-left:20px;' placeholder="수치형으로 변환할 문자형 컬럼을 선택하세요." readonly /></td>
+                    </tr>
+					<tr><td colspan="2" class=ltxt><b style='float:left'>
+					    * 결측치 제거 : 결측치가 포함되어 있는 행을 제거합니다. <br>
+						* 결측치 치환 : 결측치가 관찰된 셀을 해당 열의 평균값 또는 최빈값으로 대체합니다.<br>
+						* 이상치 제거 : 속성의 값이 일반적인 값보다 편차가 큰 값을 삭제합니다.<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						(3시그마기준 99.7%이상에 포함되는 값을 이상치로 판별)
+						</b></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pop-btn-area">
+            <div class="btn-area">
+                <button type="button" class="button primary">분석</button>
+                <button type="button" class="button" data-bui-toggle-inactive="corelation">다음</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- MLP 설정-->
+<div class="layer-popup module-a system-pop" id="MLP" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:650px">
+        <div class="pop-title">
+            <h2>다중 퍼셉트론 셋팅</h2>
+        </div>
+        <div class="pop-container">
+            <div class="pop-table" style="height:450px; overflow:auto">
+                <table>
+                    <colgroup>
+                        <col width="120px">
+                        <col width="auto">
+                    </colgroup>
+                    <tbody>
+					<!-- 기초전처리 start-->
+                    <tr>
+                        <th>
+                            결측치 처리
+                        </th>
+                        <td><select name="null" style='margin-left:0px;'><option value="Y">제거</option><option value="R">치환</option><!--<option value="N">처리안함</option>--></select></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            이상치 처리
+                        </th>
+                        <td><select name="outlier" style='margin-left:0px;'><option value="D">제거</option><option value="N">처리안함</option></select></td>
+                    </tr>
+					<!-- 기초전처리 end-->
+                    <tr>
+                        <th>
+                            종속 변수
+						</th>
+                        <td>
+                            <select name="target_name" class="cb_column" style='margin-left:0px;'></select>
+                        </td>
+                    </tr>
+					
+                    <tr>
+                        <th>
+                            독립 변수
+                        </th>
+                        <td>
+							<input type="text" class="cb_column" name="x_names" style='padding-left:20px;' placeholder="독립 변수로 사용할 컬럼을 선택하세요." readonly />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            공변량
+						</th>
+                        <td>
+                            <select name="cov" class="cb_column" style='margin-left:0px;'><option value=''>없음</option></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            수치형 변환
+                        </th>
+                        <td><input type="text" name="cvtnumeric" class='textonly' style='padding-left:20px;' placeholder="수치형으로 변환할 문자형 컬럼을 선택하세요." readonly /></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            학습데이터비율
+						</th>
+                        <td>
+                            <input type="text" name="splitrate" value=100 style='padding-left:20px;'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            은닉층 수
+						</th>
+                        <td>
+                            <select name="nhiddens" style='margin-left:0px;'><option selected>1</option><option>2</option></select>
+                        </td>
+                    </tr>
+                   <tr>
+                        <th>
+                            은닉층 노드수
+						</th>
+                        <td>
+							<input type="text" name="nnodes" placeholder="입력하지 않으면 노드수를 자동 계산합니다." style='padding-left:20px;'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            활성화함수
+						</th>
+                        <td>
+                            <select name="activefun" style='margin-left:0px;'><option value='tanh' selected>쌍곡탄젠트</option><option value='sigmoid'>시그모이드</option></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            출력층활성화함수
+						</th>
+                        <td>
+                            <select name="oactivefun" style='margin-left:0px;'><option value='linear'>항등함수</option><option value='softmax' selected>소프트맥스</option><option value='tanh'>쌍곡탄젠트</option><option value='sigmoid'>시그모이드</option></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            학습유형
+						</th>
+                        <td>
+                            <select name="trainmode" style='margin-left:0px;'><option value='batch' selected>배치</option><!--<option value='online'>온라인</option>--><option value='miniauto'>미니배치(자동계산)</option><option value='minibatch'>미니배치(사용자정의)</option></select>
+                        </td>
+                    </tr>
+					<tr style=display:none class=optT>
+                        <th>
+                            미니배치레코드수
+						</th>
+                        <td>
+                            <input type="text" name="minibatch" value=2 style='padding-left:20px;'>
+                        </td>
+                    </tr>
+                    <tr style=display:none>
+                        <th>
+                            최적화 알고리즘
+						</th>
+                        <td>
+                            <select name="optimize" style='margin-left:0px;'><option value='G' selected>기울기 하강</option><option value='D'>척도화된켤레기울기</option></select>
+                        </td>
+                    </tr>
+                    <tr style=display:none class=optG>
+                        <th>
+                            학습률
+						</th>
+                        <td>
+                            <input type="text" name="Glearn_rate" value=0.001 style='margin-left:0px;'>
+                        </td>
+                    </tr>
+                    <tr style=display:none class=optG>
+                        <th>
+                            모멘텀
+						</th>
+                        <td>
+                            <input type="text" name="Gmomentom" value=0.4 style='margin-left:0px;'>
+                        </td>
+                    </tr>
+                    <tr style=display:none class=optD>
+                        <th>
+                            초기람다
+						</th>
+                        <td>
+                            <input type="text" name="Dlambda" value=0.0 style='margin-left:0px;'>
+                        </td>
+                    </tr>
+                    <tr style=display:none class=optD>
+                        <th>
+                            초기시그마
+						</th>
+                        <td>
+                            <input type="text" name="Dsigma" value=0.0 style='margin-left:0px;'>
+                        </td>
+                    </tr>
+                    <tr style=display:none class=optD>
+                        <th>
+                            구간중심
+						</th>
+                        <td>
+                            <input type="text" name="Dcenter" value=0.0 style='margin-left:0px;'>
+                        </td>
+                    </tr>
+                    <tr style=display:none class=optD>
+                        <th>
+                            구간변위
+						</th>
+                        <td>
+                            <input type="text" name="Dvar" value=0.0 style='margin-left:0px;'>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+				
+            </div>
+			
+        </div>
+        <div class="pop-btn-area">
+			<b style='float:left;text-align:left'>
+					    * 결측치 제거 : 결측치가 포함되어 있는 행을 제거합니다. <br>
+						* 결측치 치환 : 결측치가 관찰된 셀을 해당 열의 평균값 또는 최빈값으로 대체합니다.<br>
+						* 이상치 제거 : 속성의 값이 일반적인 값보다 편차가 큰 값을 삭제합니다.<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						(3시그마기준 99.7%이상에 포함되는 값을 이상치로 판별)
+						</b></b>
+            <div class="btn-area">
+                <button type="button" class="button primary">분석</button>
+                <button type="button" class="button" data-bui-toggle-inactive="statistics">다음</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- 결과 보기 -->
+<div class="layer-popup module-a system-pop" id="resultviewer" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:1200px">
+            <div class="pop-title">
+                <h2>결과 보기</h2>
+            </div>
+            <div class="pop-container">
+				<div class="border p-5" style="width:1150px;height:600px;overflow:auto" id="ana_info"></div>
+            </div>
+            <div class="pop-btn-area">
+                <div class="btn-area">
+                    <button type="button" class="button primary saveresult">결과저장</button>
+                    <button type="button" class="button" data-bui-toggle-inactive="resultviewer">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 검사결과 보기 -->
+<div class="layer-popup module-a system-pop" id="resultviewer2" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:1200px">
+            <div class="pop-title">
+                <h2>AI 검사 결과보기</h2>
+            </div>
+            <div class="pop-container">
+				<div class="border p-5" style="width:1150px;height:650px;overflow:auto" id="ana_info2"></div>
+            </div>
+            <div class="pop-btn-area">
+                <div class="btn-area">
+                    <button type="button" class="button primary saveresult">검사결과저장</button>
+                    <button type="button" class="button" data-bui-toggle-inactive="resultviewer">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 학습결과 보기 -->
+<div class="layer-popup module-a system-pop" id="resultviewer3" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:1200px">
+            <div class="pop-title">
+                <h2>AI 모델 생성 학습 결과보기</h2>
+            </div>
+            <div class="pop-container">
+				<div class="border p-5" style="width:1150px;height:650px;overflow:auto" id="ana_info3"></div>
+            </div>
+            <div class="pop-btn-area">
+                <div class="btn-area">
+                    <b style='float:left'>* AI 모델 생성 학습 결과보기를 저장하는 것을 권고합니다.</b>
+					<button type="button" class="button primary saveresult">학습결과저장</button>
+                    <button type="button" class="button" data-bui-toggle-inactive="resultviewer">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 데이터보기 -->
+<div class="layer-popup module-a system-pop" id="dataviewer" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area w960" style="width:1200px">
+            <div class="pop-title">
+                <h2>상세 제조데이터</h2>
+            </div>
+            <div class="pop-container">
+                <div class="code-list type02">
+
+                    <div class="table-type">
+                        <table class="table-list-type" style="font-size:16.0pt; width:100%"><!-- 테이블 size 지정 필요 -->
+                            <colgroup>
+                                <col width="*">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Machine_Name</th>
+                                <th>Item No</th>
+                                <th>working time</th>
+                                <th>Thickness 1(mm)</th>
+                                <th>Thickness 2(mm)</th>
+                                <th>weld force(bar)</th>
+                                <th>weld current(kA) </th>
+                                <th>weld Voltage(v)</th>
+                                <th>weld time(ms) </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>30</td>
+                                <td>Spot-01</td>
+                                <td>65235-25800</td>
+                                <td>3/24/2020 0:00</td>
+                                <td>0.7</td>
+                                <td>0.7</td>
+                                <td>2.36
+                                </td>
+                                <td>14.56
+                                </td>
+                                <td>2.7
+                                </td>
+                                <td>71
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="pop-btn-area">
+                <div class="btn-area">
+                	<b style='float:left'><label id='totalrecord'></label> </b><br>
+                	<b style='float:left'><label id='totalrecord1'></label> </b><br>
+                	<b style='float:left'><label id='totalrecord2'>* 변수명에 포함된 특수문자,띄어쓰기는 '_'로 대체됩니다.</label></b>
+                    <button type="button" class="button" data-bui-toggle-inactive="dataviewer">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 메세지박스 -->
+<div class="layer-popup module-a system-pop" id="msgbox" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:700px">
+            <div class="pop-title">
+                <h2>데이터셋 입력</h2>
+            </div>
+            <div class="pop-container">
+                분석이 완료되었습니다. <br>
+                결과 보기에서 결과를 확인하세요.
+            </div>
+            <div class="pop-btn-area">
+                <div class="btn-area">
+                    <button type="button" class="button close" data-bui-toggle-inactive="msgbox">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 메세지박스callback -->
+<div class="layer-popup module-a system-pop" id="msgbox2" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:700px">
+            <div class="pop-title">
+                <h2>데이터셋 입력</h2>
+            </div>
+            <div class="pop-container"  style='height:200px; overflow:auto;'>
+                분석이 완료되었습니다. <br>
+                결과 보기에서 결과를 확인하세요.
+            </div>
+            <div class="pop-btn-area">
+                <div class="btn-area">
+                    <button type="button" class="button close" data-bui-toggle-inactive="msgbox">다음</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 컬럼선택 -->
+<div class="layer-popup module-a system-pop" id="selectcol_popup" data-bui-toggle="layerPopupTypeA" tabindex="0">
+    <div class="popup-item">
+        <div class="popup-area" style="width:500px">
+            <div class="pop-title">
+                <h2>컬럼선택</h2>
+            </div>
+            <div class="pop-container" style='height:400px; overflow:auto;'>
+				<div class="check-wrap"><input type="checkbox" id="c11" name="cc" /><label for="c11"><span></span>컬럼1</label></div>
+				<div class="check-wrap"><input type="checkbox" id="c12" name="cc" /><label for="c12"><span></span>컬럼2</label></div>
+            </div>
+            <div class="pop-btn-area">
+                <div class="btn-area">
+                    <button type="button" class="button" data-bui-toggle-inactive="selectcol_popup">취소</button>
+                    <button type="button" class="button primary"  data-bui-toggle-inactive="selectcol_popup">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 처리중 -->
+<div class="layer-popup module-a system-pop" id="loading" data-bui-toggle="layerPopupTypeB" tabindex="0">
+	<div class="popup-area" style='width:600px;height:190px'>
+	   <div class="pop-container">
+			<div class="pop-loading" style="width:600px;">
+				<center><span class='msgtime' style='font-size:18px;color:yellow;'>00:00</span></center>
+				<p class="loading-tit">
+				<label class="msgtxt">분석중 입니다.</label>
+				<span>잠시만 기다려주세요.</span>
+				</p>
+				<div class="loading-bar"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<input type="file" accept=".xls,.xlsx,.csv,.txt" id='file' style="display:none">
+<!-- wrap -->
+<script type="text/javascript" src="../../js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.bxslider.js"></script>
+<script type="text/javascript" src="../../js/common_ui.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+
+<script type = "text/javascript" src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+</body>
+</html>
+
+<!-- 스크립트 영역 -->
+<script type="text/javascript">
+
+
+var st = null;
+var loading_timer = null;
+
+function loading_time()
+{
+	var dur = Math.floor(((new Date()).getTime()-st)/1000);
+	var min = Math.floor(dur/60);
+	var sec = dur%60;
+	
+	if(min==0) min="00";
+	else if(min<10) min = "0"+min;
+	else min = ""+min;
+	if(sec==0) sec="00";
+	else if(sec<10) sec = "0"+sec;
+	
+	min = min.substring(min.length-2);
+	$('#loading .msgtime').text(min+":"+sec);
+}
+
+// 이벤트 처리:파일 업로드 클릭시 파일명 표시
+function onChangeFile(e){
+	var filename = e.value;
+	var p = filename.lastIndexOf("\\");
+	if(p>0) filename = filename.substring(p+1);
+	p = filename.lastIndexOf("/");
+	if(p>0) filename = filename.substring(p+1);
+	e.parentNode.nextElementSibling.innerHTML =  filename;
+}
+
+// 공통합수: 로딩중 상태 메세지 출력
+function start_loading(msg)
+{
+	st = (new Date()).getTime();
+	if(loading_timer!=null) clearInterval(loading_timer);
+	loading_timer = setInterval(loading_time, 1000);
+
+	$('#loading .msgtime').text("00:00");
+	$('#loading .msgtxt').html(msg);
+	layerPopupTypeB.toggle('loading');	
+}
+
+// 공통합수: 로딩중 상태 메세지 숨김
+function stop_loading()
+{
+	if(loading_timer!=null) clearInterval(loading_timer);
+	loading_timer = null;
+	layerPopupTypeB.toggle('loading');
+}
+
+// 공통합수: 메세지 박스 출력
+function msg_alert(title, msgtext)
+{
+	$("#msgbox .pop-title").text(title);
+	$("#msgbox .pop-container").html(msgtext);
+	layerPopupTypeA.toggle('msgbox');
+}
+
+// 공통합수: 메세지 박스 출력 및 callback 함수 실행
+function msg_alert_callback(title, msgtext, callback)
+{
+	$("#msgbox2 .pop-title").text(title);
+	$("#msgbox2 .pop-container").html(msgtext);
+	layerPopupTypeA.toggle('msgbox2');
+	
+	if(callback !== undefined )
+	{
+		$('#msgbox2 button.close').unbind('click').click(function() {
+			callback();
+		});
+	}
+}
+
+var pop_selected = [];
+// 공통합수: 컬럼 선택-전체선택처리
+$(document).on('click', '#selecta', function() {
+	var checkall = this.checked;
+	$('#selectcol_popup [name=colselector]').each(function() {
+		this.checked = checkall;
+	});
+	 
+	var cols = allval($('#selectcol_popup [name=colselector]:checked'));
+	$('#selectcolumns').val(cols);
+	pop_selected = [];
+	if(cols.length>0) pop_selected = cols.split(",");
+});
+
+// 공통합수: 컬럼 선택-선택추가처리
+$(document).on('click', '#selectcol_popup [name=colselector]', function() {
+	if(this.checked) //선택추가
+	{
+		pop_selected.push($(this).val());
+	}
+	else // 선택 삭제
+	{
+		var fp = pop_selected.indexOf($(this).val());
+		if(fp>=0) pop_selected.splice(fp,1);
+	}
+	$('#selectcolumns').val(pop_selected.join(","));
+	
+	$('#selecta')[0].checked = false;
+});
+
+// 공통합수: 컬럼 선택
+function popup_column_select(title, list, element)
+{
+	var label = element.parent().parent().children('th').text().trim();
+	if(label=="변수") title = label + " 선택";
+	else if(label=="독립 변수") title = label + " 선택";
+	else if(label=="수치형 변환") title = label + " 변수 선택";
+	else title = label + " 변수 선택";
+
+	$("#selectcol_popup .pop-title").text(title);
+	
+	var placeholder = element.attr('placeholder');
+	
+	var textonly = element.hasClass('textonly'); // 문자형 컬럼만 선택가능
+	var numonly = element.hasClass('numonly'); // 수치형 컬럼만 선택가능
+	
+	var html = '<input type="text" id="selectcolumns" value="'+element.val()+'" placeholder="'+placeholder+'" style="border:none; outline:0; width:100%; margin-left:0px;" readonly>';
+
+	html += '<div class="check-wrap"><input type="checkbox" id="selecta" value="" /><label for="selecta"><span></span>전체선택</label></div>';
+	var cols = list.split(",")
+
+	pop_selected = [];
+	if(element!==undefined)
+	{
+		if(element.val().length>0) pop_selected = element.val().split(',');
+	}
+	for(var i in cols)
+	{
+		if(cols[i]=="") continue;
+		var fp = pop_selected.indexOf(cols[i]); 
+		
+		var type = typestr(input_data_types[cols[i]]); // <font size=2 color=gray>['+type+']</font>
+		
+		if(textonly && type!="문자형") continue;
+		if(numonly && type!="수치형") continue;
+		if(fp<0)
+			html += '<div class="check-wrap"><input type="checkbox" id="c'+i+'" name="colselector" value="'+cols[i]+'" /><label for="c'+i+'"><span></span>'+cols[i]+'<font size=2 color=gray>['+type+']</font></label></div>';
+		else
+			html += '<div class="check-wrap"><input type="checkbox" id="c'+i+'" name="colselector" value="'+cols[i]+'" checked/><label for="c'+i+'"><span></span>'+cols[i]+'<font size=2 color=gray>['+type+']</font></label></div>';
+	}
+	
+	$("#selectcol_popup .pop-container").html(html);
+	layerPopupTypeA.toggle('selectcol_popup');
+	
+	$('#selectcol_popup button.primary').unbind('click').click(function() {
+		element.val($('#selectcolumns').val());
+	});
+}
+
+// 이벤트처리: 수치형 변환 입력박스 클릭시 실행
+$("#statistics [name=cvtnumeric],#visual [name=cvtnumeric],#regression [name=cvtnumeric],\
+#cluster [name=cvtnumeric],#randomforest [name=cvtnumeric],#corelation [name=cvtnumeric],#MLP [name=cvtnumeric]").click(function(){
+
+	var wnd = $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().attr('id');
+	var vals = "";
+	if (wnd=="statistics") 			vals = allval($('#statistics [name=x_names]'));
+	else if (wnd=="visual") 		vals = allval($('#visual .cb_column'));
+	else if (wnd=="regression") 	vals = allval($('#dep_val,#ind_val'));
+	else if (wnd=="cluster") 		vals = allval($('#cluster .cb_column'));
+	else if (wnd=="randomforest") 	vals = allval($('#randomforest [name=x_names],#rf_target_name'));
+	else if (wnd=="corelation") 	vals = allval($('#corelation [name=x_names]'));
+	else if (wnd=="MLP") 			vals = allval($('#MLP [name=x_names],#MLP [name=cov]'));
+	
+	popup_column_select('컬럼선택',vals,$(this));
+});
+
+// 이벤트처리: 변수 입력박스 클릭시
+$("input[name=x_names]").click(function(){
+	var vals = input_data_columns.join(",");
+	popup_column_select('컬럼선택',vals, $(this));
+});
+
+var input_data = null;
+var input_data_columns = [];
+var input_data_types = {};
+var input_file = null;
+var upload_path = null;
+var uid = "";
+var text_encoding = "";
+
+// 공통함수: 결과 다운로드 처리
+function download(filename, text) {
+	if (navigator.msSaveBlob) { // IE
+		var BOM = "\uFEFF";
+		//익스플로러면..
+        var blobObject = new Blob([BOM + text], {type: 'type: "text/plain; charset=utf-8"'});
+        window.navigator.msSaveOrOpenBlob(blobObject, filename);
+		return;
+    }
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+
+// 공통함수: 결과 다운로드 처리
+function urldownload(filename, url) {
+	if (navigator.msSaveBlob) { //IE
+		var imgData = atob(url.split(',')[1]),
+		len = imgData.length,
+		buf = new ArrayBuffer(len),
+		view = new Uint8Array(buf),
+		blob,
+		i;
+		for (i = 0; i < len; i++) {
+			view[i] = imgData.charCodeAt(i) & 0xff; // masking
+		}
+		var blobObject = new Blob([view], {type: 'application/octet-stream'});
+        window.navigator.msSaveOrOpenBlob(blobObject, filename);
+		return;
+    }
+    var pom = document.createElement('a');
+    pom.setAttribute('href', url);
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+
+// 공통함수: excel 파일 미리보기 read
+function readExcel(file, callback) {
+    let reader = new FileReader();
+	var binary = '';
+    reader.onload = function () {
+        let data = reader.result;
+		 var bytes = new Uint8Array(reader.result);
+		 var length = bytes.byteLength;
+
+		 for (var i = 0; i < length; i++) {
+			 var a = bytes[i];
+
+			 var b = String.fromCharCode(a)
+			 binary += b;
+		 }
+		 data = binary;
+		
+        let workBook = XLSX.read(data, { type: 'binary' });
+        workBook.SheetNames.forEach(function (sheetName) {
+            console.log('SheetName: ' + sheetName);
+            let rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
+//            console.log(JSON.stringify(rows));
+			text_encoding = "";
+			callback(rows);
+			read_columninfo();
+        })
+    };
+	//reader.readAsBinaryString(file);
+    reader.readAsArrayBuffer(file);
+}
+
+// 공통함수: csv 파일 미리보기 read
+function fileread(file, callback)
+{
+	$.post('/readtext',{path:upload_path,maxline:200}).done(function(res){
+		text_encoding = res.encoding;
+		callback(res.text);
+		
+//		res.readcount
+//		res.linecount
+		read_columninfo(res.columninfo);
+		
+		$('#totalrecord').text("* 본 제조데이터는 "+fmtstr(res.linecount)+"개의 레코드로 구성되어 있습니다.");
+		if(res.linecount>200){
+			$('#totalrecord1').html("* 제조데이터 미리보기는 상위 200개 레코드만 표시합니다.");
+			$('#totalrecord2').show();
+		}
+		else {
+			$('#totalrecord1').html("* 변수명에 포함된 특수문자,띄어쓰기는 '_'로 대체됩니다.");
+			$('#totalrecord2').hide();
+		}
+	});
+}
+
+// 이벤트 처리: 8개 알고리즘 메뉴 클릭처리
+$('button.step').click(function(){
+	var idx = $(this).attr("id").replace("step","");
+	$('.step-menu > ul > li.active').removeClass('active');
+	$(this).parent().addClass('active');
+	$('.item-flex').hide();
+	$('#flow'+idx).show();
+	initflow('#flow'+idx);
+
+});
+
+// 공통합수: csv 데이터 토큰 분리
+function csvtoken(line, deli)
+{
+	var tks = [];
+	line = line.replace("\uFEFF", ""); //BOM제거...
+	while(line.length!="")
+	{
+		if(line.indexOf('"')==0)
+		{
+			var ep = line.indexOf('"'+deli);
+			if(ep<0) break;
+			tks.push(line.substring(0,ep));
+			line = line.substring(ep+('"'+deli).length);
+		}
+		else
+		{
+			var ep = line.indexOf(',');
+			if(ep<0) break;
+			tks.push(line.substring(0,ep));
+			line = line.substring(ep+1);
+		}
+	}
+	if(line!="") tks.push(line);
+	return tks;
+}
+
+//csv to jsonlist
+function csvtolist(data, deli, header)
+{
+	if(deli===undefined) deli = ",";
+	if(header===undefined) header = true;
+	var lst = [];
+	var columns = [];
+	var lines = data.split("\n");
+	for(var i in lines)
+	{
+		var line = lines[i].replace("\r","");
+		if(line.length<=0) continue;
+		var record = {};
+		//var cols = line.split(deli);
+		var cols = csvtoken(line, deli);
+		if(i==0){
+			if(header){
+				for(j in cols) columns.push(cols[j].replace('"','').replace('"',''));
+				continue;
+			}
+			else for(j in cols) columns.push("column_"+j);
+		}
+		
+		for(j in cols) {
+			if(!cols[j].indexOf("\"")==0) record[columns[j]] = cols[j];
+			else record[columns[j]] = cols[j].substring(1, cols[j].length-1);
+		}
+		lst.push(record);
+	}
+	return lst;
+}
+
+// 공통함수: 숫자 포메팅 출력 (3자리씩 , 구분 처리)
+function fmtstr(v)
+{
+	if(v === undefined) return "";
+	if(!$.isNumeric(v)) return v;
+	
+	var str = ""+v;
+	var vals = str.split(".");
+	if(vals[0].length>3)
+	{
+		cs = vals[0];
+		vals[0]="";
+		while(cs.length>3)
+		{
+			vals[0] = ","+cs.substring(cs.length-3)+vals[0];
+			cs = cs.substring(0,cs.length-3);
+		}
+		vals[0] = cs+vals[0];
+	}
+	if(vals.length>1 && vals[1].length>3) {
+		vals[1] = vals[1].substring(0,3);
+	}
+	var retstr = "";
+	if(vals.length>1) retstr = vals[0]+"."+vals[1];
+	else retstr = vals[0];
+	
+	if(retstr.indexOf("-,")==0) retstr = retstr.replace("-,","-");
+	return retstr;
+}
+
+// 컬럼 명 읽기 ... Object.keys 대체...
+function getkeys(infos)
+{
+	var rets = [];
+	var keys = Object.keys(infos);
+	for( var i in keys) { 
+		if(keys[i].indexOf("__EMPTY")!=0 && keys[i]!="" ) rets.push(keys[i]);
+	}
+	return rets;
+}
+
+// callback : 미리보기데이터 읽어왔을때 실행
+function dataloaded(name, data)
+{
+	console.log('dataloaded', name);
+	
+	$('[name=cvtnumeric]').val('');
+	$('input[name=x_names]').val('');
+
+	$('#dataviewbtn').text("["+name+"] 데이터보기");
+	$('#dataviewbtn').show();
+	
+	input_data = data;
+	//table-list-type
+	
+	var keys = getkeys(input_data[0]);
+	input_data_columns = keys;
+	
+	$('.table-list-type').css("width", keys.length*150+"px");
+
+	var thead = "<tr>";
+	
+	for(var i in keys) {
+		type = input_data_types[keys[i]];
+		if(type==undefined || type==null)
+			thead += "<th>"+keys[i]+"</th>";
+		else
+			thead += "<th>"+keys[i]+"<br>"+type+"</th>";
+	}
+	thead += "</tr>";
+	$('.table-list-type thead').empty().append(thead);
+	$('.table-list-type tbody').empty();
+	
+	for(var l = 0; l<input_data.length && l<200; l++) {
+		var row = input_data[l];
+		var tr = "<tr>";
+		for(var i in keys) tr += "<td>"+fmtstr(row[keys[i]])+"</td>";
+		tr += "</tr>";
+		$('.table-list-type tbody').append(tr);
+	}
+}
+
+// 공통함수: 컬럼의 데이터 type을 리턴
+function typestr(type)
+{
+	if(type==undefined || type==null || type=="") return "";
+	if(type.indexOf("int")>=0||type.indexOf("float")>=0) return "수치형";
+	return "문자형";
+}
+
+// 공통함수: 컬럼 type 정보 읽어오기
+function read_columninfo(infos)
+{
+	var info = infos;
+	input_data_types = {};
+				
+	var infos = info.split("\n")
+	for (var t in infos)
+	{
+		var p = infos[t].lastIndexOf(":");
+		var n = "";
+		var v = "";
+		if(p>0){
+			n = infos[t].substring(0,p).trim();
+			v = infos[t].substring(p+1).trim();
+			console.log('types==>', '['+n+']','['+v+']');
+			input_data_types[n] = v;
+		}
+	}
+	var keys = input_data_columns;
+	var thead = "<tr>";
+	for(var i in input_data_columns) {
+		type = input_data_types[keys[i]];
+		type = typestr(type);
+		if(type==undefined || type==null)
+			thead += "<th>"+keys[i]+"</th>";
+		else
+			thead += "<th>"+keys[i]+"<br><font size=2 color=gray>["+type+"]</font></th>";
+	}
+	thead += "</tr>";
+	$('.table-list-type thead').html(thead);				
+	$(".cb_column").empty();
+	var keys = getkeys(input_data[0]);
+	for(var i in keys) {
+		var type = typestr(input_data_types[keys[i]]); // <font size=2 color=gray>['+type+']</font>
+		$(".cb_column").append('<option value="' + keys[i]+ '">'+keys[i]+'['+type+']</option>');
+	}
+	$('#MLP [name=cov]').append("<option value='' selected>없음</option>");
+}
+
+// 이벤트 처리: 데이트미리보기
+function viewdata(){ //for IE
+	layerPopupTypeA.toggle('dataviewer')
+}
+
+// 이벤트 처리: 데이터 입력 클릭 이벤트
+$('#step11,#step21,#step41,#step51,#step61,#step71,#step81,#step91').click( function() {
+
+	var id = $(this).attr("id");
+	$('#file').unbind('change').change(function() {
+		
+		console.log('file change', $('#file').get(0).files.length);
+		
+		if($('#file').get(0).files.length<=0) return;
+		
+		start_loading('업로드 중입니다.');
+		
+		input_file = $('#file').get(0).files[0];
+		var file = input_file;
+		var fileName = file.name;
+
+
+		var formData = new FormData();
+		formData.append('filename', input_file);
+
+		$.ajax({
+      	  type: "POST",
+      	  url: '/uploadfile',
+      	  data: formData,
+//          enctype: 'multipart/form-data',
+      	  contentType: false,
+      	  processData: false,
+      	  cache: false,
+      	  complete: function(res) {
+                var obj = JSON.parse(res.responseText);
+                console.log(obj);
+				upload_path = obj.path;
+				
+				/*
+				if(fileName.indexOf(".xls")>0)
+				{
+					readExcel(file,function(list){
+						dataloaded(fileName, list);
+						$('#totalrecord').text("* 본 제조데이터는 "+fmtstr(list.length)+"개의 레코드로 구성되어 있습니다.");
+						if(list.length>200) $('#totalrecord1').text("* 제조데이터 미리보기는 상위 200개 레코드만 표시합니다.");
+						else $('#totalrecord1').text("");
+						
+						$(".cb_column").empty();
+						var keys = getkeys(input_data[0]);
+						for(var i in keys) $(".cb_column").append("<option>"+keys[i]+"</option>");
+						$('#MLP [name=cov]').append("<option value='' selected>없음</option>");
+					
+					});
+				
+				}
+				else */
+				fileread(file,function(res) {
+					var deli = ",";
+					/*
+					var comma = res.indexOf(",");
+					var tab = res.indexOf("\t");
+					if((tab>=0 && comma<0) || (tab>=0 && comma>=0) && (tab<comma)) deli = "\t";
+					*/
+					
+					dataloaded(fileName, csvtolist(res,deli,true));
+					$(".cb_column").empty();
+					var keys = getkeys(input_data[0]);
+					for(var i in keys) $(".cb_column").append("<option>"+keys[i]+"</option>");
+					$('#MLP [name=cov]').append("<option value='' selected>없음</option>");
+				});
+				
+				$('input[name=x_names]').val('');
+				
+				stop_loading();
+				
+      	  },
+      	  error: function(jqXHR, textStatus, errorThrown) {
+				stop_loading();
+                msg_alert('업로드', '업로드 에 실패 하였습니다.');
+      	  }
+      	});
+
+	});
+
+	$('#file').attr('accept','.xls,.xlsx,.csv,.txt');
+	$('#file').click();
+
+});
+
+// 회귀분석 신뢰구간값 목록 초기화
+for(var i=100; i>=5; i-=5) $('#confidence_interval').append("<option>"+ (i==100?99:i) +"</option>");
+$('#confidence_interval').val("95");
+
+// 이벤트 처리: 회귀분석 클릭
+$('#step13').click( function() {
+
+	$("#regression [name=null]").val($("#visual [name=null]").val());
+
+	layerPopupTypeA.toggle('regression');
+	$('#regression button.primary').unbind('click').click(function() {
+	
+		var dep = $("#dep_val").val();
+		var ind = $("#ind_val").val();
+		var confidence_interval = $("#confidence_interval").val();
+
+		if(ind==dep)
+		{
+			msg_alert('오류', '독립변수와 종속변수를 다르게 선택해주세요.');
+			return;
+		}
+	
+		layerPopupTypeA.toggle('regression');
+		
+		var precmds = [];
+		precmds.push("/python/data_process.sh");
+		precmds.push(upload_path);
+		precmds.push(upload_path+".csv");
+		precmds.push($("#regression [name=null]").val());
+		precmds.push(allval("#regression .cb_column")); // 컬럼선택
+		var outlier = allval("#regression .cb_column");
+		if($("#regression [name=outlier]").val()!="D") outlier = "";
+		precmds.push(outlier);
+		precmds.push($("#regression [name=cvtnumeric]").val());
+		precmds.push(text_encoding); // text_encoding
+		
+		execshell_pre(precmds, function() {
+	
+			var cmds = ["/python/regress.sh",upload_path+".csv",ind,dep,"10",confidence_interval/100];
+			var d = {};
+			d.cmd=cmds.join("@");
+			d.deli= "@";
+
+			execshell(cmds);
+		});
+	
+	
+	});
+});
+
+// 이벤트 처리: 랜덤포레스트
+$('#step22').click( function() {
+	layerPopupTypeA.toggle('randomforest');
+	$('#randomforest button.primary').unbind('click').click(function() {
+	
+		var rf_target_name = $("#rf_target_name").val();
+		var rf_x_names = allval("#randomforest [name=x_names]");
+	
+		var rf_numoftree = $("#rf_numoftree").val();
+		var rf_rand = $("#rf_rand").val();
+
+		var model_name = allval("#randomforest [name=model_name]");
+		
+		if(rf_x_names=="" || rf_target_name===null)
+		{
+			msg_alert('오류', '컬럼을 선택하지 않았습니다.');
+			return;
+		}
+
+		if(model_name=="")
+		{
+			msg_alert('오류', '모델명을 입력하지 않았습니다.');
+			return;
+		}
+	
+		layerPopupTypeA.toggle('randomforest');
+		
+		var precmds = [];
+		precmds.push("/python/data_process.sh");
+		precmds.push(upload_path);
+		precmds.push(upload_path+".csv");
+		precmds.push($("#randomforest [name=null]").val());
+		precmds.push(allval("#randomforest .cb_column")); // 컬럼선택
+//		precmds.push($("#randomforest [name=outlier]").val());
+		var outlier = rf_x_names;
+		if($("#randomforest [name=outlier]").val()!="D") outlier = "";
+		precmds.push(outlier);
+		precmds.push($("#randomforest [name=cvtnumeric]").val());
+		precmds.push(text_encoding); // text_encoding
+
+		execshell_pre(precmds, function() {
+	
+			start_loading('분석중 입니다.');
+			var cmds = ["/python/randomforest_v4.sh",upload_path+".csv",rf_x_names,rf_target_name,rf_numoftree,rf_rand,uid,model_name];
+			var d = {};
+			d.cmd=cmds.join("@");
+			d.deli= "@";
+
+			$.post('/shell',d).done(function(res){
+				stop_loading();
+				if(res.success)
+				{
+					if(res.result.trim()=="" /*&& res.errlog!=""*/)
+					{
+						console.log(res);
+						msg_alert('알림', '전처리가 완료된 데이터만 분석 가능하며,<br>문자, 범주형 데이터 및 null값을 제거하여 주세요.');
+						return;
+					}
+					msg_alert('분석완료', '분석이 완료되었습니다. 시각화에서 결과를 확인하세요.');
+					$('#ana_info').html(res.result);
+				}
+				else
+				{
+					console.log(res);
+					msg_alert('알림', '전처리가 완료된 데이터만 분석 가능하며,<br>문자, 범주형 데이터 및 null값을 제거하여 주세요.');
+				}
+			});	
+		});
+	
+	});
+});
+
+// 동적 컬럼 추가
+function addcol(selector)
+{
+	if(selector!==undefined)
+	{
+		$(selector).append($(selector + " select:first").clone());
+		return;
+	}
+
+	$("[name=rf_x_names]:eq(0)").parent().append($("[name=rf_x_names]:eq(0)").clone())
+}
+
+// 동적 컬럼 삭제
+function delcol(selector)
+{
+	if(selector!==undefined)
+	{
+		if($(selector+" select").length>1) $(selector + " select:last").remove();
+		return;
+	}
+
+	if($("[name=rf_x_names]").length<=1) return;
+	$("[name=rf_x_names]:last").remove();
+}
+
+// 이벤트 처리: 결과보기의 결과 저장 클릭
+$('#resultviewer button.saveresult').unbind('click').click(function() {
+	var html = $('#ana_info').html();
+	download("result_"+ymd()+".html", html);
+});
+
+// 이벤트 처리: 알고리즘별 결과보기 버튼 클릭
+$('#step23,#step43,#step63,#step73,#step83,#step93,#step12,#step52').click( function() {
+
+	var id = $(this).attr("id");
+	$('#resultviewer .button:last').text('닫기');
+	if(id=="step43") $('#resultviewer h2').text('계층적군집분석 결과');
+	else if(id=="step73") $('#resultviewer h2').text('기술통계 분석결과');
+	else if(id=="step93") $('#resultviewer h2').text('K-평균군집분석 결과');
+	else if(id=="step23") {
+		$('#resultviewer .button:last').text('다음');
+		$('#resultviewer h2').text('랜덤포레스트학습 결과');
+	}
+	else if(id=="step52") $('#resultviewer h2').text('상관분석 결과');
+	else if(id=="step12") $('#resultviewer h2').text('회귀분석 결과');
+	else $('#resultviewer h2').text('결과보기');
+	layerPopupTypeA.toggle('resultviewer');
+	/*
+	$('#resultviewer button.saveresult').unbind('click').click(function() {
+		var html = $('#ana_info').html();
+		download("result_"+ymd()+".html", html);
+	});
+	*/
+});
+
+// 이벤트 처리: AI 검사 결과보기, 랜덤포레스트 분류 결과보기 버튼 클릭
+$('#step33,#step25').click( function() {
+
+	var id = $(this).attr("id");
+	if(id=="step33") {
+		$('#resultviewer2 h2').text('AI 검사 결과보기');
+		$('#resultviewer2 .saveresult').text('검사결과저장');
+	}
+	else if(id=="step25") {
+		$('#resultviewer2 h2').text('랜덤포레스트 예측 결과보기');
+		$('#resultviewer2 .saveresult').text('예측결과저장');
+	}
+
+	layerPopupTypeA.toggle('resultviewer2');
+	$('#resultviewer2 button.saveresult').unbind('click').click(function() {
+		var html = $('#ana_info2').html();
+		download("result_"+ymd()+".html", html);
+	});
+});
+
+// 이벤트 처리: AI 검사 결과보기 버튼 클릭
+$('#resultviewer3 button.saveresult').unbind('click').click(function() {
+	var html = $('#ana_info3').html();
+	download("result_"+ymd()+".html", html);
+});
+
+// 공통함수: 년월일
+function ymd()
+{
+	var ct = new Date();
+	return ct.getFullYear()+"-"+(ct.getMonth()+1)+"-"+ct.getDate();
+}
+
+var modelname = "";
+var dataset = [];
+var classname = [];
+var testfile = [];
+
+// 이벤트 처리: AI 데이터셋 class 추가 - 사용안함
+$('.addclass').click(function() {
+
+	$('#cnndataset table tbody').append($('.m_clsname:first').clone());
+	$('#cnndataset table tbody').append($('.m_filename:first').clone());
+	$('.m_clsname').each(function(i,e) {
+		$(e).find('th:eq(0)').text("클래스명"+(i+1)+":");
+	});
+	$('.m_filename').each(function(i,e) {
+		$(e).find('th:eq(0)').text("데이터셋"+(i+1)+":");
+	});
+
+});
+
+// 이벤트 처리: AI 데이터셋 class 삭제 - 사용안함
+$('.delclass').click(function() {
+	if($('.m_clsname').length<=2) return;
+	$('.m_clsname:last').remove();
+	$('.m_filename:last').remove();
+});
+
+//CNN 데이터셋
+$('#step30').click(function() {
+	layerPopupTypeA.toggle('cnndataset');
+
+	$('#cnndataset button.primary').unbind('click').click(function() {
+		dataset = [];
+		classname = [];
+		modelname = $('#cnndataset input[name=modelname]').val();
+		
+		if(modelname=="")
+		{
+			msg_alert('입력오류', '모델명을 입력하지 않았습니다.');
+			return;
+		}
+		
+		var err = false;
+		$('#cnndataset input[name=classname]').each(function(i,e){
+		
+			var val = $(e).val();
+			if(val.length==0)
+			{
+				err = true;
+				return;
+			}
+			classname.push(val);
+		});
+		
+		if(err)
+		{
+			msg_alert('입력오류', '클래스명을 입력하지 않았습니다.');
+			return;
+		}
+		
+		var formData = new FormData();
+		$('#cnndataset input[name=dataset]').each(function(i,e){
+			if($(e).get(0).files.length==0) {
+				err = true;
+				return;
+			}
+			formData.append('filename', $(e).get(0).files[0]);
+		});
+		
+		if(err)
+		{
+			msg_alert('입력오류', '제조 AI 데이터셋을 입력하지 않았습니다.');
+			return;
+		}
+
+		$('select[name=modelname]').empty().append('<option>'+modelname+'</option>');
+
+		layerPopupTypeA.toggle('cnndataset');
+		start_loading('제조 AI 데이터셋을 업로드 중입니다.');
+		$.ajax({
+      	  type: "POST",
+      	  url: '/uploadfiles',
+      	  data: formData,
+//          enctype: 'multipart/form-data',
+      	  contentType: false,
+      	  processData: false,
+      	  cache: false,
+      	  complete: function(res) {
+                var obj = JSON.parse(res.responseText);
+                console.log(obj);
+				dataset = obj.path;
+				stop_loading();
+                msg_alert('제조 AI 데이터셋 업로드', '제조 AI 데이터셋을 업로드 하였습니다. AI 모델을 생성하여 주세요.');
+      	  },
+      	  error: function(jqXHR, textStatus, errorThrown) {
+				stop_loading();
+                msg_alert('업로드', '업로드가 실패 하였습니다.');
+      	  }
+      	});
+	});
+});
+
+//이벤트 처리: CNN 모델생성
+$('#step301').click(function() {
+	layerPopupTypeA.toggle('cnnsetting');
+	
+	$('#cnnsetting button.primary').unbind('click').click(function() {
+		reset_aidataset();
+		reset_aitest();
+		modelname = $('#cnnsetting select[name=modelname]').val();
+		epochs = $('#cnnsetting [name=epochs]').val();
+		batchsize = $('#cnnsetting [name=batchsize]').val();
+		learnrate = $('#cnnsetting [name=learnrate]').val();
+		if(modelname==null || modelname=="")
+		{
+		    msg_alert('모델없음', '모델명을 선택하지 않았습니다.');
+			return;
+		}
+		if(classname.length==0)
+		{
+		    msg_alert('학습데이터셋없음', '제조 AI 데이터셋을 업로드하지 않았습니다.');
+			return;
+		}
+		layerPopupTypeA.toggle('cnnsetting');
+		start_loading('AI 모델을 생성중입니다.');
+		var cmds = ["/CNN/cnnfitn.sh", modelname];
+		for(var i=0; i<classname.length; i++) {
+			cmds.push(classname[i]);
+			cmds.push(dataset[i]);
+		}
+		var cmds = ["/CNN/cnnfit5.sh", uid, modelname, classname[0], classname[1], dataset[0], dataset[1], epochs, batchsize, learnrate];
+
+		var d = {};
+		d.cmd=cmds.join("@");
+		d.deli= "@";
+
+		$.post('/shell',d).done(function(res){
+			stop_loading();
+			if(res.success)
+			{
+				if(res.result.trim()=="" /*&& res.errlog!=""*/)
+				{
+					console.log(res);
+					msg_alert('알림', '학습용 데이터셋이 올바른지 확인하여 주세요.');
+					return;
+				}
+			
+				var html = res.result;
+				html = html.replace(//gi, "");
+				
+				var sp = html.indexOf("Found ");
+				var ep = html.indexOf(" classes.");
+				if(sp>0 && ep>0) html = html.substring(0, sp-1)+html.substring(ep+10);
+				
+				$('#ana_info3').html(html);
+				layerPopupTypeA.toggle('resultviewer3');
+			}
+		});
+	});
+});
+
+//이벤트 처리: CNN 테스트데이트 입력
+$('#step31').click(function() {
+
+	$.post('/shell',{cmd:"/CNN/cnnlst.sh@"+uid, deli:"@"}).done(function(res){
+		if(res.success)
+		{
+			var ls = res.result.trim().split("\n");
+			$('#cnntest select[name=modelname]').empty();
+			
+			ls.forEach(function(l) { 
+				var sp = l.lastIndexOf("/");
+				var ep = l.lastIndexOf(".");
+				l = l.substring(sp+1,ep);
+				if(l=="") return;
+				$('#cnntest select[name=modelname]').append("<option>"+l+"</option>");
+				$('#delmodel').show();
+			});
+			if(modelname!="") $('#cnntest select[name=modelname]').val(modelname);
+		}
+    });
+	
+	layerPopupTypeA.toggle('cnntest');
+
+	$('#cnntest button.primary').unbind('click').click(function() {
+	
+		modelname = $('#cnntest select[name=modelname]').val();
+		if(modelname=="")
+		{
+			msg_alert('AI 모델 선택', 'AI 모델을 선택하지 않았습니다.');
+			return;
+		}
+		var fcnt = 0;
+		var formData = new FormData();
+		$('#cnntest input[name=filename]').each(function(i,e) {
+			if($(e).get(0).files.length>0) {
+				formData.append('filename', $(e).get(0).files[0]);
+				fcnt++;
+			}
+		});
+		if(fcnt<=0)
+		{
+			msg_alert('파일선택', '파일을 선택하지 않았습니다.');
+			return;
+		}
+		
+		$.ajax({
+      	  type: "POST",
+      	  url: '/uploadfiles',
+      	  url: '/uploadfiles',
+      	  data: formData,
+//          enctype: 'multipart/form-data',
+      	  contentType: false,
+      	  processData: false,
+      	  cache: false,
+      	  complete: function(res) {
+                var obj = JSON.parse(res.responseText);
+                console.log(obj);
+				testfile = obj.path;
+				layerPopupTypeA.toggle('cnntest');
+				msg_alert('검사대상 제조데이터 업로드', '검사대상 제조데이터를 업로드 하였습니다. AI 검사를 실행하여 주세요.');
+      	  },
+      	  error: function(jqXHR, textStatus, errorThrown) {
+                msg_alert('검사대상 제조데이터 업로드', '검사대상 제조데이터 업로드 에 실패 하였습니다.');
+      	  }
+      	});
+	});
+
+});
+
+// 이벤트 처리: AI 모델생성 클릭
+$('#step32').click(function() {
+	if(modelname=="" || testfile.length<=0)
+	{
+		msg_alert('검사대상 제조데이터입력오류', '검사대상제조데이터를 입력하지 않았습니다.');
+		return;
+	}
+	
+	$.post('/fileinfo',{filename:"CNN/model/user_"+uid+"/"+modelname+".h5"}).done(function(res){
+		if(res.success)
+		{
+			start_loading('AI 검사 실행중입니다.');
+			testfiles = testfile.join(',');
+			var cmds = ["/CNN/cnnn.sh",uid, modelname, testfiles];
+			var d = {};
+			d.cmd=cmds.join("@");
+			d.deli= "@";
+
+			$.post('/shell',d).done(function(res){
+				stop_loading();
+				if(res.success)
+				{
+					msg_alert('AI 검사 실행 완료', 'AI 검사가 완료되었습니다. AI 검사 결과보기에서 결과를 확인하세요.');
+					$('#ana_info2').html(res.result);
+				}
+			});	
+		
+		} else{
+			msg_alert('AI 검사 실행실패', '모델이 없습니다. 모델을 먼저 생성해주세요.');
+		}
+	});
+});
+
+// 이벤트 처리: 테스트 데이터 추가
+function addtestfile()
+{
+	var obj = $('#testfile div:first').clone();
+	obj.children('span').text('선택된 파일이 없습니다.');
+	obj.children('input').val('');
+	$('#testfile').append(obj);
+}
+
+// 이벤트 처리: 테스트 데이터 삭제
+function deltestfile()
+{
+	if($('#testfile div').length<=1) return;
+	$('#testfile div:last').remove();
+}
+
+// 이벤트 처리: 군집분석 분석 종류 변경(계층적/kmean)
+$('#clustertype').change(function() {
+	if($('#clustertype').val()=="계층적 군집분석")
+	{
+		$('.clustertype2').hide();
+		$('.clustertype1').show();
+	}
+	else
+	{
+		$('.clustertype1').hide();
+		$('.clustertype2').show();
+	}
+});
+
+// 공통함수 : 쉘 명령 실행-backend 알고리즘을 shell로 실행
+function execshell(cmds,callback) {
+
+	start_loading('분석중 입니다.');
+	var d = {};
+	d.cmd = cmds.join("@");
+	d.deli= "@";
+	$.post('/shell',d).done(function(res){
+		stop_loading();
+		if(res.success)
+		{
+		
+			if(res.result.trim()=="" /*&& res.errlog!=""*/)
+			{
+				console.log(res);
+				msg_alert('알림', '전처리가 완료된 데이터만 분석 가능하며,<br>문자, 범주형 데이터 및 null값을 제거하여 주세요.');
+				return;
+			}
+		
+			if(callback!==undefined) callback(res.result);
+			else {
+				$('#ana_info').html(res.result);
+				msg_alert('분석완료', '분석이 완료되었습니다. 결과보기에서 확인하세요.');
+			}
+		}
+		else
+		{
+			msg_alert('알림', '전처리가 완료된 데이터만 분석 가능하며,<br>문자, 범주형 데이터 및 null값을 제거하여 주세요.');
+		}
+    });
+}
+
+// 이벤트 처리: 군집 설정
+$('#step42,#step92').click( function() {
+	
+	layerPopupTypeA.toggle('cluster');
+	$('#cluster button.primary').unbind('click').click(function() {
+		var cmds = [];
+		
+		if(allval("#cluster [name=x_names]")=="" || $("#cluster [name=target_name]").val()===null)
+		{
+			msg_alert('오류', '컬럼을 선택하지 않았습니다.');
+			return;
+		}
+		
+		if($('#clustertype').val()=="계층적 군집분석"){
+			cmds.push("/python/clustering1.sh");
+			cmds.push(upload_path+".csv");
+			cmds.push(allval("#cluster [name=x_names]"));
+			cmds.push($("#cluster [name=target_name]").val());
+			cmds.push($("#cluster [name=mink]").val());
+			cmds.push($("#cluster [name=maxk]").val());
+		} else {
+			cmds.push("/python/clustering2.sh");
+			cmds.push(upload_path+".csv");
+			cmds.push(allval("#cluster [name=x_names]"));
+			cmds.push($("#cluster [name=target_name]").val());
+			cmds.push($("#cluster [name=max_iter]").val());
+			cmds.push($("#cluster [name=converge]").val());
+			cmds.push($("#cluster [name=k]").val());
+			
+			var conv = parseFloat($("#cluster [name=converge]").val())
+			if(conv <0 || conv>1)
+			{
+				msg_alert('오류', '수렴기준의 값 범위를 초과 했습니다.(0~1)');
+				return;
+			}
+		}
+		
+		// 전처리...
+		layerPopupTypeA.toggle('cluster');
+		
+		var precmds = [];
+		precmds.push("/python/data_process.sh");
+		precmds.push(upload_path);
+		precmds.push(upload_path+".csv");
+		precmds.push($("#cluster [name=null]").val());
+		precmds.push(allval("#cluster .cb_column")); // 컬럼선택
+		var outlier = allval("#cluster .cb_column"); //allval("#cluster [name=x_names]");
+		if($("#cluster [name=outlier]").val()!="D") outlier = "";
+		precmds.push(outlier);
+		precmds.push($("#cluster [name=cvtnumeric]").val());
+		precmds.push(text_encoding); // text_encoding
+		
+		execshell_pre(precmds, function() {		
+			execshell(cmds);
+		});
+	});
+});
+
+// CNN 데이터셋 초기화
+function reset_aidataset()
+{
+	$('#cnndataset input[name=dataset]').each(function(i,e) {
+		$(this).val('');
+		$(this).parent().next().html('선택된 파일이 없습니다.<br>(파일첨부형식: zip 파일)');
+	});
+}
+
+// CNN 테스트데이터 초기화
+function reset_aitest()
+{
+	$('#cnntest input[name=filename]').each(function(i,e) {
+		$(this).val('');
+		$(this).parent().next().html('선택된 파일이 없습니다.');
+	});
+}
+
+//이벤트 처리: 랜덤포레스트 테스트데이트 입력
+$('#step24').click(function() {
+
+	$.post('/shell',{cmd:"/python/rflst.sh@"+uid, deli:"@"}).done(function(res){
+		if(res.success)
+		{
+			var ls = res.result.trim().split("\n");
+			$('#randomforesttest select[name=modelname]').empty();
+			
+			ls.forEach(function(l) { 
+				var sp = l.lastIndexOf("/");
+				var ep = l.lastIndexOf(".");
+				l = l.substring(sp+1,ep);
+				if(l=="") return;
+				$('#randomforesttest select[name=modelname]').append("<option>"+l+"</option>");
+				$('#delrandomforestmodel').show();
+			});
+			if(modelname!="") $('#randomforesttest select[name=modelname]').val(modelname);
+		}
+    });
+	
+	layerPopupTypeA.toggle('randomforesttest');
+
+	$('#randomforesttest button.primary').unbind('click').click(function() {
+	
+		var modelname = $('#randomforesttest select[name=modelname]').val();
+		
+		if(modelname==null || modelname=="")
+		{
+			msg_alert('렌덤 포레스트 모델 선택', '랜덤포레스트 모델을 선택하지 않았습니다.');
+			return;
+		}
+		var fcnt = 0;
+		var formData = new FormData();
+		$('#randomforesttest input[name=filename]').each(function(i,e) {
+			if($(e).get(0).files.length>0) {
+				formData.append('filename', $(e).get(0).files[0]);
+				fcnt++;
+			}
+		});
+		if(fcnt<=0)
+		{
+			msg_alert('파일선택', '파일을 선택하지 않았습니다.');
+			return;
+		}
+		
+		$.ajax({
+      	  type: "POST",
+      	  url: '/uploadfiles',
+      	  url: '/uploadfiles',
+      	  data: formData,
+//          enctype: 'multipart/form-data',
+      	  contentType: false,
+      	  processData: false,
+      	  cache: false,
+      	  complete: function(res) {
+                var obj = JSON.parse(res.responseText);
+                console.log(obj);
+				testfile = obj.path;
+				layerPopupTypeA.toggle('randomforesttest');
+				
+				start_loading('랜덤포레스트 예측 실행중입니다.');
+				testfiles = testfile.join(',');
+				var cmds = ["/python/rfn.sh",uid, modelname, testfiles];
+				var d = {};
+				d.cmd=cmds.join("@");
+				d.deli= "@";
+
+				$.post('/shell',d).done(function(res){
+					stop_loading();
+					if(res.success)
+					{
+						msg_alert('랜덤포레스트 예측 실행 완료', '랜덤포레스트 예측이가 완료되었습니다. 예측 결과보기에서 결과를 확인하세요.');
+						$('#ana_info2').html(res.result);
+					}
+				});	
+				
+//				분석 실행....
+				
+//				msg_alert('검사대상 제조데이터 업로드', '검사대상 제조데이터를 업로드 하였습니다. AI 검사를 실행하여 주세요.');
+      	  },
+      	  error: function(jqXHR, textStatus, errorThrown) {
+                msg_alert('검사대상 제조데이터 업로드', '검사대상 제조데이터 업로드 에 실패 하였습니다.');
+      	  }
+      	});
+	});
+
+});
+
+// 이젠트 처리: 랜덤포레스트 모델삭제
+function delrandomforestmodel()
+{
+	modelname = $('#randomforesttest select[name=modelname]').val();
+	modelname = $('#randomforesttest select[name=modelname]').val();
+	if(modelname=="") return;
+	if(confirm(modelname+" 모델을 삭제할까요 ?"))
+	{
+		start_loading('모델을 삭제중입니다.');
+		var cmds = ["/python/rfdel.sh", uid, modelname];
+		var d = {};
+		d.cmd=cmds.join("@");
+		d.deli= "@";
+
+		$.post('/shell',d).done(function(res){
+			stop_loading();
+			if(res.success)
+			{
+				var ls = res.result.trim().split("\n");
+				$('#randomforesttest select[name=modelname]').empty();
+			
+				$('#delmodel').hide();
+				ls.forEach(function(l) { 
+					var sp = l.lastIndexOf("/");
+					var ep = l.lastIndexOf(".");
+					l = l.substring(sp+1,ep);
+					if(l=="") return;
+					$('#randomforesttest select[name=modelname]').append("<option>"+l+"</option>");
+					$('#delrandomforestmodel').show();
+				});
+			}
+		});
+	}
+}
+
+
+// 각 flow 초기화 코드 ...
+function initflow(sel)
+{
+	if(sel=="#flow4" || sel=="#flow9") // 군집분석
+	{
+		var type = sel=="#flow4"?"계층적 군집분석":"K-평균군집";
+		$('#clustertype').val(type);
+		
+		$('#cluster h2').text(type+" 알고리즘 셋팅");
+	
+		$('#clustertype').change();
+	}
+
+	$('#ana_info2').html('')
+	$('#ana_info').html('');
+	$(".cb_column").empty();
+	input_data = null;
+	input_data_columns = [];
+    input_file = null;
+    upload_path = null;
+	$('#dataviewbtn').hide();	
+	$('#file').val('');
+	$('#plot_info').html('');
+	$('[name=cvtnumeric]').val('');
+	$('input[name=x_names]').val('');
+	reset_aidataset();
+	reset_aitest();
+}
+
+//해당 항목의 값을 모두가져옴
+function allval(selector)
+{
+	val = "";
+	$(selector).each(function(i,e){
+		if($(e).val()!=null && $(e).val()!="") {
+			if(val!="") val += ",";
+			val += $(e).val();
+		}
+	});
+	return val;
+}
+
+// 이벤트 처리: 상관분석
+$('#step53').click( function() {
+
+	layerPopupTypeA.toggle('corelation');
+	
+	$('#corelation button.primary').unbind('click').click(function() {
+
+		layerPopupTypeA.toggle('corelation');
+		
+		var xnames = allval("#corelation .cb_column");
+		var cvtnumeric = $("#corelation [name=cvtnumeric]").val();
+		if(xnames===null || xnames==""){
+			msg_alert('알림', '분석 데이터를 설정해주세요.');
+			return;
+		}
+		
+		// 문자형 컬럼과 수치형으로 변환된 컬럼만 선택가능함...
+		var cols = xnames.split(",");
+		var cvts = cvtnumeric.split(",");
+		for(var i in cols){
+			var type = typestr(input_data_types[cols[i]]);
+			if(type=="문자형" && cvts.indexOf(cols[i])<0) {
+				msg_alert('알림', '수치형 데이터만 분석이 가능합니다.');
+				return;
+			}
+		}
+	
+		var precmds = [];
+		precmds.push("/python/data_process.sh");
+		precmds.push(upload_path);
+		precmds.push(upload_path+".csv");
+		precmds.push($("#corelation [name=null]").val());
+		precmds.push(xnames); // 컬럼선택
+		var outlier = allval("#corelation .cb_column");
+		if($("#corelation [name=outlier]").val()!="D") outlier = "";
+		precmds.push(outlier);
+		precmds.push(cvtnumeric);
+		precmds.push(text_encoding); // text_encoding
+		
+		execshell_pre(precmds, function() {
+		
+			var cmds = [];
+			cmds.push("/python/corelation.sh");
+			cmds.push(upload_path+".csv");
+			cmds.push(allval("#corelation [name=x_names]"));
+			execshell(cmds);
+		});
+	});	
+});
+
+//공통함수 : backend 데이터 처리를  shell로 실행
+function execshell_pre(cmds,callback) {
+
+	start_loading('데이터 처리중입니다.');
+	var d = {};
+	d.cmd = cmds.join("@");
+	d.deli= "@";
+	$.post('/shell',d).done(function(res){
+		stop_loading();
+		
+		console.log('preprocessing===>',res);
+		if(res.success)
+		{
+			if(res.result.trim()=="")
+			{
+				console.log(res);
+				callback();
+				return;
+			}
+		
+			msg_alert_callback('데이터 수정', res.result.trim(),callback);
+		}
+		else
+		{
+			msg_alert('데이터 수정', '데이터 수정에 실패했습니다.');
+		}
+    });
+
+}
+
+// 이벤트 처리: 기술통계분석
+$('#step72').click( function() {
+	layerPopupTypeA.toggle('statistics');
+	$('#statistics button.primary').unbind('click').click(function() {
+	
+		var xnames = allval("#statistics [name=x_names]");
+		
+		if(xnames===null || xnames==""){
+		
+			msg_alert('알림', '분석 데이터를 설정해주세요.');
+			return;
+		}
+		
+		// 전처리...
+		layerPopupTypeA.toggle('statistics');
+		
+		var precmds = [];
+		precmds.push("/python/data_process.sh");
+		precmds.push(upload_path);
+		precmds.push(upload_path+".csv");
+		precmds.push($("#statistics [name=null]").val());
+		precmds.push($("#statistics [name=x_names]").val()); // 컬럼선택
+		var outlier = $("#statistics [name=x_names]").val();
+		if($("#statistics [name=outlier]").val()!="D") outlier = "";
+		precmds.push(outlier);
+		precmds.push($("#statistics [name=cvtnumeric]").val());
+		precmds.push(text_encoding); // text_encoding
+		
+		execshell_pre(precmds, function() {
+		
+			var cmds = [];
+			cmds.push("/python/statistics.sh");
+			cmds.push(upload_path+".csv");
+			var xnames = allval("#statistics [name=x_names]");
+			cmds.push(xnames);
+			
+			execshell(cmds);
+		});
+	});	
+});
+
+// 이벤트 처리: MLP optimize 변경시
+$('#MLP [name=optimize]').change(function(){
+	$('.optG,.optD').hide();
+	$('.opt'+$('#MLP [name=optimize]').val()).show();
+
+});
+
+// 이벤트 처리: MLP trainmode 변경시`
+$('#MLP [name=trainmode]').change(function(){
+
+	if($('#MLP [name=trainmode]').val()=="minibatch")
+		$('.optT').show();
+	else 
+		$('.optT').hide();
+
+});
+
+// 이벤트 처리: MLP분석
+$('#step82').click( function() {
+
+	layerPopupTypeA.toggle('MLP');
+	$('#MLP button.primary').unbind('click').click(function() {
+	
+		var xnames = allval("#MLP [name=x_names]");
+		var target_name = $("#MLP [name=target_name]").val();
+		
+		if(xnames===null || xnames==""){
+		
+			msg_alert('알림', '분석 데이터를 설정해주세요.');
+			return;
+		}
+		if(target_name===null || target_name==""){
+		
+			msg_alert('알림', '분석 데이터를 설정해주세요.');
+			return;
+		}
+		
+		// 전처리...
+		layerPopupTypeA.toggle('MLP');
+		
+		var precmds = [];
+		precmds.push("/python/data_process.sh");
+		precmds.push(upload_path);
+		precmds.push(upload_path+".csv");
+		precmds.push($("#MLP [name=null]").val());
+		precmds.push(allval("#MLP .cb_column")); // 컬럼선택
+		var outlier = xnames;
+		if($("#MLP [name=outlier]").val()!="D") outlier = "";
+		precmds.push(outlier);
+		precmds.push($("#MLP [name=cvtnumeric]").val());
+		precmds.push(text_encoding); // text_encoding
+		
+		execshell_pre(precmds, function() {
+		
+			var cmds = [];
+			cmds.push("/python/mlp.sh");
+			cmds.push(upload_path+".csv");
+			cmds.push(target_name);
+			cmds.push(xnames);
+			cmds.push($("#MLP [name=cov]").val());
+			cmds.push($("#MLP [name=splitrate]").val());
+			cmds.push($("#MLP [name=nhiddens]").val());
+			cmds.push($("#MLP [name=activefun]").val());
+			cmds.push($("#MLP [name=optimize]").val());
+			cmds.push($("#MLP [name=Glearn_rate]").val());
+			cmds.push($("#MLP [name=Gmomentom]").val());
+			cmds.push($("#MLP [name=Dlambda]").val());
+			cmds.push($("#MLP [name=Dsigma]").val());
+			cmds.push($("#MLP [name=Dcenter]").val());
+			cmds.push($("#MLP [name=Dvar]").val());
+			//-----0127 추가
+			var nnodes = $("#MLP [name=nnodes]").val();
+			if(nnodes=="") nnodes = "0";
+			cmds.push(nnodes);
+			cmds.push($("#MLP [name=oactivefun]").val());
+			var tmode = $("#MLP [name=trainmode]").val();
+			var minibatch = $("#MLP [name=minibatch]").val();
+			if(tmode=="miniauto"){
+				tmode = "minibatch";
+				minibatch = "0";
+			}
+			cmds.push(tmode);
+			cmds.push(minibatch);
+			
+			execshell(cmds);
+		});
+	});	
+});
+
+var params = location.href.split("?");
+if(params.length>=2)
+{
+	ids = params[1];
+	
+	var p = ids.indexOf("USER_ID=");
+	if(p>=0) {
+		uid = ids.substring(p+8);
+		p = uid.indexOf('&');
+		if(p>=0) uid = uid.substring(0, p);
+	}
+}
+
+// 이젠트 처리: CNN 모델삭제
+function delmodel()
+{
+	modelname = $('#cnntest select[name=modelname]').val();
+	modelname = $('#cnntest select[name=modelname]').val();
+	if(modelname=="") return;
+	if(confirm(modelname+" 모델을 삭제할까요 ?"))
+	{
+		start_loading('모델을 삭제중입니다.');
+		var cmds = ["/CNN/cnndel.sh", uid, modelname];
+		var d = {};
+		d.cmd=cmds.join("@");
+		d.deli= "@";
+
+		$.post('/shell',d).done(function(res){
+			stop_loading();
+			if(res.success)
+			{
+				var ls = res.result.trim().split("\n");
+				$('#cnntest select[name=modelname]').empty();
+			
+				$('#delmodel').hide();
+				ls.forEach(function(l) { 
+					var sp = l.lastIndexOf("/");
+					var ep = l.lastIndexOf(".");
+					l = l.substring(sp+1,ep);
+					if(l=="") return;
+					$('#cnntest select[name=modelname]').append("<option>"+l+"</option>");
+					$('#delmodel').show();
+				});
+			}
+		});
+	}
+}
+	
+</script>
+<!-- 스크립트 영역 -->

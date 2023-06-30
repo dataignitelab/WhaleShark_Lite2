@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+
+        <title>WhaleShark Lite2</title>
+
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <!-- Bootstrap is included in its original form, unaltered -->
+        <link rel="stylesheet" href="css/bootstrap.css">
+
+        <!-- Related styles of various javascript plugins -->
+        <link rel="stylesheet" href="css/plugins.css">
+
+  		<link rel="stylesheet" href="js/summernote/summernote-lite.min.css">
+
+        <!-- The main stylesheet of this template. All Bootstrap overwrites are defined in here -->
+        <link rel="stylesheet" href="css/main.css">
+
+        <!-- Load a specific file here from css/themes/ folder to alter the default theme of the template -->
+
+        <!-- The themes stylesheet of this template (for using specific theme color in individual elements - must included last) -->
+        <link rel="stylesheet" href="css/themes.css">
+        
+		<link rel="stylesheet" href="js/Chart/Chart.min.css">
+        
+        <!-- END Stylesheets -->
+
+        <!-- Modernizr (browser feature detection library) & Respond.js (Enable responsive CSS code on browsers that don't support it, eg IE8) -->
+        <script src="js/vendor/modernizr-respond.min.js"></script>
+        
+    </head>
+
+    <!-- Add the class .fixed to <body> for a fixed layout on large resolutions (min: 1200px) -->
+    <!-- <body class="fixed"> -->
+    <body>
+        <!-- Page Container -->
+        <div id="page-container">
+            <!-- Header -->
+            <!-- Add the class .navbar-fixed-top or .navbar-fixed-bottom for a fixed header on top or bottom respectively -->
+            <!-- <header class="navbar navbar-inverse navbar-fixed-top"> -->
+            <!-- <header class="navbar navbar-inverse navbar-fixed-bottom"> -->
+            <header class="navbar navbar-inverse">
+                <!-- Mobile Navigation, Shows up  on smaller screens -->
+                <ul class="navbar-nav-custom pull-right hidden-md hidden-lg">
+                    <li class="divider-vertical"></li>
+                    <li>
+                        <!-- It is set to open and close the main navigation on smaller screens. The class .navbar-main-collapse was added to aside#page-sidebar -->
+                        <a href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-main-collapse">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- END Mobile Navigation -->
+
+                <!-- Logo -->
+                <a href="index.html" class="navbar-brand"><b style='font-family:arial;font-size:1.2em;color:yellow'>WhaleShark Lite2 </b></a>
+
+                <!-- Loading Indicator, Used for demostrating how loading of widgets could happen, check main.js - uiDemo()
+                <div id="loading" class="pull-left"><i class="fa fa-certificate fa-spin"></i></div> -->
+
+                <!-- Header Widgets -->
+                <!-- You can create the widgets you want by replicating the following. Each one exists in a <li> element -->
+                <ul id="widgets" class="navbar-nav-custom pull-right">
+
+                    <!-- User Menu -->
+                    <li class="dropdown pull-right dropdown-user">
+                    	<font color=white><b>(운영자)</b></font>
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><img src="img/template/avatar.png" alt="avatar"> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!-- Just a button demostrating how loading of widgets could happen, check main.js- - uiDemo() -->
+                            <li>
+                                <!-- Modal div is at the bottom of the page before including javascript code -->
+                                <a href="#modal-user-settings" role="button" data-toggle="modal"><i class="fa fa-user"></i> 개인 정보 설정</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="javascript:logout();" url="page_login.html"><i class="fa fa-lock"></i> 로그아웃</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END User Menu -->
+                </ul>
+                <!-- END Header Widgets -->
+            </header>
+            <!-- END Header -->
+
+            <!-- Inner Container -->
+            <div id="inner-container">
+                <!-- Sidebar -->
+                <aside id="page-sidebar" class="collapse navbar-collapse navbar-main-collapse">
+                    <!-- Sidebar search -->
+                    <form id="sidebar-search">
+                        <div class="input-group">
+                            <input type="text" id="sidebar-search-term" name="sidebar-search-term" placeholder="" disabled>
+                            <!-- <button><i class="fa fa-search"></i></button> -->
+                        </div>
+                    </form>
+                    <!-- END Sidebar search -->
+
+                    <!-- Primary Navigation -->
+                    <nav id="primary-nav">
+                        <ul>
+                            <!-- <li class=''>
+                                <a href="#" class="menu" data-link="page_dashboard.html" class="active"><i class="fa fa-fire"></i>데이터관리</a>
+                            </li> -->
+                            <!--
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>데이터관리</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="manualdata_mgr.html"><i class="gi gi-sort"></i>센서데이터수동입력</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="sensordata.html"><i class="gi gi-sort"></i>센서데이터조회</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="dashboard.html"><i class="gi gi-sort"></i>센서대시보드</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="analysis_tools.html"><i class="gi gi-circle_question_mark"></i>분석도구</a>
+                                    </li>
+                                </ul>
+                            </li>
+                              -->
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>데이터 통합</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="meta_mgr.html"><i class="gi gi-sort"></i>통합데이터 관리</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="fileupload.html"><i class="gi gi-sort"></i>파일 업로드</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="ftpsync.html"><i class="gi gi-sort"></i>ftp 동기화</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="rdbsync.html"><i class="gi gi-sort"></i>rdb 동기화</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>데이터 브라우즈</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="datagrid.html"><i class="gi gi-sort"></i>데이터 그리드</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>분석</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="analysis_wizard1.html"><i class="gi gi-sort"></i>자동분석1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="analysis_wizard.html"><i class="gi gi-sort"></i>자동분석</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="analysis_tools.html"><i class="gi gi-sort"></i>분석도구</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>시각화</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="dashboard.html"><i class="gi gi-sort"></i>시각화도구</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>시스템 모니터링</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="monitoring.html"><i class="gi gi-sort"></i>시스템 모니터링</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="help.html"><i class="gi gi-sort"></i>사용법 및 도움말</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>사용자및권한관리</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="user_mgr.html"><i class="gi gi-sort"></i>사용자관리</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="group_mgr.html"><i class="gi gi-sort"></i>사용자그룹관리</a>
+                                    </li>
+                                    <!--
+                                    <li>
+                                        <a href="#" class="menu" data-link="permission_mgr.html"><i class="gi gi-circle_question_mark"></i>권한관리</a>
+                                    </li>
+                                      -->
+                                    <li>
+                                        <a href="#" class="menu" data-link="menu_mgr.html"><i class="gi gi-circle_question_mark"></i>메뉴관리</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>수집장치관리</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="sensor_mgr.html"><i class="gi gi-sort"></i>센서관리</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="device_mgr.html"><i class="gi gi-sort"></i>단말관리</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class='tmenu'>
+                                <a href="#"><i class="fa fa-th-list"></i>모델 및 서비스관리</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="menu" data-link="model_mgr.html"><i class="gi gi-sort"></i>모델관리</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu" data-link="svc_mgr.html"><i class="gi gi-sort"></i>서비스관리</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                    </nav>
+                </aside>
+                <!-- END Sidebar -->
+
+                <!-- Page Content -->
+                <div id="page-content">
+                </div>
+                <!-- END Page Content -->
+
+                <!-- Footer -->
+                <footer>
+                    <strong>© Copyright 데이터센터릭-IoTMan. All rights reserved.</strong>
+                </footer>
+                <!-- END Footer -->
+            </div>
+            <!-- END Inner Container -->
+        </div>
+        <!-- END Page Container -->
+
+        <!-- Scroll to top link, check main.js - scrollToTop() -->
+        <a href="javascript:void(0)" id="to-top"><i class="fa fa-chevron-up"></i></a>
+
+        <!-- User Modal Settings, appears when clicking on 'User Settings' link found on user dropdown menu (header, top right) -->
+        <div id="modal-user-settings" class="modal">
+            <!-- Modal Dialog -->
+            <div class="modal-dialog">
+                <!-- Modal Content -->
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4>개인정보 설정</h4>
+                    </div>
+                    <!-- END Modal Header -->
+
+                    <!-- Modal Content -->
+                    <div class="modal-body">
+                        <!-- Tab links -->
+                        <ul id="example-user-tabs" class="nav nav-tabs" data-toggle="tabs">
+                            <li class="active"><a href="#user-tabs-account"><i class="fa fa-cogs"></i> 계정 정보</a></li>
+                        </ul>
+                        <!-- END Tab links -->
+
+                        <!-- END Tab Content -->
+                        <div class="tab-content">
+                            <!-- First Tab -->
+                            <div class="tab-pane active" id="user-tabs-account">
+                                <div class="alert alert-success hide">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Success!</strong> Password changed!
+                                </div>
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">사용자명</label>
+                                        <div class="col-md-9">
+                                            <!-- <p class="form-control-static" id=user-name>administrator</p> -->
+                                            <input type="text" id="user-name" class="form-control">
+                                            <!-- <span class="help-block">이름은 변경할수 없습니다!</span> -->
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3" for="user-pass">비밀번호</label>
+                                        <div class="col-md-9">
+                                            <input type="password" id="user-pass" class="form-control">
+                                            <span class="help-block">정보변경시 현재 비밀번호를 입력해주세요!</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3" for="user-newpass">새 비밀번호</label>
+                                        <div class="col-md-9">
+                                            <input type="password" id="user-newpass" placeholder="비밀번호 변경시에만 입력해주세요." class="form-control">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- END First Tab -->
+                        </div>
+                        <!-- END Tab Content -->
+                    </div>
+                    <!-- END Modal Content -->
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer remove-margin">
+                        <button type='button' class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+                        <button type='button' class="btn btn-success" id="btnchginfo" ><i class="fa fa-check"></i> 변경내용 저장</button>
+                    </div>
+                    <!-- END Modal footer -->
+                </div>
+                <!-- END Modal Content -->
+            </div>
+            <!-- END Modal Dialog -->
+        </div>
+        <!-- END User Modal Settings -->
+
+        <!-- Excanvas for canvas support on IE8 -->
+        <!--[if lte IE 8]><script src="js/helpers/excanvas.min.js"></script><![endif]-->
+
+        <!-- Include Jquery library from Google's CDN but if something goes wrong get Jquery from local file (Remove 'http:' if you have SSL) -->
+        <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+        <!-- <script>!window.jQuery && document.write(decodeURI('%3Cscript src="js/vendor/jquery-1.11.1.min.js"%3E%3C/script%3E'));</script> -->
+        <script src="js/vendor/jquery-1.11.1.min.js"></script>
+        <script src="js/vendor/jquery-ui.js"></script>
+
+        <!-- Bootstrap.js -->
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <!-- Jquery plugins and custom javascript code -->
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+		<!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
+		<script src="js/d3/js/d3.min.js"></script>
+		<!-- <script src="js/d3/js/d3.v4.min.js"></script> -->
+		<script src="js/Chart/d3.v4.min.js"></script>
+		<!-- <script src="js/d3/js/d3.layout.cloud.js"></script> --> 
+  		<script src="js/summernote/summernote-lite.js"></script>
+		<script src="js/Chart/Chart.min.js"></script>
+	    <script src="js/Chart/jquery.awesomeCloud-0.2.js"></script>
+	    <script src="js/Chart/plotLine-chart.js"></script>
+	    
+		<link href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.ui.position.min.js" type="text/javascript"></script>
+		<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		
+        <script src="js/sha/sha512.min.js"></script> 
+        <script src="js/baseapp.js"></script>
+        <script src="js/language.js"></script>
+		
+    
+        <!-- Javascript code only for this page -->
+        <script>
+        
+        	function logout()
+        	{
+        		App.msg_confirm('로그아웃', '로그아웃할까요?', logout_action);
+        	}
+        	
+        	function logout_action()
+        	{
+    			$.post(App.baseurl+"/login", {action:"logout"}).done();
+    			App.loginname = '';
+    			App.islogin = false;
+    			location.href = "login.html";
+        	}
+        
+            $('#btnchginfo').on('click', function()
+            {
+                var old_pass = hex_sha512($("#user-pass").val());
+                var new_pass = hex_sha512($("#user-newpass").val());
+
+                if($("#user-name").val()=="")
+                {
+                    App.msg_alert('개인정보 변경', '이름를 입력해주세요..');
+                    return;
+                }
+                if($("#user-pass").val()=="")
+                {
+                    App.msg_alert('개인정보 변경', '기존비밀번호를 입력해주세요..');
+                    return;
+                }
+                /*
+                if($("#user-newpass").val()=="")
+                {
+                    App.msg_alert('개인정보 변경', '변경할 비밀번호를 입력해주세요..');
+                    return;
+                }
+                */
+
+                var post={name:$("#user-name").val(),oldpassword:old_pass};
+                if($("#user-newpass").val()!="") post.password = new_pass;
+
+        		$.post(App.baseurl+"/update_myinfo", post).done(function(ret) {
+        			if(ret.success)
+        			{
+                        App.msg_alert('개인정보 변경', ' 저장되었습니다. 다시로그인해주세요', logout_action);
+        			}
+        			else
+        			{
+                        App.msg_alert('개인정보 변경실패', '정보가 올바르지 않습니다.');
+        			}
+        		}).fail(function() {
+                    App.msg_alert('개인정보 변경실패', '에러가 발생했습니다.');
+        		});
+                
+            });
+
+        	$(function init() {
+        		
+        		App.islogin = false;
+        		$.post(App.baseurl+"/login_info", {time:new Date()}).done(function(ret) {
+        			if(ret.success)
+        			{
+        				$('.dropdown-user b:first').text(ret.loginname);
+        				App.islogin = true;
+        				App.loginname = ret.loginname;
+        				App.loginid = ret.loginid;
+        				App.loginuserid = ret.loginuserid;
+        				App.company = ret.company;
+        				App.role = ret.role;
+        				$("#user-name").val(App.loginname);
+    	            	movepage("intro.html");
+
+        				if(App.menus === undefined) App.menus = {};
+    	            	// menu load...
+    	            	var cond = {qid:"usermenu",userid:App.loginid};
+    	            	$.post(App.baseurl+"/list",cond).done(function(res) {
+							$('a.menu').parent().hide();
+    	            		if(res.success && res.list.length>0)
+    	            		{
+    	            			for(var i=0; i<res.list.length; i++)
+    	            			{
+    	            				var menu = res.list[i];
+    	            				if(menu.link == "" ) continue;
+    	            				if(App.menus[menu.link]===undefined) $('a.menu[data-link="'+menu.link+'"]').parent().show();
+    	            				App.menus[menu.link] = menu;
+    	            			}
+    	            			
+    	            			$('li.tmenu').each(function(i,e){
+    	            				var cnt = 0;
+    	            				$(this).find('li').each(function() { if($(this).css('display')!='none') cnt++; });
+    	            				$(this).find('span').text(cnt);
+    	            				
+    	            			});
+    	            		}
+    	            	});
+        			}
+        			else
+    	                location.href = "login.html";
+        				
+        		}).fail(function() {
+	                location.href = "login.html";
+        		});
+	            
+	            $(".menu").on('click', function () {
+
+	            	var url = $(this).data('link');
+	            	$('a.active').removeClass('active');
+	            	
+	            	$(this).parent().parent().parent().find('a').eq(0).addClass('active');
+	            	if(url!==undefined && url!="") movepage(url);
+	            });
+	            
+        	});
+        	
+        	// session chk...
+        	var lasttime = (new Date()).getTime();
+        	$(document).mousedown(function() {
+        		var ct = (new Date()).getTime();
+        		
+        		var inttime = (ct - lasttime)/1000;
+        		
+        		if(inttime>60)
+        		{
+        			$.post(App.baseurl+"/login_info", {time:new Date()}).done(function(ret) { if(!ret.success) location.href = "login.html"; });
+        		}
+        		lasttime = ct;
+        	});
+        	
+            
+        </script>
+    </body>
+</html>

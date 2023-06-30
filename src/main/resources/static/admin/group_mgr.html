@@ -1,0 +1,255 @@
+                    <!-- Navigation info -->
+                    <ul id="nav-info" class="clearfix">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li><a href="javascript:void(0)">사용자및권한관리</a></li>
+                        <li class="active"><a href="javascript:void(0)">그룹관리</a></li>
+                    </ul>
+                    <!-- END Navigation info -->
+
+                    <!-- Editable Datatables -->
+                    <h3 class="page-header page-header-top">그룹관리 <small> </small></h3>
+
+                    <!-- Toolbar -->
+                    <div class="push">
+                        <button class="btn btn-success W" id='btnAdd' title="그룹등록"><i class="fa fa-plus"></i> 그룹등록</button>
+                    </div>
+                    <!-- END Toolbar -->
+
+                    <!-- Table -->
+                    <table id="group-datatables" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="cell-small text-center">#</th>
+                                <th><i class="fa fa-user"></i> 그룹명</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 비고</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 등록일시</th>
+                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- END Table -->
+                    <!-- END Editable Datatables -->
+                    
+                    <!-- user modal form -->
+					<div id="group-modal" class="modal">
+					        <!-- Modal Dialog -->
+					        <div class="modal-dialog">
+					            <!-- Modal Content -->
+					            <div class="modal-content">
+					                <!-- Modal Header -->
+					                <div class="modal-header">
+					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					                    <h4>그룹 등록</h4>
+					                </div>
+					                <!-- END Modal Header -->
+					
+					                <!-- Modal Content -->
+					                <div class="modal-body">
+			                            <form class="form-horizontal">
+			                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">그룹명</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="name" class="form-control" value="">
+		                                            <input type="hidden" name="id" class="form-control" value="">
+			                                    </div>
+			                                </div>
+	
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">비고 </label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="bigo" class="form-control" value="">
+			                                    </div>
+			                                </div>
+			                                
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">상태</label>
+			                                    <div class="col-md-9">
+		                                            <select name="state" class="form-control">
+						                            <option value="ACTIVE">활성</option>
+						                            <option value="INACTIVE">비활성</option>
+						                            </select>
+			                                    </div>
+			                                </div>
+			
+			                            </form>
+					                </div>
+					                <!-- END Modal Content -->
+					
+					                <!-- Modal footer -->
+					                <div class="modal-footer remove-margin">
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" ><i class="fa fa-check"></i> 저장</button>
+					                </div>
+					                <!-- END Modal footer -->
+					            </div>
+					            <!-- END Modal Content -->
+					        </div>
+					        <!-- END Modal Dialog -->        
+					</div>
+					<!-- END user modal form -->
+                    
+                    
+        <!-- Javascript code only for this page -->
+        <script>
+        	
+        	var editableTable = null;
+        	
+            $(function () {
+
+                var delHandle = function () {
+
+                    // When the user clicks on a delete button
+                    $('body').off('click', 'a.delRow').on('click', 'a.delRow', function () {
+                    	var id = $(this).data("id");
+                    	var row = $(this).parent().parent().index();
+                    	var d = editableTable.fnGetData(row);
+                		App.msg_confirm('삭제', '['+d.name+'] 정보를  삭제 할까요?', function() {
+                			App.start_loading('그룹정보 삭제중');
+                			var cond = {qid:'groupdelete',id:id};
+                			console.log('delete==>', cond);
+                            $.post(App.baseurl+"/delete", cond).done(function (res) {
+                            	App.stop_loading();
+                            	if(res.success && res.result>0) {
+                            		editableTable.fnDeleteRow(row);
+                            	}
+                            	else {
+                                	App.msg_alert('삭제', '그룹정보 삭제 실패하였습니다.');
+                            	}
+                            }).fail( function () {
+                            	App.stop_loading();
+                            	App.msg_alert('삭제', '그룹정보 삭제  실패 하였습니다.');
+                            });
+                		} );
+                    });
+                };
+
+                var addHandle = function () {
+                     $("#btnAdd").click(function () {
+                    	$('#group-modal .modal-header h4').text('그룹 등록');
+                    	$('#group-modal [name=id]').val('');
+                    	$('#group-modal [name=name]').val('');
+                    	$('#group-modal [name=bigo]').val('');
+                    	$('#group-modal [name=state]').val("ACTIVE");
+                    	$('#group-modal').modal({backdrop:'static'});
+                    });
+                };
+                
+                var editHandle = function () {
+
+                    // When the user clicks on a delete button
+                    $('body').off('click', 'a.editRow').on('click', 'a.editRow', function () {
+
+                    	var uid = $(this).data("id");
+                    	var row = $(this).parent().parent().index();
+                    	var d = editableTable.fnGetData(row);
+                    	
+                    	$('#group-modal .modal-header h4').text('그룹 정보수정');
+                    	
+                    	$('#group-modal [name=id]').val(d.id);
+                    	$('#group-modal [name=name]').val(d.name);
+                    	$('#group-modal [name=bigo]').val(d.bigo);
+                    	$('#group-modal [name=state]').val(d.state);
+                    	
+                    	$('#group-modal').modal({backdrop:'static'});
+                    });
+                };
+                
+                editableTable = initgrid('#group-datatables',{
+                ajax: {
+                    url: App.baseurl+'/list', 
+                    type: 'POST',
+                    dataFilter: function(data){
+                        var jdata = jQuery.parseJSON( data );
+                        var json = {};
+                        json.recordsTotal = jdata.total;
+                        json.recordsFiltered = jdata.total;
+                        json.data = jdata.list;
+                        return JSON.stringify( json ); // return JSON string
+                    },
+                    data: function (d) {
+                    	d.qid = "grouplist";
+                    	var fld = "name";
+                    	d.column = fld;
+//                    	d.company = App.company;
+                    	d.find =  $('.dataTables_filter input').val();
+    				},
+                },
+                columns: [
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
+                    {data: "name"},
+                    {data: "bigo"}, 
+                    {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
+                    {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                ],
+                paging: true,
+                serverSide: true,
+                processing: true, 
+                });
+                
+                $('.dataTables_filter input').attr('placeholder', '검색');
+
+                addHandle();
+                delHandle();
+                editHandle();
+
+            });
+            
+            $('#btnSave').click(function() {
+
+                if($("#group-modal [name=name]").val()=="")
+                {
+                    App.msg_alert('입력오류', '그룹명을 입력하지 않았습니다.');
+                    return;
+                }
+
+                var data = {qid:"groupupdate"};
+            	var uid = hashcode('grp_');
+                var url = App.baseurl+"/update";
+                
+                if($("#group-modal [name=id]").val()=="") {
+                	url = App.baseurl+"/insert";
+                	data.qid = "groupadd";
+                	data.id = uid;
+               	}
+                else data.id = $("#group-modal [name=id]").val();
+                
+                data.name = $('#group-modal [name=name]').val();
+                data.bigo = $('#group-modal [name=bigo]').val();
+                data.state = $('#group-modal [name=state]').val();
+                data.company = App.company;
+                App.start_loading('정보저장중');
+                $.post(url, data).done(function(res) {
+                    console.log(res);
+                    if(res.success)
+                    {
+                      	App.stop_loading();
+                       	App.msg_alert('그룹정보', '저장되었습니다.', function() { $('#group-modal').modal('hide'); $('#group-datatables').DataTable().ajax.reload(null, false); });
+                    }
+                    else {
+                        App.stop_loading();
+                        App.msg_alert('그룹정보', '저장에 실패 하였습니다.');
+                    }
+                }).fail(function(e) {
+                    App.stop_loading();
+                    console.log('error=>',e);
+                    App.msg_alert('그룹정보', '저장에 실패 하였습니다.');
+                }); 
+
+            }); 
+
+			// W 권한 없을때...
+			var delbtnclass = "";
+			if(App.menus[App.curpage] !== undefined)
+			{
+				if(App.menus[App.curpage].rwtype!="W") {
+					$('button.W').hide();
+					delbtnclass = 'hide';
+				}
+			}
+            
+        </script>

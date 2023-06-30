@@ -1,0 +1,462 @@
+                    <!-- Navigation info -->
+                    <ul id="nav-info" class="clearfix">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li><a href="javascript:void(0)">사용자및권한관리</a></li>
+                        <li class="active"><a href="javascript:void(0)">사용자관리</a></li>
+                    </ul>
+                    <!-- END Navigation info -->
+
+                    <!-- Editable Datatables -->
+                    <h3 class="page-header page-header-top">사용자관리 <small> </small></h3>
+
+                    <!-- Toolbar -->
+                    <div class="push">
+                        <button class="btn btn-success W" id='btnAdd' title="사용자등록"><i class="fa fa-plus"></i> 사용자등록</button>
+                    </div>
+                    <!-- END Toolbar -->
+
+                    <!-- Table -->
+                    <table id="user-datatables" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="cell-small text-center">#</th>
+                                <th><i class="fa fa-user"></i> 아이디</th>
+                                <th><i class="fa fa-user"></i> 이름</th>
+                                <th><i class="fa fa-envelope-o"></i> 이메일</th>
+                                <th><i class="fa fa-envelope-o"></i> 비고</th>
+                                <th><i class="fa fa-group"></i> 소속회사</th>
+                                <th><i class="fa fa-group"></i> 사용권한</th>
+                                <th><i class="fa fa-group"></i> 소속그룹</th>
+                                <th><i class="fa fa-file"></i> 상태</th>
+                                <th> 등록일시</th>
+                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- END Table -->
+                    <!-- END Editable Datatables -->
+                    
+                    <!-- user modal form -->
+					<div id="modal-user-form" class="modal">
+					        <!-- Modal Dialog -->
+					        <div class="modal-dialog">
+					            <!-- Modal Content -->
+					            <div class="modal-content">
+					                <!-- Modal Header -->
+					                <div class="modal-header">
+					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					                    <h4>사용자 등록</h4>
+					                </div>
+					                <!-- END Modal Header -->
+					
+					                <!-- Modal Content -->
+					                <div class="modal-body">
+			                            <form class="form-horizontal">
+			                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">사용자id</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="user-userid" class="form-control" value="">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">이름</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="user-name" class="form-control" value="">
+		                                            <input type="hidden" name="user-id" value="" >
+			                                    </div>
+			                                </div>
+			
+			                                <div class="form-group">
+			                                        <label class="control-label col-md-3">이메일</label>
+			                                        <div class="col-md-9">
+		                                                <input type="text" name="user-email" class="form-control" value="">
+			                                        </div>
+			                                </div>
+			
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">비밀번호</label>
+			                                    <div class="col-md-9">
+		                                            <input type="password" name="user-password" class="form-control" value="">
+			                                    </div>
+			                                </div>
+	
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">비고 </label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="user-bigo" class="form-control" value="">
+			                                    </div>
+			                                </div>
+
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">회사</label>
+			                                    <div class="col-md-9">
+		                                            <select name="user-company" class="form-control"></select>
+			                                    </div>
+			                                </div>
+
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">사용권한</label>
+			                                    <div class="col-md-9">
+		                                            <select name="user-role" class="form-control">
+		                                            <option>USER</option>
+		                                            <option>OPERATOR</option>
+		                                            <option>ADMIN</option>
+		                                            </select>
+			                                    </div>
+			                                </div>
+
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">소속그룹 </label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="groups" class="form-control" value="" readonly>
+		                                            <input type="hidden" name="groupids" class="form-control" value="" readonly>
+		                                            <div class='grouplst' style='border:1px solid lightgray; overflow:auto; height:150px;'>
+		                                            <input type=checkbox id=s1><label for=s1>센서1</label><br>
+		                                            </div>
+			                                    </div>
+			                                </div>
+			                                
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">상태</label>
+			                                    <div class="col-md-9">
+		                                            <select name="user-state" class="form-control">
+						                            <option value="ACTIVE">활성</option>
+						                            <option value="INACTIVE">비활성</option>
+						                            </select>
+			                                    </div>
+			                                </div>
+			
+			                            </form>
+					                </div>
+					                <!-- END Modal Content -->
+					
+					                <!-- Modal footer -->
+					                <div class="modal-footer remove-margin">
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" ><i class="fa fa-check"></i> 저장</button>
+					                </div>
+					                <!-- END Modal footer -->
+					            </div>
+					            <!-- END Modal Content -->
+					        </div>
+					        <!-- END Modal Dialog -->        
+					</div>
+					<!-- END user modal form -->
+                    
+                    
+        <!-- Javascript code only for this page -->
+        <script>
+        	
+        	var editableTable = null;
+
+        	var group_hash = {};
+        	
+        	// 그룹id목록을 이름목록으로...
+        	function group_names(groups, callback)
+        	{
+        		var names = [];
+        		var gids = [];
+        		
+        		if(groups===undefined || groups==null || groups=="")
+        		{
+        			if(callback !== undefined) callback(gids, names);
+        			return "";
+        		}
+        		var ids = groups.split(",");
+        		for(var i=0; i<ids.length; i++)
+        			if(ids[i].length>0) {
+        				if(group_hash[ids[i]]!==undefined) {
+        					names.push(group_hash[ids[i]].name);
+	        				gids.push(ids[i]);
+    	    			}
+        			}
+
+				if(callback !== undefined) callback(gids, names); 
+        		
+        		return names.length>0?names.join(","):"";
+        	}
+        	
+        	
+            $(function () {
+
+            	if(App.role!="ADMIN"){
+            		$('[name=user-company]').attr('disabled',true);
+            		$('[name=user-role]').attr('disabled',true);
+            		$('[name=user-role] option:last').remove();
+            	}
+            	
+                $.post(App.baseurl+"/list",{qid:"grouplist",column:"name"/*, company:App.company*/},
+                    	function(res){
+                    		$('.grouplst').empty();
+                    		if(res.success)
+                    		{
+                    			group_hash = {};
+                    			for(var i=0; i<res.list.length; i++)
+                    			{
+                    				group_hash[res.list[i].id] = res.list[i];
+                    				if(res.list[i].state=="ACTIVE")
+        	                			$('.grouplst').append('&nbsp;<input name=group type=checkbox id=g'+i+' value="'+res.list[i].id+'"><label for=g'+i+'>&nbsp;'+res.list[i].name+'</label><br>');
+                    			}
+                    		}
+               	});
+
+                $.post(App.baseurl+"/list",{qid:"companylist",column:"name"},
+                    	function(res){
+                    		$('[name=user-company]').empty().append('<option value="">선택없음</option>');
+                    		if(res.success)
+                    		{
+                    			for(var i=0; i<res.list.length; i++)
+                    			{
+       	                			$('[name=user-company]').append('<option value="'+res.list[i].cid+'">'+res.list[i].name+'('+res.list[i].daepyo+')</option>');
+                    			}
+                    		}
+               	});
+                
+                $(document).off('click','[name=group]').on('click','[name=group]',function() {
+                	
+                	var groups = $('[name=groupids]').val();
+                	var txt = $(this).next().text();
+                	
+                	if($(this).is(":checked")) // +
+                	{
+                		groups += (groups.length>0?",":"")+ $(this).val();
+                	}
+                	else // -
+                	{
+                		groups = groups.split($(this).val()).join('');
+                	}
+                	console.log(groups);
+            		group_names(groups,function(ids, names) {
+            			$('[name=groupids]').val(ids.join(","));
+            			$('[name=groups]').val(names.join(","));
+            		});
+                });
+                
+
+                var delHandle = function () {
+
+                    // When the user clicks on a delete button
+                    $('body').off('click', 'a.delRow').on('click', 'a.delRow', function () {
+                    	var uid = $(this).data("id");
+                    	var row = $(this).parent().parent().index();
+                    	var d = editableTable.fnGetData(row);
+                		App.msg_confirm('삭제', '['+d.name+'] 정보를  삭제 할까요?', function() {
+                			App.start_loading('회원정보 삭제중');
+                			var cond = {qid:'userdelete',id:uid};
+                			console.log('delete==>', cond);
+                            $.post(App.baseurl+"/delete", cond).done(function (res) {
+                            	App.stop_loading();
+                            	if(res.success && res.result>0) {
+                            		editableTable.fnDeleteRow(row);
+                            	}
+                            	else {
+                                	App.msg_alert('삭제', '회원정보 삭제 실패하였습니다.');
+                            	}
+                            }).fail( function () {
+                            	App.stop_loading();
+                            	App.msg_alert('삭제', '회원정보 삭제  실패 하였습니다.');
+                            });
+                		} );
+                    });
+                };
+
+                var addHandle = function () {
+                     $("#btnAdd").click(function () {
+                    	$('#modal-user-form .modal-header h4').text('사용자 등록');
+            			if(App.role!="ADMIN") $('[name=user-company]').val(App.company);
+                    	$('[name=user-role]').val('USER');
+            			$('[name=groupids]').val('');
+            			$('[name=groups]').val('');
+            			$('[name=group]').prop('checked',false);
+                    	$('[name=user-id]').val('');
+                    	$('[name=user-userid]').val('');
+                    	$('[name=user-name]').val('');
+                    	$('[name=user-password]').val('');
+                    	$('[name=user-email]').val('');
+                    	$('[name=user-bigo]').val('');
+                    	$('[name=user-state]').val("ACTIVE");
+                    	$('#modal-user-form').modal({backdrop:'static'});
+                    });
+                };
+                
+                var editHandle = function () {
+
+                    // When the user clicks on a delete button
+                    $('body').off('click', 'a.editRow').on('click', 'a.editRow', function () {
+
+                    	var uid = $(this).data("id");
+                    	var row = $(this).parent().parent().index();
+                    	var d = editableTable.fnGetData(row);
+                    	
+                    	$('#modal-user-form .modal-header h4').text('사용자 정보수정');
+                    	
+            			$('[name=groupids]').val(d.groupids);
+            			$('[name=groups]').val(group_names(d.groupids));
+            			$('[name=user-company]').val(d.company==null?'':d.company);
+            			$('[name=user-role]').val(d.role);
+            			
+            			$('[name=group]').prop('checked',false);
+            			if(d.groupids!==undefined && d.groupids!==null)
+            			{
+            				var gids = d.groupids.split(',');
+            				for(var i=0; i<gids.length; i++) $('[value='+gids[i]+']').prop('checked',true);
+            			}
+            			
+                    	$('[name=user-id]').val(d.id);
+                    	$('[name=user-userid]').val(d.userid);
+                    	$('[name=user-name]').val(d.name);
+                    	$('[name=user-email]').val(d.email);
+                    	$('[name=user-bigo').val(d.bigo);
+                    	$('[name=user-state]').val(d.state);
+                    	$('[name=user-password]').val('');
+                    	$('[name=user-password]').attr('placeholder', '비밀번호 변경시에만 입력하세요..');
+                    	
+                    	$('#modal-user-form').modal({backdrop:'static'});
+                    });
+                };
+                
+                editableTable = initgrid('#user-datatables',{
+                ajax: {
+                    url: App.baseurl+'/list', 
+                    type: 'POST',
+                    dataFilter: function(data){
+                        var jdata = jQuery.parseJSON( data );
+                        var json = {};
+                        json.recordsTotal = jdata.total;
+                        json.recordsFiltered = jdata.total;
+                        json.data = jdata.list;
+                        return JSON.stringify( json ); // return JSON string
+                    },
+                    data: function (d) {
+                    	d.qid = "userlist";
+                    	var fld = $("#field").val();
+                    	if(fld=="" || fld==null) fld="name"; //초기검색키
+                    	d.column = fld;
+//                    	d.role = App.role;
+//                    	d.company = App.company;
+                    	d.find =  $('.dataTables_filter input').val();
+    				},
+                },
+                columns: [
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
+                    {data: "userid"},
+                    {data: "name"},
+                    {data: "email"}, 
+                    {data: "bigo"}, 
+                    {data: "companyname", defaultContent: "-"}, 
+                    {data: "role", defaultContent: "-"}, 
+                    {data: "groupids", render : function(data, type, row, obj) { return group_names(data); }}, 
+                    {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
+                    {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                ],
+                paging: true,
+                serverSide: true,
+                processing: true, 
+                });
+                
+                $('.dataTables_filter input').attr('placeholder', '검색');
+                
+                /* Column별 검색기능 추가 */
+                $('#user-datatables_filter').prepend('<select id="field" class="form-control"><option value="name" selected>이름</option><option value="userid">아이디</option><option value="email">이메일</option></select>');
+
+                addHandle();
+                delHandle();
+                editHandle();
+
+            });
+            
+            $('#btnSave').click(function() {
+
+                if($("[name=user-name]").val()=="")
+                {
+                    App.msg_alert('입력오류', '이름을 입력하지 않았습니다.');
+                    return;
+                }
+
+                if($("[name=user-id]").val()=="" && $("[name=user-password]").val()=="")
+                {
+                    App.msg_alert('입력오류', '비밀번호를 입력하지 않았습니다.');
+                    return;
+                }
+
+                if($("[name=user-email]").val()=="")
+                {
+                    App.msg_alert('입력오류', '이메일을 입력하지 않았습니다.');
+                    return;
+                }
+
+                var data = {qid:"userupdate"};
+            	var uid = hashcode('usr_');
+                var url = App.baseurl+"/update";
+                
+                if($("[name=user-id]").val()=="") {
+                	url = App.baseurl+"/insert";
+                	data.qid = "useradd";
+                	data.id = uid;
+               	}
+                else data.id = $("[name=user-id]").val();
+                data.userid = $('[name=user-userid]').val();
+                data.name = $('[name=user-name]').val();
+                data.email = $('[name=user-email]').val();
+                if($("[name=user-id]").val()!="" && $("[name=user-password]").val()=="") // 수정이면서 입력 없으면
+	               	data.password = "password";
+                else {
+                	if(data.qid=="useradd") data.password = hex_sha512($("[name=user-password]").val());
+                	else data.password = "'"+hex_sha512($("[name=user-password]").val())+"'"; 
+                }
+                data.role = $('[name=user-role]').val();
+                data.company = $('[name=user-company]').val();
+                data.bigo = $('[name=user-bigo]').val();
+                data.state = $('[name=user-state]').val();
+                App.start_loading('정보저장중');
+                $.post(url, data).done(function(res) {
+                    console.log(res);
+                    if(res.success)
+                    {
+                        App.stop_loading();
+                        
+                      	var posts = [];
+                      	// 그룹 목록 삭제..
+                      	posts.push({url:App.baseurl+"/delete",data:{qid:"usergroupdelete", userid:data.id}});
+                      	// 구룹 목록 추가...
+                      	var groupids = $('[name=groupids]').val();
+                      	var gids = groupids.split(",");
+                      	for(var i=0; i<gids.length; i++)
+                      	{
+                      		if(gids[i]=="") continue; 
+                          	posts.push({url:App.baseurl+"/insert",data:{qid:"usergroupadd", userid:data.id, groupid:gids[i]}});
+                      	}
+                      	
+                      	// 다중 post...
+                      	multi_post(posts);
+                        
+						$('#modal-user-form').modal('hide');
+                        App.msg_alert('사용자정보', '저장되었습니다.', function() {  $('#user-datatables').DataTable().ajax.reload(null, false);});
+                    }
+                    else {
+                        App.stop_loading();
+                        App.msg_alert('사용자정보', '저장에 실패 하였습니다.');
+                    }
+                }).fail(function(e) {
+                    App.stop_loading();
+                    console.log('error=>',e);
+                    App.msg_alert('사용자정보', '저장에 실패 하였습니다.');
+                }); 
+
+            });
+            
+			// W 권한 없을때...
+			var delbtnclass = "";
+			if(App.menus[App.curpage] !== undefined)
+			{
+				if(App.menus[App.curpage].rwtype!="W") {
+					$('button.W').hide();
+					delbtnclass = 'hide';
+				}
+			}
+			
+        </script>

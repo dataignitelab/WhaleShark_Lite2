@@ -1,0 +1,535 @@
+<style>
+	.dataframe {margin-left:10px;width:700px;border-collapse: collapse;border:1px solid black;font-size:12.0pt;}
+	.dataframe th {border:1px solid black;background-color:lightgray;font-size:12.0pt;vertical-align: middle}
+	.dataframe td {border:1px solid black;font-size:12.0pt;vertical-align: middle}
+	.ctxt {text-align:center !important}
+	.ltxt {text-align:left !important}
+	.num {text-align:right !important}
+	button:focus {outline: none;}
+	.table-list-type th {font-size:12.0pt !important;}
+	.table-list-type td {font-size:12.0pt !important}
+	input::placeholder {font-style: italic;}
+	
+	.datalist {padding:2px 0px 2px 5px}
+	.selectdata {background-color:yellow;}
+	.plabel {display:inline-block;width:115px;}
+	.pval {width:175px;border:1px solid gray;}
+	.tab-success {background-color:#5fc27e}
+	.tab-fail {background-color:#fcc100}
+/*	.taba-success {color:black !important;}
+	taba-fail {color:#fcc100 !important;}
+*/	
+</style>
+                    <!-- Navigation info -->
+                    <ul id="nav-info" class="clearfix">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li><a href="javascript:void(0)">분석</a></li>
+                        <li class="active"><a href="javascript:void(0)">자동분석1</a></li>
+                    </ul>
+                    <!-- END Navigation info -->
+
+                    <h3 class="page-header page-header-top">자동분석1<small> </small></h3>
+			
+                    <!-- Toolbar -->
+                   <button id='refresh' class='hide'><i class="fa fa-refresh"></i> Refresh</button>
+					
+                    <div style='height:800px;'>
+                    <div style='height:100%;width:25%;display:inline-block; border: 1px solid black; vertical-align:top'>
+                    <ul id="demand-tabs" class="nav nav-tabs" data-toggle="tabs">
+						<li class="active"><a href="#src"><i class="fa fa-list-alt"></i>통합데이터</a></li>
+					</ul>
+					<div class='tab-content'>
+						<div class='tab-pane active' id='src' style='height:720px;overflow:auto;'>
+						<button><i class="fa fa-file"></i> a.csv</button><span class='badge badge-warning'>file</span><br>
+						<button><i class="fa fa-gears"></i>계림데이터</button><span class='badge badge-success'>tsdb</span><br>
+						<button><i class="fa fa-database"></i>계림데이터</button><span class='badge badge-info'>rdb</span><br>
+						
+						</div>
+					</div>
+					
+                    </div>
+                    <div style='height:100%;width:53%;display:inline-block; border: 1px solid black; vertical-align:top'>
+					<div class="progress" style='height:5px;margin:0px;background-color:gray'><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="background-color:#BAFF1A;width:0%">
+						<span class="sr-only">70% Complete</span></div>
+					</div>
+                    <ul id="result-tabs" class="nav nav-tabs" data-toggle="tabs">
+						<li class=""><a href="#result"><label class=tab-success>&nbsp;</label><i class="fa fa-list-alt"></i>기술통계</a></li>
+						<li class=""><a href="#result"><label class=tab-fail>&nbsp;</label><i class="fa fa-list-alt"></i>기술통계</a></li>
+					</ul>
+					<div class='tab-content'>
+						<div class='tab-pane active' id='result' style='width:825px;height:670px;overflow:auto;border:1px solid lightgray'>
+						
+						</div>
+					</div>
+					                    
+                    </div>
+                    <div style='height:100%;width:20%;display:inline-block; border: 1px solid black; vertical-align:top'>
+                    <ul id="demand-tabs" class="nav nav-tabs" data-toggle="tabs">
+						<li class="active"><a href="#oaram"><i class="fa fa-cog"></i>파라미터</a></li>
+					</ul>
+					<div class='tab-content'>
+						<div class='tab-pane active' id='param' style='height:703px;overflow:auto;'>
+						<br>
+						</div>
+						<button id='btnexec' class='hide' style='width:100%''>수동 분석</button>						
+					</div>
+                    </div>
+					<input type=hidden id='columns' readonly>
+					
+                    </div>
+                    
+                    
+                    
+        <!-- Javascript code only for this page -->
+        <script>
+        	var initcolumncnt = 5;
+	       	var info_columnnames = null;
+	       	var info_encoding = "";
+        	var editableTable = null;
+			
+			function paramstoobj(paramstr)
+			{
+				var obj = {};
+				if(paramstr===undefined || paramstr==null) return obj;
+				var ps = paramstr.split(";");
+				for(var i=0; i<ps.length; i++)
+				{
+					var sp = ps[i].indexOf(":");
+					if(sp>0)
+					{
+						obj[ps[i].substring(0, sp)] = ps[i].substring(sp+1);
+					}
+				}
+				return obj;
+			}
+			
+			function getparam(paramobj, param, defval)
+			{
+				var v = paramobj[param];
+				if(v===undefined || v==null) {
+					if (defval!==undefined) return defval;
+					else return param;
+				} else return v;
+			}
+        	
+            $.post(App.baseurl+'/list', {qid:'metafind',column:'mtype',value:'csv',value1:'xls',value2:'rdb',value3:'tsdb',mowner:App.loginuserid}, function(res) {
+            	if(res.success)
+            	{
+                	$('#src').empty();
+                	for(var i=0; i<res.list.length; i++)
+                	{
+                		var item = res.list[i];
+                		
+                		if(item.mtype=="tsdb")
+                		{
+                			$('#src').append("<div class='datalist'><button mid='"+item.id+"' title='"+item.mdesc+"' class='data' mtype='"+item.mtype+"' mname='"+item.mname+"' mtable='"+item.mtable+"' url='"+item.ourl+"' otable='"+item.otable+"' odatabase='"+item.odatabase+"'><i class='fa fa-signal'></i> "+item.mname+"</button><span class='badge badge-success'>"+item.mtype+"</span></div>");
+                		}
+                		else if(item.mtype=="rdb")
+                		{
+                			$('#src').append("<div class='datalist'><button mid='"+item.id+"' title='"+item.mdesc+"' class='data' mtype='"+item.mtype+"' mname='"+item.mname+"' mtable='"+item.mtable+"' url='"+item.ourl+"' otable='"+item.otable+"' odatabase='"+item.odatabase+"'><i class='fa fa-database'></i> "+item.mname+"</button><span class='badge badge-info'>"+item.mtype+"</span></div>");
+                		}
+                		else if(item.mtype=="csv" || item.mtype=="xls")
+                		{
+                			filelist(item);
+                		}
+                	}
+            	}
+            });
+                        
+            function filelist(item)
+            {
+            	$.post(App.baseurl+'/filelist', {path:item.mpath,mowner:App.loginuserid}, function(res) {
+        			if(res.success) {
+        				for(var i=0; i<res.list.length; i++){
+                			$('#src').append("<div class='datalist'><button mid='"+item.id+"' title='"+item.mdesc+"' class='data' mtype='"+item.mtype+"' mname='"+item.mname+"' path='"+item.mpath+"' mowner='"+App.loginuserid+"' filename='"+res.list[i].filename+"'><i class='fa fa-file'></i> "+item.mname+"-"+res.list[i].filename+"</button><span class='badge badge-warning'>"+item.mtype+"</span></div>");
+        				}	
+        			}
+        		});
+            }
+            
+            var cols = "";
+            $(document).off('click','button.data').on('click','button.data', function() {
+            	var obj = this;
+            	
+            	
+            	$('.datalist').removeClass('selectdata');
+            	$(this).parent().addClass('selectdata');
+            	
+            	
+            	// column 정보 loading...
+            	
+            	//rdb
+            	if($(obj).attr('mtype')=="rdb")
+            	{
+            		var table = $(obj).attr('mtable')
+            		var gridurl = App.baseurl+'/readrdb';
+	        		$.post(gridurl, {table:table,length:1},function(res) {
+	            		if(res.success)
+	            		{
+	                    	var filtercolumns = [];
+	        				var cnames = [];
+	        				info_columnnames = res.columns.split(",");
+	        				for(var i=0; i<initcolumncnt && i<info_columnnames.length; i++) cnames.push(info_columnnames[i]);
+	        				cols = cnames.join(",");
+							$('#columns').val(cols);
+	            		}
+	            	});
+            	}
+            	//tsdb
+            	else if($(obj).attr('mtype')=="tsdb")
+            	{
+        			var ourl = $(obj).attr('url');
+                	var odatabase = $(obj).attr('odatabase');
+                	var otable = $(obj).attr('otable');
+                	sql = "select * from "+otable+ " limit 1";
+            		query_lite(ourl, odatabase, sql, function(success, res, param){
+            			if(success)
+            			{
+            				var data = gettsdata(res);
+            				info_columnnames = data.columns;
+            				var cnames = data.columns;
+            				if(cnames.length > initcolumncnt) cnames = info_columnnames.slice(0,initcolumncnt);
+            				cols = cnames.join(",");
+							$('#columns').val(cols);
+            			}
+            		}, null);
+            	}
+            	//csv
+            	else if($(obj).attr('mtype')=="csv")
+            	{
+	        		var filepath = $(obj).attr('path')+"/"+$(obj).attr('filename');
+	            	var gridurl = App.baseurl+'/readcsv';
+	            	$.post(gridurl, {filepath:filepath,length:1},function(res) {
+	            		if(res.success)
+	            		{
+	            			info_columnnames = res.columns.split(",");
+	            			info_encoding = res.encoding;
+	            			cnames = info_columnnames;
+	            			if(cnames.length > initcolumncnt) cnames = info_columnnames.slice(0,initcolumncnt);
+	            			cols = cnames.join(",");
+							$('#columns').val(cols);
+	            		}
+	            	});
+	            }
+				App.msg_confirm('자동분석 ', '분석을 실행할까요?', function() {exec_analysis(obj)});
+			});
+            
+            $(document).off('click', '#columns,.columns').on('click', '#columns,.columns', function() {
+				var obj = this;
+				selectcolumn_dlg(info_columnnames, $(obj).val().split(","), function(checked) {
+            		$(obj).val(checked.join(","));
+            	});
+            });
+
+			$(document).off('click', '.column').on('click', '.column', function() {
+				var obj = this;
+				selectcolumn1_dlg(info_columnnames, $(obj).val().split(","), function(checked) {
+            		$(obj).val(checked.join(","));
+            	});
+            });
+            
+            function execautoshell(mtype, sql, host, port, uid, pwd, db)
+			{
+				App.start_loading('데이터 분석실행중...');
+				var cmds = ["/lite2/shell/autoanalysis.sh", mtype, App.loginuserid, sql, host, port, uid, pwd, db];
+//				var cmds = ["/python/python","/lite/shell/autoanalysis.py", "-ftype", mtype, "-userid", App.loginuserid, "-q", sql, "-server", host, "-port", port, "-uid", uid, "-pwd", pwd, "-db", db];
+				console.log('cmd===>', cmds)
+				var d = {};
+				d.cmd=cmds.join("@");
+				d.deli= "@";
+				$.post(App.baseurl+'/shell',d).done(function(res){
+					App.stop_loading();
+					if(res.success)
+					{
+						App.msg_alert('분석실행완료', '분석이 실행되었습니다.');
+						percent = "0";
+						$('.progress span').text("0");
+						$('.progress-bar').css('width',percent+"%");
+						$('.progress-bar').attr('aria-valuenow',percent);
+						$('#result-tabs').empty();
+						$('#result,#param').empty();
+						$('#btnexec').addClass('hide');
+						
+						$('#refresh').click();
+					}
+					else
+					{
+						console.log(res);
+						App.msg_alert('에러', '데이터 분석에 오류가 발생했습니다.');
+					}
+				});
+           	}
+			
+			function exec_analysis(obj) { // get data
+        		var mid = $(obj).attr('mid');
+        		var mname = $(obj).attr('mname');
+        		var cols = $("#columns").val();
+        		var range = 1; //1일
+        		var ct = new Date();
+        		var st = new Date(ct.getTime()-range*24*60*60*1000);
+        		var sdate = st.format('yyyy-MM-dd');	
+        		var edate = ct.format('yyyy-MM-dd');
+        		var mtype = $(obj).attr('mtype');
+        		var configstr = "";
+        		if(mtype=="tsdb"){
+//    				cols = "*";
+    				cols = "\""+cols.split(",").join("\",\"")+"\"";
+    		    	var ourl = $(obj).attr('url');
+    		    	var odatabase = $(obj).attr('odatabase');
+    		    	var otable = $(obj).attr('otable');
+    				var ftime = sdate + " 00:00:00";
+    				var ttime = edate + " 23:59:59.9999";
+    				var sql = "select "+cols+ " from "+otable+" "; 
+    				sql += "where time >='"+ftime+"' and time <='"+ttime+"'";
+    				sql += " order by time limit 10000";
+    		    	var p0 = ourl.indexOf('://'); //account
+    		    	var p1 = ourl.indexOf(':',p0+3); // password
+    		    	var p2 = ourl.lastIndexOf('@'); //host
+    		    	var p3 = ourl.lastIndexOf(':'); //port
+    		    	var p4 = ourl.lastIndexOf('/');
+    		    	var uid="";
+    		    	var pwd="";
+    		    	var host="";
+    		    	var port="";
+    				if(p0>=0 && p1>=0&& p2>=0&& p3>=0 && p4>=0)
+    		    	{
+    					uid = ourl.substring(p0+3,p1);
+    					pwd = ourl.substring(p1+1,p2);
+    					host = ourl.substring(p2+1,p3);
+    					port = ourl.substring(p3+1,p4);
+    		    	}
+    				execautoshell('influxdb', sql, host, port, uid, pwd, odatabase, mname+" 데이터");
+    				var configstr = JSON.stringify({'mid':mid, 'mtype':mname, 'sdate':sdate, 'edate':edate, 'columns':$('#columns').val()});
+    			}
+    			// rdb
+    			else if(mtype=="rdb"){
+    				var table = $(obj).attr('mtable');
+    				var sql = mtype+"#select "+cols+" from "+table+" limit 10000";
+    				execautoshell('influxdb', sql, "-","-","-","-","-", mname+" 데이터");
+    				var configstr = JSON.stringify({'mid':mid, 'mtype':mname, 'sdate':'', 'edate':'', 'columns':$('#columns').val()});
+    			}
+    			// csv sql = filepath@encoding@columns
+    			else if(mtype=="csv"||mtype=="xls"){
+    				var path = $(obj).attr('path');
+    				var mowner = $(obj).attr('mowner');
+    				var filename = $(obj).attr('filename');
+    	        	var filepath = mowner+"/"+path+"/"+filename;
+    				var sql = mtype+"#"+filepath+"#"+info_encoding+"#"+cols;
+    				execautoshell('influxdb', sql, "-","-","-","-","-", mname+" 데이터");
+    				var configstr = JSON.stringify({'mid':mid, 'mtype':mname, 'sdate':'', 'edate':'', filename:filename, 'columns':$('#columns').val()});
+    			}
+        		
+        		// 최종 선택 저장
+        		if(configstr!="")
+        		{
+        			var cond = {qid:"configput", key:App.loginuserid+'_autoanalysis', value:configstr};
+        			$.post(App.baseurl+'/update',cond).done(function(res){ });
+        		}
+            }			
+           			
+			var results = '';
+			var params = '';
+			
+			function load_results()
+			{
+				var cond = {qid:"algorunlist",userid:App.loginuserid};
+				$.post(App.baseurl+'/list', cond, function(res) {
+//					console.log(res);
+					if(res.success)
+					{
+						results = res.list;
+						$('#result-tabs').empty();
+						var run_log = "";
+						for(var i=0; i<res.list.length; i++)
+						{
+							var item = res.list[i];
+							if(item.state=="분석완료" || item.state=="분석불가" )
+							{
+								var icon = '<i class="fa fa-cogs"></i>';
+								
+								if(item.id<=6) icon = '<img width=20 src=img/i'+item.id+'.png>';
+								else if(item.id==8) icon = '<img width=20 src=img/i3.png>';
+								else icon = '<img width=20 src=img/i8.png>';
+								
+								
+								if(item.state=="분석완료") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-success"><label class=tab-success>&nbsp;</label>'+icon+item.name+'</a></li>');
+								else if(item.state=="분석불가") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-fail"><label class=tab-fail>&nbsp;</label>'+icon+item.name+'</a></li>');
+								if(item.run_log!=null) run_log = item.run_log.trim();
+							}
+						}
+						var lastlog = run_log.split("\n");
+						if(lastlog.length>0) lastlog = lastlog[lastlog.length-1];
+						
+						var progress = getsubstring(lastlog, ": ", " ").trim();
+						if(progress.length>0)
+						{
+							var cnts = progress.split('/');
+							if(cnts.length==2)
+							{
+								var percent = Math.floor(parseInt(cnts[0]) * 100.0 / parseInt(cnts[1]));
+								$('.progress span').text(progress);
+								$('.progress-bar').css('width',percent+"%");
+								$('.progress-bar').attr('aria-valuenow',percent);
+								
+//								console.log('[',percent,']');
+								if(percent<100) setTimeout(load_results, 3000);
+								
+							}
+						}
+						params = getsubstring(run_log, "파라미터- ", "\n").trim();
+						var pobj = paramstoobj(params);
+						
+						if(pobj["columns"]===undefined || pobj["columns"]==null)
+						{
+							info_columnnames = [];
+							setTimeout(load_results, 5000);
+						} else 
+							info_columnnames = pobj["columns"].split(",");
+					}
+				});         	
+			}
+
+			$(document).off('click','#result-tabs a').on('click','#result-tabs a',function() {
+				var idx = $(this).data('idx');
+				var content = results[idx].run_result;
+				var state = results[idx].state;
+				var paramobj = paramstoobj(results[idx].params);
+				
+				$('#btnexec').removeClass('hide');
+				
+				if(state=="분석완료")
+				{
+					if(content.indexOf("success:")==0) content = content.substring(8);
+					else if(content.indexOf("error:")==0) content = content.substring(6);
+					$('#result').html(content);
+				}
+				else $('#result').html("");
+				
+				// parame - {pname/type/defval/enums} enums=optname1:optvalue1,optname2:optvalue2, or optvalue1,optvalue2
+				var html = "";
+				
+				var cmd = results[idx].cmd;
+				
+				var pobj = paramstoobj(params);
+				
+				for(var pi=0;pi<20; pi++)
+				{
+					var pname = getsubstring(cmd, "{", "}", pi);
+					var ptype = "";
+					var defval = "";
+					var enums = "";
+					if(pname=="") break;
+					
+					if(pname.indexOf("/")>=0)
+					{
+						var ps = pname.split("/");
+						if(ps.length>=1) pname = ps[0];
+						if(ps.length>=2) ptype = ps[1];
+						if(ps.length>=3) defval = ps[2];
+						if(ps.length>=4) enums = ps[3];
+					}
+					var pval =  getparam(pobj, pname, defval);
+//					pobj[pname];
+//					if(pval===undefined || pval=="" && defval!="") pval = defval;
+					plabel = getparam(paramobj, pname);
+					
+					if(ptype=="readonly") html += "<div class=hide><br><span class='plabel'>"+plabel+"</span><input class='pval' type=text name='"+pname+"' value='"+pval+"' readonly></div>";
+					else if(ptype=="columns") html += "<br><span class='plabel'>"+plabel+"</span><input class='columns pval' type=text name='"+pname+"' value='"+pval+"' class='columns' readonly>";
+					else if(ptype=="column") html += "<br><span class='plabel'>"+plabel+"</span><input class='column pval' type=text name='"+pname+"' value='"+pval+"' class='column' readonly>";
+					else if(ptype=="enum") {
+						var opts = enums.split(",");
+						var inputhtml = "<select class='pval' name='"+pname+"'>";
+						var optfind = false;
+						for(var oi=0;oi<opts.length; oi++)
+						{
+							var optn = opts[oi].trim();
+							if(optn=="") continue;
+							var optv = optn;
+							var cp = optn.indexOf(":");
+							if(cp>0)
+							{
+								optv = optn.substring(cp+1);
+								optn = optn.substring(0,cp);
+							}
+							if(pval==optv)
+							{
+								inputhtml += "<option value='"+optv+"' selected>"+optn+"</option>";
+								optfind = true;
+							}
+							else inputhtml += "<option value='"+optv+"'>"+optn+"</option>";
+						}
+						if(!optfind) inputhtml += "<option value='"+pval+"'>"+pval+"</option>";
+						inputhtml += "</select>";
+						html += "<br><span class='plabel'>"+plabel+"</span>"+inputhtml;
+//						html += "<br><span class='plabel'>"+plabel+"</span><select class='pval' name='"+pname+"'><option value='"+pval+"'>"+pval+"</option></select>";
+					}
+					else html += "<br><span class='plabel'>"+plabel+"</span><input class='pval' type=text name='"+pname+"' value='"+pval+"'>";
+				}
+				$('#param').html(html);
+			});
+            
+			$('#refresh').off('click').on('click',load_results);
+			
+			$('#refresh').click();
+			
+			function execshell(cmds, idx)
+			{
+				App.start_loading('데이터 분석중...');
+				console.log('cmd===>', cmds)
+				var d = {};
+				d.cmd=cmds.join("@");
+				d.deli= "@";
+				$.post(App.baseurl+'/shell',d).done(function(res){
+					App.stop_loading();
+//					console.log(res);
+					if(res.success)
+					{
+						App.msg_alert('분석완료', '데이터 분석이 완료되었습니다.');
+						results[idx].run_result = res.result;
+						$('#result').html(res.result);
+					}
+					else
+					{
+						console.log(res);
+						App.msg_alert('에러', '데이터 분석에 오류가 발생했습니다.');
+					}
+				});
+           	}
+			
+			$('#btnexec').off('click').on('click',function() {
+				var mtext = $('#result-tabs li.active a').text();
+				var idx = ""+$('#result-tabs li.active a').data('idx');
+
+				if(mtext=="") return;
+
+				var cmds = results[idx].cmd.split(" ");
+				$('#param input,#param select').each(function() {
+					var pname = $(this).attr('name');
+					var pval = $(this).val();
+					for(var i=0; i<cmds.length; i++) cmds[i] = cmds[i].replace(new RegExp('{'+pname+'.*}'),pval);
+				});
+				App.msg_confirm('수동분석 ', mtext+' 분석을 실행할까요?', function() {execshell(cmds, idx)});
+			});
+			
+			function lastcond()
+			{
+    			var cond = {qid:"configget", key:App.loginuserid+'_autoanalysis'};
+    			$.post(App.baseurl+'/list',cond).done(function(res){
+    				if(res.success && res.list.length>0)
+    				{
+    					var last = res.list[0].value;
+    					if(last!=null && last!="") last = JSON.parse(last);
+   					
+						var findobj = null;
+						if(last.filename!==undefined) findobj = $("[mid='"+last.mid+"'][filename='"+last.filename+"']");
+						else findobj = $("[mid='"+last.mid+"']");
+
+						if(findobj!=null) findobj.parent().addClass('selectdata');
+    				}
+    			});
+			}
+
+			setTimeout(lastcond, 1000)
+			
+
+        </script>

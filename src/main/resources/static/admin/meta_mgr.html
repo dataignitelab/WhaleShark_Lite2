@@ -1,0 +1,340 @@
+                    <!-- Navigation info -->
+                    <ul id="nav-info" class="clearfix">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li><a href="javascript:void(0)">데이터 통합</a></li>
+                        <li class="active"><a href="javascript:void(0)">통합데이터 관리</a></li>
+                    </ul>
+                    <!-- END Navigation info -->
+
+                    <!-- Editable Datatables -->
+                    <h3 class="page-header page-header-top">통합데이터 관리<small> </small></h3>
+
+                    <!-- Toolbar -->
+                    <div class="push">
+                        <button class="btn btn-success W" id='btnAdd' title="통합데이터 정보 등록"><i class="fa fa-plus"></i>통합데이터 등록</button>
+                    </div>
+                    <!-- END Toolbar -->
+
+                    <!-- Table -->
+                    <table id="datatables" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="cell-small text-center">#</th>
+                                <th><i class="fa fa-user"></i> 통합데이터명</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 설명</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 데이터유형</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 스케쥴</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 등록일시</th>
+                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- END Table -->
+                    <!-- END Editable Datatables -->
+                    
+                    <!-- user modal form -->
+					<div id="metaform-modal" class="modal">
+					        <!-- Modal Dialog -->
+					        <div class="modal-dialog">
+					            <!-- Modal Content -->
+					            <div class="modal-content">
+					                <!-- Modal Header -->
+					                <div class="modal-header">
+					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					                    <h4>통합데이터정보 등록</h4>
+					                </div>
+					                <!-- END Modal Header -->
+					
+					                <!-- Modal Content -->
+					                <div class="modal-body">
+			                            <form class="form-horizontal">
+			                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">* 통합데이터명</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="mname" class="form-control">
+		                                            <input type="hidden" name="id" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">설명</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="mdesc" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">* 데이터종류</label>
+			                                    <div class="col-md-9">
+		                                            <select name="mtype" class="form-control">
+		                                            <option>csv</option>
+		                                            <option>xls</option>
+		                                            <option>file</option>
+		                                            <!--<option>tsdb</option>-->
+		                                            <option>rdb</option>
+		                                            </select>
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">* 저장경로</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="mpath" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">* 저장테이블</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="mtable" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">* 원본경로</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="opath" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">* 원본url</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="ourl" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">* 원본database</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="odatabase" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">* 원본table</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="otable" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">수집key</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="mkey" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">수집방식</label>
+			                                    <div class="col-md-9">
+		                                            <select name="mscheduletype" class="form-control">
+		                                            <option value='MANUAL'>수동</option>
+		                                            <option value='CRONTAB'>CRONTAB</option>
+		                                            </select>
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">수집스케쥴</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="mschedule" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">수집방식</label>
+			                                    <div class="col-md-9">
+		                                            <select name="mstate" class="form-control">
+		                                            <option value='ACTIVE'>활성</option>
+		                                            <option value='INACTIVE'>비활성</option>
+		                                            </select>
+			                                    </div>
+			                                </div>
+			                            </form>
+					                </div>
+					                <!-- END Modal Content -->
+					
+					                <!-- Modal footer -->
+					                <div class="modal-footer remove-margin">
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" ><i class="fa fa-check"></i> 저장</button>
+					                </div>
+					                <!-- END Modal footer -->
+					            </div>
+					            <!-- END Modal Content -->
+					        </div>
+					        <!-- END Modal Dialog -->        
+					</div>
+					<!-- END user modal form -->
+                    
+                    
+        <!-- Javascript code only for this page -->
+        <script>
+        
+        	var editableTable = null;
+  
+            $(function () {
+                
+                editableTable = initgrid('#datatables',{
+                ajax: {
+                    url: App.baseurl+'/list', 
+                    type: 'POST',
+                    dataFilter: function(data){
+                        var jdata = jQuery.parseJSON( data );
+                        var json = {};
+                        json.recordsTotal = jdata.total;
+                        json.recordsFiltered = jdata.total;
+                        json.data = jdata.list;
+                        return JSON.stringify( json ); // return JSON string
+                    },/*
+                    dataSrc: function(datasrc) {
+                    	console.log('datasrc',datasrc);
+                    	
+                    	var data = {data:datasrc.list,recordsTotal:datasrc.total,recordsFiltered:datasrc.total};
+                    	return datasrc.list;
+                    },*/
+                    data: function (d) {
+//                    	d = {};
+                    	d.qid = "metalist";
+                    	var fld = "mname";
+                    	d.column = fld;
+//                    	d.company = App.company;
+                    	d.find =  $('.dataTables_filter input').val();
+//                    	d.mowner = App.loginuserid;
+                    				
+                    	return d;
+    				},
+                },
+                columns: [
+                    {orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
+                    {data: "mname"},
+                    {data: "mdesc"},
+                    {data: "mtype"}, 
+                    {data: "mstate"}, 
+                    {data: "mscheduletype"}, 
+                    {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }},
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { 
+					if(data<0) return '자동생성';
+					return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; 
+					}},
+                ],
+                paging: true,
+                serverSide: true,
+                processing: true, 
+                });
+                
+                $('.dataTables_filter input').attr('placeholder', '검색');
+
+                $("#btnAdd").off('click').on('click',function () {
+                	$('#metaform-modal .modal-header h4').text('통합데이터정보 등록');
+                	$('#metaform-modal form')[0].reset();
+                	$('#metaform-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
+                                    	
+                });
+                
+
+            });
+            
+            $('#btnSave').off('click').on('click',function() {
+
+            	var formvalid = [];
+            	var formdata = {};
+            	$('#metaform-modal form input,#metaform-modal form select').each(function(i, e) {
+            		var lbl = $(this).parent().parent().find('label:first').text();
+            		var val = $(this).val();
+            		var name = $(this).attr('name');
+            		formdata[name] = val;
+            		console.log(lbl,val,name);
+            		if(lbl.indexOf("*")==0 && val=="" && name!="id")
+            		{
+            			formvalid.push(lbl);
+            			return;
+            		}
+//            		else formdata[$(this).attr('name')] = $(this).val();
+            	});
+            	
+                if(formvalid.length>0)
+                {
+                	App.msg_alert('입력오류', formvalid[0]+'값을 입력해주세요!');
+                    return;
+                }
+
+                var url = "";
+                console.log('formdata',formdata);
+                if(formdata.id=="")
+                {
+                	formdata.mowner = App.loginuserid;
+                	formdata.qid = "metaadd";
+                	url = App.baseurl+"/insert";
+                }
+                else
+                {
+                	formdata.qid = "metaupdate";
+                	formdata.mowner = 'mowner';
+                	url = App.baseurl+"/update";
+                }
+            	formdata.company = App.company;
+                
+                App.start_loading('정보저장중');
+                $.post(url, formdata).done(function(res) {
+                    console.log(res);
+                    if(res.success)
+                    {
+                      	App.stop_loading();
+                      	$('#metaform-modal').modal('hide');
+                       	App.msg_alert('통합데이터정보', '저장되었습니다.', function() { $('#datatables').DataTable().ajax.reload(null, false); });
+                    }
+                    else {
+                        App.stop_loading();
+                        App.msg_alert('통합데이터정보', '저장에 실패 하였습니다.');
+                    }
+                }).fail(function(e) {
+                    App.stop_loading();
+                    console.log('error=>',e);
+                    App.msg_alert('통합데이터정보', '저장에 실패 하였습니다.');
+                });
+            }); 
+            
+            
+			// W 권한 없을때...
+			var delbtnclass = "";
+            
+            // del button...
+            $('body').off('click', 'a.delRow').on('click', 'a.delRow', function () {
+//            	var id = $(this).data("id");
+            	var row = $(this).parent().parent().index();
+            	var d = editableTable.fnGetData(row);
+        		App.msg_confirm('삭제', '['+d.mname+'] 정보를  삭제 할까요?', function() {
+        			App.start_loading('통합데이터 정보 삭제중');
+        			var cond = {qid:'metadelete',id:d.id};
+        			console.log('delete==>', cond);
+                    $.post(App.baseurl+"/delete", cond).done(function (res) {
+                    	App.stop_loading();
+                    	if(res.success && res.result>0) {
+                    		editableTable.fnDeleteRow(row);
+                    	}
+                    	else {
+                        	App.msg_alert('삭제', '통합데이터 정보 삭제에 실패하였습니다.');
+                    	}
+                    }).fail( function () {
+                    	App.stop_loading();
+                    	App.msg_alert('삭제', '통합데이터 정보 삭제에  실패 하였습니다.');
+                    });
+        		} );
+            });
+            
+            // edit...
+            $('body').off('click', 'a.editRow').on('click', 'a.editRow', function () {
+
+//            	var uid = $(this).data("id");
+            	var row = $(this).parent().parent().index();
+            	var d = editableTable.fnGetData(row);
+            	
+            	$('#metaform-modal .modal-header h4').text('통합데이터 정보수정');
+            	$('#metaform-modal form')[0].reset();
+            	
+            	$('#metaform-modal form input,select').each(function(i, e) {
+            		var val = d[$(this).attr('name')];
+            		if(val!==undefined) $(this).val(val);
+            	});
+            	
+            	$('#metaform-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
+            });
+            
+
+            
+            
+        </script>
