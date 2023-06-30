@@ -1,17 +1,17 @@
                     <!-- Navigation info -->
                     <ul id="nav-info" class="clearfix">
                         <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-                        <li><a href="javascript:void(0)" data-lang="main_menu_usernrolemgr">사용자및권한관리</a></li>
-                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_group_mgmt">사용자 그룹관리</a></li>
+                        <li><a href="javascript:void(0)">사용자및권한관리</a></li>
+                        <li class="active"><a href="javascript:void(0)">그룹관리</a></li>
                     </ul>
                     <!-- END Navigation info -->
 
                     <!-- Editable Datatables -->
-                    <h3 class="page-header page-header-top" data-lang="groupmgmt_title">사용자그룹관리</h3>
+                    <h3 class="page-header page-header-top">그룹관리 <small> </small></h3>
 
                     <!-- Toolbar -->
                     <div class="push">
-                        <button class="btn btn-success W" id='btnAdd' title="그룹등록" data-lang="groupmgmt_add,groupmgmt_add:title"><i class="fa fa-plus"></i> 그룹등록</button>
+                        <button class="btn btn-success W" id='btnAdd' title="그룹등록"><i class="fa fa-plus"></i> 그룹등록</button>
                     </div>
                     <!-- END Toolbar -->
 
@@ -20,11 +20,11 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
-                                <th data-lang="common_group_name"><i class="fa fa-user"></i> 그룹명</th>
-                                <th data-lang="common_bigo" class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 비고</th>
-                                <th data-lang="common_state" class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
-                                <th data-lang="common_wdate" class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 등록일시</th>
-                                <th data-lang="common_action" class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                                <th><i class="fa fa-user"></i> 그룹명</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 비고</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 등록일시</th>
+                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,7 +42,7 @@
 					                <!-- Modal Header -->
 					                <div class="modal-header">
 					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					                    <h4 data-lang="groupmgmt_add">그룹등록</h4>
+					                    <h4>그룹 등록</h4>
 					                </div>
 					                <!-- END Modal Header -->
 					
@@ -51,7 +51,7 @@
 			                            <form class="form-horizontal">
 			                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_group_name">그룹명</label>
+			                                    <label class="control-label col-md-3">그룹명</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="name" class="form-control" value="">
 		                                            <input type="hidden" name="id" class="form-control" value="">
@@ -59,18 +59,18 @@
 			                                </div>
 	
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_bigo">비고 </label>
+			                                    <label class="control-label col-md-3">비고 </label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="bigo" class="form-control" value="">
 			                                    </div>
 			                                </div>
 			                                
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_state">상태</label>
+			                                    <label class="control-label col-md-3">상태</label>
 			                                    <div class="col-md-9">
 		                                            <select name="state" class="form-control">
-						                            <option value="ACTIVE" data-lang="common_state_active">활성</option>
-						                            <option value="INACTIVE" data-lang="common_state_inactive">비활성</option>
+						                            <option value="ACTIVE">활성</option>
+						                            <option value="INACTIVE">비활성</option>
 						                            </select>
 			                                    </div>
 			                                </div>
@@ -81,8 +81,8 @@
 					
 					                <!-- Modal footer -->
 					                <div class="modal-footer remove-margin">
-					                    <button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
-					                    <button type="button" class="btn btn-success W" id="btnSave" data-lang="common_save_btn"><i class="fa fa-check"></i> 저장</button>
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" ><i class="fa fa-check"></i> 저장</button>
 					                </div>
 					                <!-- END Modal footer -->
 					            </div>
@@ -107,8 +107,8 @@
                     	var id = $(this).data("id");
                     	var row = $(this).parent().parent().index();
                     	var d = editableTable.fnGetData(row);
-                		App.msg_confirm(lang('common_delete_btn','삭제'), lang('common_msg_delete_confirm','{1} 정보를  삭제 할까요?',d.name), function() {
-                			App.start_loading(lang('common_msg_deleting','정보 삭제중'));
+                		App.msg_confirm('삭제', '['+d.name+'] 정보를  삭제 할까요?', function() {
+                			App.start_loading('그룹정보 삭제중');
                 			var cond = {qid:'groupdelete',id:id};
                 			console.log('delete==>', cond);
                             $.post(App.baseurl+"/delete", cond).done(function (res) {
@@ -117,11 +117,11 @@
                             		editableTable.fnDeleteRow(row);
                             	}
                             	else {
-                                	App.msg_alert(lang('cmmon_delete_btn','삭제'), lang('common_msg_delete_failed','정보 삭제 실패하였습니다.'));
+                                	App.msg_alert('삭제', '그룹정보 삭제 실패하였습니다.');
                             	}
                             }).fail( function () {
                             	App.stop_loading();
-                            	App.msg_alert(lang('cmmon_delete_btn','삭제'), lang('common_msg_delete_failed','정보 삭제 실패하였습니다.'));
+                            	App.msg_alert('삭제', '그룹정보 삭제  실패 하였습니다.');
                             });
                 		} );
                     });
@@ -129,7 +129,7 @@
 
                 var addHandle = function () {
                      $("#btnAdd").click(function () {
-                    	$('#group-modal .modal-header h4').text(lang('groupmgmt_add','그룹 등록'));
+                    	$('#group-modal .modal-header h4').text('그룹 등록');
                     	$('#group-modal [name=id]').val('');
                     	$('#group-modal [name=name]').val('');
                     	$('#group-modal [name=bigo]').val('');
@@ -147,7 +147,7 @@
                     	var row = $(this).parent().parent().index();
                     	var d = editableTable.fnGetData(row);
                     	
-                    	$('#group-modal .modal-header h4').text(lang('groupmgmt_modify','그룹 정보수정'));
+                    	$('#group-modal .modal-header h4').text('그룹 정보수정');
                     	
                     	$('#group-modal [name=id]').val(d.id);
                     	$('#group-modal [name=name]').val(d.name);
@@ -184,14 +184,14 @@
                     {data: "bigo"}, 
                     {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
                     {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
-                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn:title" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn:title" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
                 ],
                 paging: true,
                 serverSide: true,
                 processing: true, 
                 });
                 
-                $('.dataTables_filter input').attr('placeholder', lang('common_search_btn','검색'));
+                $('.dataTables_filter input').attr('placeholder', '검색');
 
                 addHandle();
                 delHandle();
@@ -203,7 +203,7 @@
 
                 if($("#group-modal [name=name]").val()=="")
                 {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('groupmgmt_group_name_empty','그룹명을 입력하지 않았습니다.'));
+                    App.msg_alert('입력오류', '그룹명을 입력하지 않았습니다.');
                     return;
                 }
 
@@ -228,16 +228,16 @@
                     if(res.success)
                     {
                       	App.stop_loading();
-                       	App.msg_alert(lang('groupmgmt_group_info','그룹정보'), lang('common_msg_saved','저장되었습니다.'), function() { $('#group-modal').modal('hide'); $('#group-datatables').DataTable().ajax.reload(null, false); });
+                       	App.msg_alert('그룹정보', '저장되었습니다.', function() { $('#group-modal').modal('hide'); $('#group-datatables').DataTable().ajax.reload(null, false); });
                     }
                     else {
                         App.stop_loading();
-                        App.msg_alert(lang('groupmgmt_group_info','그룹정보'), lang('common_msg_save_failed','저장에 실패 하였습니다.'));
+                        App.msg_alert('그룹정보', '저장에 실패 하였습니다.');
                     }
                 }).fail(function(e) {
                     App.stop_loading();
                     console.log('error=>',e);
-                    App.msg_alert(lang('groupmgmt_group_info','그룹정보'), lang('common_msg_save_failed','저장에 실패 하였습니다.'));
+                    App.msg_alert('그룹정보', '저장에 실패 하였습니다.');
                 }); 
 
             }); 
@@ -252,5 +252,4 @@
 				}
 			}
             
-            updatelang();
         </script>

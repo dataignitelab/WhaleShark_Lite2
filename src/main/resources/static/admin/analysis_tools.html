@@ -1,8 +1,8 @@
 <!-- Navigation info -->
 <ul id="nav-info" class="clearfix">
     <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-    <li><a href="javascript:void(0)" data-lang="main_menu_data_analysis">분석</a></li>
-    <li class="active"><a href="javascript:void(0)" data-lang="main_menu_analysis_tool">분석도구</a></li>
+    <li><a href="javascript:void(0)">분석</a></li>
+    <li class="active"><a href="javascript:void(0)">분석도구</a></li>
 </ul>
 <!-- END Navigation info -->
 
@@ -24,23 +24,23 @@
                       <form class="form-horizontal">
                       
 						  <div class="form-group">
-                              <label class="control-label col-md-3" data-lang="common_metadata_select">통합데이터선택 </label>
+                              <label class="control-label col-md-3">통합데이터선택 </label>
                               <div class="col-md-9">
                                      <select id="mtype" class="form-control">
-                                     <option value="" data-lang="common_metadata_select">통합데이터선택</option>
+                                     <option value="">통합데이터선택</option>
                                      </select>
                                </div>
                           </div>                      
                           <div class="form-group hide">
-                              <label class="control-label col-md-3" data-lang="common_file_select">file</label>
+                              <label class="control-label col-md-3">file</label>
                               <div class="col-md-9">
                                      <select id="filename" class="form-control">
-                                     <option value="" data-lang="common_file_select">파일선택</option>
+                                     <option value="">통합데이터선택</option>
                                      </select>
                               </div>
                           </div>
                           <div class="form-group">
-                              <label class="control-label col-md-3" data-lang="common_column_select">컬럼선택</label>
+                              <label class="control-label col-md-3">컬럼선택</label>
                               <div class="col-md-9">
                                      <input type="text" id="columns" class="form-control" readonly>
                                      
@@ -48,9 +48,9 @@
                           </div>
                           
                           <div class="form-group hide">
-                              <label class="control-label col-md-3" dta-lang="anatool_data_dur">데이터 기간</label>
+                              <label class="control-label col-md-3">데이터 기간</label>
                               <div class="col-md-9">
-                          		<select id='range'><option value="" data-lang="anatool_manual_select">직접선택</option><option value='1d' data-lang="anatool_cond_recent_1day">최근1일</option><option value='3d' data-lang="anatool_cond_recent_3day">최근3일</option><option value='7d' data-lang="anatool_cond_recent_7day">최근7일</option></select>
+                          		<select id='range'><option value="">직접선택</option><option value='1d'>최근1일</option><option value='3d'>최근3일</option><option value='7d'>최근7일</option></select>
                           		
                           		<div class='range'>
 									<input type="text" id="sdate" class="input-datepicker"><select id="shour" class='hour'></select><select id="sminute" class='minute'></select>~
@@ -65,8 +65,9 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer remove-margin">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
-                    <button type="button" class="btn btn-success" id="btnSave" data-lang="common_ok_btn"><i class="fa fa-check"></i> 확인</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+                    <!-- <button type="button" class="btn btn-default" id="btnFile" ><i class="fa fa-check"></i> 파일업로드</button> -->
+                    <button type="button" class="btn btn-success" id="btnSave" ><i class="fa fa-check"></i> 확인</button>
                 </div>
                 <!-- END Modal footer -->
             </div>
@@ -77,7 +78,7 @@
 </div>
 
 
-<h3 class="page-header page-header-top" data-lang="anatool_title">분석도구</h3>
+<h3 class="page-header page-header-top">분석도구</h3>
 <iframe style='border:0px;width:100%;height:100%' scrolling="0" frameborder="0" vspace="0" hspace="0"></iframe>
 
 <!-- 스크립트 영역 -->
@@ -99,19 +100,19 @@ function importdata(callback)
 		
 		if(mname=="")
 		{
-			App.msg_alert(lang('ana_error','오류'), lang('ana_msg_metadata_empty','통합데이터를 선택하지 않았습니다.'));
+			App.msg_alert('오류', '통합데이터를 선택하지 않았습니다.');
 			return;
 		}
 
 		if(sdate=="" && mtype=="tsdb")
 		{
-			App.msg_alert(lang('ana_error','오류'), lang('ana_msg_start_empty','시작일 선택하지 않았습니다.'));
+			App.msg_alert('오류', '시작일 선택하지 않았습니다.');
 			return;
 		}
 
 		if(edate=="" && mtype=="tsdb")
 		{
-			App.msg_alert(lang('ana_error','오류'), lang('ana_msg_end_empty','종료일을 선택하지 않았습니다.'));
+			App.msg_alert('오류', '종료일을 선택하지 않았습니다.');
 			return;
 		}
 		
@@ -195,7 +196,7 @@ $.post(App.baseurl+'/list', {qid:'metafind',column:'mtype',value:'csv',value1:'x
 	
 	if(res.success)
 	{
-    	$('#mtype').empty().append("<option value='' data-lang='common_msg_select_metadata'>"+lang("common_msg_select_metadata", "통합데이터를 선택해주세요.")+"</option>");
+    	$('#mtype').empty().append("<option value=''>통합데이터를 선택해주세요.</option>");
     	for(var i=0; i<res.list.length; i++)
     	{
     		var item = res.list[i];
@@ -213,7 +214,7 @@ $('#mtype').change(function() {
 	
 	if(mtype=="csv"|| mtype=="xls")
 	{
-		$('#filename').empty().append("<option value='' data-lang='common_msg_select_file'>"+lang("common_msg_select_file", "파일을 선택해주세요.")+"</option>");
+		$('#filename').empty().append("<option value=''>파일을 선택해주세요.</option>");
 		$.post(App.baseurl+'/filelist', {path:path,mowner:App.loginuserid}, function(res) {
 			if(res.success) {
 				for(var i=0; i<res.list.length; i++){
@@ -366,10 +367,6 @@ $(window).resize();
 
 $('iframe').css('width',$('#page-content').width());
 $('iframe').css('height',$('#page-content').height());
-
-var l = getLanguage();
-if(l!="ko") l="en";
-$('iframe').attr('src','/upload/front/html/views/analysis_tools_'+l+'.html?USER_ID='+App.loginuserid);
-updatelang();
+$('iframe').attr('src','/upload/front/html/views/analysis_tools_dc.html?USER_ID='+App.loginuserid);
 </script>
 <!-- 스크립트 영역 -->

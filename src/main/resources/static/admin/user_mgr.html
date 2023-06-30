@@ -1,17 +1,17 @@
                     <!-- Navigation info -->
                     <ul id="nav-info" class="clearfix">
                         <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-                        <li><a href="javascript:void(0)" data-lang="main_menu_usernrolemgr">사용자및권한관리</a></li>
-                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_user_mgmt">사용자관리</a></li>
+                        <li><a href="javascript:void(0)">사용자및권한관리</a></li>
+                        <li class="active"><a href="javascript:void(0)">사용자관리</a></li>
                     </ul>
                     <!-- END Navigation info -->
 
                     <!-- Editable Datatables -->
-                    <h3 class="page-header page-header-top" data-lang="usermgmt_title">사용자관리</h3>
+                    <h3 class="page-header page-header-top">사용자관리 <small> </small></h3>
 
                     <!-- Toolbar -->
                     <div class="push">
-                        <button class="btn btn-success W" id='btnAdd' title="사용자등록" data-lang="usermgmt_add,usermgmt_add:title"><i class="fa fa-plus"></i> 사용자등록</button>
+                        <button class="btn btn-success W" id='btnAdd' title="사용자등록"><i class="fa fa-plus"></i> 사용자등록</button>
                     </div>
                     <!-- END Toolbar -->
 
@@ -20,16 +20,16 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
-                                <th data-lang="common_id"><i class="fa fa-user"></i> 아이디</th>
-                                <th data-lang="common_name"><i class="fa fa-user"></i> 이름</th>
-                                <th data-lang="common_email"><i class="fa fa-envelope-o"></i> 이메일</th>
-                                <th data-lang="common_bigo"><i class="fa fa-envelope-o"></i> 비고</th>
-                                <th data-lang="usermgmt_user_company"><i class="fa fa-group"></i> 소속회사</th>
-                                <th data-lang="usermgmt_user_permission"><i class="fa fa-group"></i> 사용권한</th>
-                                <th data-lang="usermgmt_user_group"><i class="fa fa-group"></i> 소속그룹</th>
-                                <th data-lang="common_state"><i class="fa fa-file"></i> 상태</th>
-                                <th data-lang="common_wdate"> 등록일시</th>
-                                <th class="text-center" data-lang="common_action"><i class="fa fa-bolt"></i> Actions</th>
+                                <th><i class="fa fa-user"></i> 아이디</th>
+                                <th><i class="fa fa-user"></i> 이름</th>
+                                <th><i class="fa fa-envelope-o"></i> 이메일</th>
+                                <th><i class="fa fa-envelope-o"></i> 비고</th>
+                                <th><i class="fa fa-group"></i> 소속회사</th>
+                                <th><i class="fa fa-group"></i> 사용권한</th>
+                                <th><i class="fa fa-group"></i> 소속그룹</th>
+                                <th><i class="fa fa-file"></i> 상태</th>
+                                <th> 등록일시</th>
+                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,21 +47,22 @@
 					                <!-- Modal Header -->
 					                <div class="modal-header">
 					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					                    <h4 data-lang="usermgmt_add">사용자 등록</h4>
+					                    <h4>사용자 등록</h4>
 					                </div>
 					                <!-- END Modal Header -->
 					
 					                <!-- Modal Content -->
 					                <div class="modal-body">
 			                            <form class="form-horizontal">
+			                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_userid">사용자id</label>
+			                                    <label class="control-label col-md-3">사용자id</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="user-userid" class="form-control" value="">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_name">이름</label>
+			                                    <label class="control-label col-md-3">이름</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="user-name" class="form-control" value="">
 		                                            <input type="hidden" name="user-id" value="" >
@@ -69,35 +70,35 @@
 			                                </div>
 			
 			                                <div class="form-group">
-			                                        <label class="control-label col-md-3" data-lang="common_email">이메일</label>
+			                                        <label class="control-label col-md-3">이메일</label>
 			                                        <div class="col-md-9">
 		                                                <input type="text" name="user-email" class="form-control" value="">
 			                                        </div>
 			                                </div>
 			
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_pwd">비밀번호</label>
+			                                    <label class="control-label col-md-3">비밀번호</label>
 			                                    <div class="col-md-9">
 		                                            <input type="password" name="user-password" class="form-control" value="">
 			                                    </div>
 			                                </div>
 	
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_bigo">비고 </label>
+			                                    <label class="control-label col-md-3">비고 </label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="user-bigo" class="form-control" value="">
 			                                    </div>
 			                                </div>
 
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_company">회사</label>
+			                                    <label class="control-label col-md-3">회사</label>
 			                                    <div class="col-md-9">
 		                                            <select name="user-company" class="form-control"></select>
 			                                    </div>
 			                                </div>
 
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="usermgmt_user_permission">사용권한</label>
+			                                    <label class="control-label col-md-3">사용권한</label>
 			                                    <div class="col-md-9">
 		                                            <select name="user-role" class="form-control">
 		                                            <option>USER</option>
@@ -108,7 +109,7 @@
 			                                </div>
 
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_use_role" data-lang="usermgmt_user_group">소속그룹 </label>
+			                                    <label class="control-label col-md-3">소속그룹 </label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="groups" class="form-control" value="" readonly>
 		                                            <input type="hidden" name="groupids" class="form-control" value="" readonly>
@@ -119,11 +120,11 @@
 			                                </div>
 			                                
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_state">상태</label>
+			                                    <label class="control-label col-md-3">상태</label>
 			                                    <div class="col-md-9">
 		                                            <select name="user-state" class="form-control">
-						                            <option value="ACTIVE" data-lang="common_state_active">활성</option>
-						                            <option value="INACTIVE" data-lang="common_state_inactive">비활성</option>
+						                            <option value="ACTIVE">활성</option>
+						                            <option value="INACTIVE">비활성</option>
 						                            </select>
 			                                    </div>
 			                                </div>
@@ -134,8 +135,8 @@
 					
 					                <!-- Modal footer -->
 					                <div class="modal-footer remove-margin">
-					                    <button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
-					                    <button type="button" class="btn btn-success W" id="btnSave" data-lang="common_save_btn"><i class="fa fa-check"></i> 저장</button>
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" ><i class="fa fa-check"></i> 저장</button>
 					                </div>
 					                <!-- END Modal footer -->
 					            </div>
@@ -204,7 +205,7 @@
 
                 $.post(App.baseurl+"/list",{qid:"companylist",column:"name"},
                     	function(res){
-                    		$('[name=user-company]').empty().append('<option value="" data-lang="common_not_selected">'+lang('common_not_selected','선택없음')+'</option>');
+                    		$('[name=user-company]').empty().append('<option value="">선택없음</option>');
                     		if(res.success)
                     		{
                     			for(var i=0; i<res.list.length; i++)
@@ -242,8 +243,8 @@
                     	var uid = $(this).data("id");
                     	var row = $(this).parent().parent().index();
                     	var d = editableTable.fnGetData(row);
-                		App.msg_confirm(lang('common_delete_btn','삭제'), lang('common_msg_delete_confirm','{1} 정보를  삭제 할까요?',d.name), function() {
-                			App.start_loading(lang('common_msg_deleting','정보 삭제중'));
+                		App.msg_confirm('삭제', '['+d.name+'] 정보를  삭제 할까요?', function() {
+                			App.start_loading('회원정보 삭제중');
                 			var cond = {qid:'userdelete',id:uid};
                 			console.log('delete==>', cond);
                             $.post(App.baseurl+"/delete", cond).done(function (res) {
@@ -252,11 +253,11 @@
                             		editableTable.fnDeleteRow(row);
                             	}
                             	else {
-                                	App.msg_alert(lang('common_delete_btn','삭제'), lang('common_msg_delete_failed','정보 삭제 실패하였습니다.'));
+                                	App.msg_alert('삭제', '회원정보 삭제 실패하였습니다.');
                             	}
                             }).fail( function () {
                             	App.stop_loading();
-                            	App.msg_alert(lang('common_delete_btn','삭제'), lang('common_msg_delete_failed','정보 삭제 실패하였습니다.'));
+                            	App.msg_alert('삭제', '회원정보 삭제  실패 하였습니다.');
                             });
                 		} );
                     });
@@ -264,7 +265,7 @@
 
                 var addHandle = function () {
                      $("#btnAdd").click(function () {
-                    	$('#modal-user-form .modal-header h4').text(lang('usermgmt_add','사용자 등록'));
+                    	$('#modal-user-form .modal-header h4').text('사용자 등록');
             			if(App.role!="ADMIN") $('[name=user-company]').val(App.company);
                     	$('[name=user-role]').val('USER');
             			$('[name=groupids]').val('');
@@ -290,7 +291,7 @@
                     	var row = $(this).parent().parent().index();
                     	var d = editableTable.fnGetData(row);
                     	
-                    	$('#modal-user-form .modal-header h4').text(lang('usermgmt_modify','사용자 정보수정'));
+                    	$('#modal-user-form .modal-header h4').text('사용자 정보수정');
                     	
             			$('[name=groupids]').val(d.groupids);
             			$('[name=groups]').val(group_names(d.groupids));
@@ -311,7 +312,7 @@
                     	$('[name=user-bigo').val(d.bigo);
                     	$('[name=user-state]').val(d.state);
                     	$('[name=user-password]').val('');
-                    	$('[name=user-password]').attr('placeholder', lang('usermgmt_msg_change_pwd','비밀번호를 변경시에만 입력하세요..'));
+                    	$('[name=user-password]').attr('placeholder', '비밀번호 변경시에만 입력하세요..');
                     	
                     	$('#modal-user-form').modal({backdrop:'static'});
                     });
@@ -350,17 +351,17 @@
                     {data: "groupids", render : function(data, type, row, obj) { return group_names(data); }}, 
                     {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
                     {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
-                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn:title" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn:title" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
                 ],
                 paging: true,
                 serverSide: true,
                 processing: true, 
                 });
                 
-                $('.dataTables_filter input').attr('placeholder', lang('common_search_btn','검색'));
+                $('.dataTables_filter input').attr('placeholder', '검색');
                 
                 /* Column별 검색기능 추가 */
-                $('#user-datatables_filter').prepend('<select id="field" class="form-control"><option value="name" selected data-lang="common_name">'+lang('common_name','이름')+'</option><option value="userid" data-lang="common_id">'+lang('common_id','아이디')+'</option><option value="email" data-lang="common_email">'+lang('common_email','이메일')+'</option></select>');
+                $('#user-datatables_filter').prepend('<select id="field" class="form-control"><option value="name" selected>이름</option><option value="userid">아이디</option><option value="email">이메일</option></select>');
 
                 addHandle();
                 delHandle();
@@ -372,19 +373,19 @@
 
                 if($("[name=user-name]").val()=="")
                 {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('usermgmt_name_empty','이름을 입력하지 않았습니다.'));
+                    App.msg_alert('입력오류', '이름을 입력하지 않았습니다.');
                     return;
                 }
 
                 if($("[name=user-id]").val()=="" && $("[name=user-password]").val()=="")
                 {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('usermgmt_pwd_empty','비밀번호를 입력하지 않았습니다.'));
+                    App.msg_alert('입력오류', '비밀번호를 입력하지 않았습니다.');
                     return;
                 }
 
                 if($("[name=user-email]").val()=="")
                 {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('usermgmt_email_empty','이메일을 입력하지 않았습니다.'));
+                    App.msg_alert('입력오류', '이메일을 입력하지 않았습니다.');
                     return;
                 }
 
@@ -411,7 +412,7 @@
                 data.company = $('[name=user-company]').val();
                 data.bigo = $('[name=user-bigo]').val();
                 data.state = $('[name=user-state]').val();
-                App.start_loading(lang('common_saving', '정보저장중'));
+                App.start_loading('정보저장중');
                 $.post(url, data).done(function(res) {
                     console.log(res);
                     if(res.success)
@@ -434,16 +435,16 @@
                       	multi_post(posts);
                         
 						$('#modal-user-form').modal('hide');
-                        App.msg_alert(lang('usermgmt_user_info','사용자정보'), lang('common_msg_saved','저장되었습니다.'), function() {  $('#user-datatables').DataTable().ajax.reload(null, false);});
+                        App.msg_alert('사용자정보', '저장되었습니다.', function() {  $('#user-datatables').DataTable().ajax.reload(null, false);});
                     }
                     else {
                         App.stop_loading();
-                        App.msg_alert(lang('usermgmt_user_info','사용자정보'), lang('common_msg_save_failed','저장에 실패 하였습니다.'));
+                        App.msg_alert('사용자정보', '저장에 실패 하였습니다.');
                     }
                 }).fail(function(e) {
                     App.stop_loading();
                     console.log('error=>',e);
-                    App.msg_alert(lang('usermgmt_user_info','사용자정보'), lang('common_msg_save_failed','저장에 실패 하였습니다.'));
+                    App.msg_alert('사용자정보', '저장에 실패 하였습니다.');
                 }); 
 
             });
@@ -458,5 +459,4 @@
 				}
 			}
 			
-            updatelang();
         </script>

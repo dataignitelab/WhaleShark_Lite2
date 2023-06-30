@@ -1,17 +1,17 @@
                     <!-- Navigation info -->
                     <ul id="nav-info" class="clearfix">
                         <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-                        <li><a href="javascript:void(0)" data-lang="main_menu_usernrolemgr">사용자및권한관리</a></li>
-                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_menu_mgmt">메뉴관리</a></li>
+                        <li><a href="javascript:void(0)">사용자및권한관리</a></li>
+                        <li class="active"><a href="javascript:void(0)">메뉴관리</a></li>
                     </ul>
                     <!-- END Navigation info -->
 
                     <!-- Editable Datatables -->
-                    <h3 class="page-header page-header-top" data-lang="menumgmt_title">메뉴관리</h3>
+                    <h3 class="page-header page-header-top">메뉴관리 <small> </small></h3>
 
                     <!-- Toolbar -->
                     <div class="push">
-                        <button class="btn btn-success W" id='btnAdd' title="메뉴등록" data-lang="menumgmt_add,menumgmt_add:title"><i class="fa fa-plus"></i> 메뉴등록</button>
+                        <button class="btn btn-success W" id='btnAdd' title="메뉴등록"><i class="fa fa-plus"></i> 메뉴등록</button>
                     </div>
                     <!-- END Toolbar -->
 
@@ -20,18 +20,17 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
-                                <th data-lang="common_id"><i class="fa fa-envelope-o"></i> 아이디</th>
-                                <th data-lang="menumgmt_parent_menu"><i class="fa fa-envelope-o"></i> 상위메뉴</th>
-                                <th data-lang="menumgmt_menu_name"><i class="fa fa-user"></i> 메뉴명</th>
-                                <th data-lang="menumgmt_menu_type"><i class="fa fa-user"></i> 메뉴종류</th>
-                                <th data-lang="menumgmt_menu_seq"><i class="fa fa-envelope-o"></i> 순서</th>
-                                <th data-lang="menumgmt_menu_link"><i class="fa fa-envelope-o"></i> 메뉴링크</th>
-                                <th data-lang="common_description"><i class="fa fa-envelope-o"></i> 설명</th>
-                                <th data-lang="menumgmt_menu_read_perm"><i class="fa fa-file"></i> 조회권한</th>
-                                <th data-lang="menumgmt_menu_write_perm"><i class="fa fa-file"></i> 수정권한</th>
-                                <th data-lang="common_state"><i class="fa fa-file"></i> 상태</th>
-                                <th data-lang="common_wdate"><i class="fa fa-file"></i> 등록일시</th>
-                                <th data-lang="common_action" class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                                <th><i class="fa fa-envelope-o"></i> 상위메뉴</th>
+                                <th><i class="fa fa-user"></i> 메뉴명</th>
+                                <th><i class="fa fa-user"></i> 메뉴종류</th>
+                                <th><i class="fa fa-envelope-o"></i> 순서</th>
+                                <th><i class="fa fa-envelope-o"></i> 메뉴링크</th>
+                                <th><i class="fa fa-envelope-o"></i> 설명</th>
+                                <th><i class="fa fa-file"></i> 조회권한</th>
+                                <th><i class="fa fa-file"></i> 수정권한</th>
+                                <th><i class="fa fa-file"></i> 상태</th>
+                                <th ><i class="fa fa-file"></i> 등록일시</th>
+                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,37 +48,33 @@
 					                <!-- Modal Header -->
 					                <div class="modal-header">
 					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					                    <h4 data-lang="menumgmt_add">메뉴 등록</h4>
+					                    <h4>메뉴 등록</h4>
 					                </div>
 					                <!-- END Modal Header -->
 					
 					                <!-- Modal Content -->
 					                <div class="modal-body">
 			                            <form class="form-horizontal">
+			                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_id">아이디</label>
-			                                    <div class="col-md-9">
-		                                            <input type="text" name="id" class="form-control" value="" readonly>
-			                                    </div>
-			                                </div>
-			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="menumgmt_menu_name">메뉴명</label>
+			                                    <label class="control-label col-md-3">메뉴명</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="name" class="form-control" value="">
+		                                            <input type="hidden" name="id" value="" >
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="menumgmt_menu_type">메뉴종류</label>
+			                                    <label class="control-label col-md-3">메뉴종류</label>
 			                                    <div class="col-md-9">
 		                                            <select name='type' class='form-control'>
-			                                            <option value='MAIN' data-lang="menumgmt_menu_type_main">메인메뉴</option>
-			                                            <option value='SUB' data-lang="menumgmt_menu_type_sub">서브메뉴</option>
-			                                            <option value='DIV' data-lang="menumgmt_menu_type_div">구분자</option>
+			                                            <option value='MAIN'>메인메뉴</option>
+			                                            <option value='SUB'>서브메뉴</option>
+			                                            <option value='DIV'>구분자</option>
 		                                            </select>
 			                                    </div>
 			                                </div>
 			                                <div class="form-group parent">
-			                                    <label class="control-label col-md-3" data-lang="menumgmt_parent_menu">상위메뉴</label>
+			                                    <label class="control-label col-md-3">상위메뉴</label>
 			                                    <div class="col-md-9">
 		                                            <select name='parent' class='form-control'>
 		                                            </select>
@@ -87,61 +82,61 @@
 			                                </div>
 			
 			                                <div class="form-group">
-			                                        <label class="control-label col-md-3" data-lang="menumgmt_menu_seq">메뉴순서</label>
+			                                        <label class="control-label col-md-3">메뉴순서</label>
 			                                        <div class="col-md-9">
 		                                                <input type="text" name="seq" class="form-control" value="">
 			                                        </div>
 			                                </div>
 			
 			                                <div class="form-group link">
-			                                    <label class="control-label col-md-3" data-lang="menumgmt_menu_link">링크</label>
+			                                    <label class="control-label col-md-3">링크</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="link" class="form-control" value="">
 			                                    </div>
 			                                </div>
 	
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_description">설명 </label>
+			                                    <label class="control-label col-md-3">비고 </label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="bigo" class="form-control" value="">
 			                                    </div>
 			                                </div>
 			                                
 				                          <div class="form-group">
-				                              <label class="control-label col-md-3" data-lang="menumgmt_menu_read_perm">조회권한</label>
+				                              <label class="control-label col-md-3">조회권한</label>
 				                              <div class="col-md-9">
 				                                     <div class='rpermission permissionlst' style='border:1px solid lightgray; overflow:auto; height:100px;'>
 						                             </div>
 				                                     <div>
-				                                     <input type="text" name="ptxtfind" class="col-md-3" value="" placeholder='그룹또는사용자' data-lang="menumgmt_group_or_user:placeholder">
-				                                     <button name='pbtnfind' type="button" data-lang="common_search_btn"> 검색</button>
-				                                     <select name='pcbfind' type="button"><option value='' data-lang="menumgmt_group_or_user">그룹또는사용자</option></select>
-				                                     <button name='pbtnadd' type="button" data-lang="common_add_btn">추가</button>
+				                                     <input type="text" name="ptxtfind" class="col-md-3" value="" placeholder='그룹또는사용자'>
+				                                     <button name='pbtnfind' type="button"> 검색</button>
+				                                     <select name='pcbfind' type="button"><option value=''>그룹또는사용자</option></select>
+				                                     <button name='pbtnadd' type="button">추가</button>
 				                                     </div>
 											  </div>
 				                          </div>
 				                          
 				                          <div class="form-group">
-				                              <label class="control-label col-md-3" data-lang="menumgmt_menu_write_perm">수정권한</label>
+				                              <label class="control-label col-md-3">수정권한</label>
 				                              <div class="col-md-9">
 				                                     <div class='wpermission permissionlst' style='border:1px solid lightgray; overflow:auto; height:100px;'>
 						                             </div>
 				                                     <div>
-				                                     <input type="text" name="ptxtfind" class="col-md-3" value=""  placeholder='그룹명또는사용자' data-lang="menumgmt_group_or_user:placeholder">
-				                                     <button name='pbtnfind' type="button" data-lang="common_search_btn"> 검색</button>
-				                                     <select name='pcbfind' type="button"><option value='' data-lang="menumgmt_group_or_user">그룹또는사용자</option></select>
-				                                     <button name='pbtnadd' type="button" data-lang="common_add_btn">추가</button>
+				                                     <input type="text" name="ptxtfind" class="col-md-3" value=""  placeholder='그룹명또는사용자'>
+				                                     <button name='pbtnfind' type="button"> 검색</button>
+				                                     <select name='pcbfind' type="button"><option value=''>그룹또는사용자</option></select>
+				                                     <button name='pbtnadd' type="button">추가</button>
 				                                     </div>
 											  </div>
 				                          </div>
 			                                
 			                                
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_state">상태</label>
+			                                    <label class="control-label col-md-3">상태</label>
 			                                    <div class="col-md-9">
 		                                            <select name="state" class="form-control">
-						                            <option value="ACTIVE" data-lang="common_state_active">활성</option>
-						                            <option value="INACTIVE" data-lang="common_state_inactive">비활성</option>
+						                            <option value="ACTIVE">활성</option>
+						                            <option value="INACTIVE">비활성</option>
 						                            </select>
 			                                    </div>
 			                                </div>
@@ -152,8 +147,8 @@
 					
 					                <!-- Modal footer -->
 					                <div class="modal-footer remove-margin">
-					                    <button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
-					                    <button type="button" class="btn btn-success W" id="btnSave" data-lang="common_save_btn"><i class="fa fa-check"></i> 저장</button>
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" ><i class="fa fa-check"></i> 저장</button>
 					                </div>
 					                <!-- END Modal footer -->
 					            </div>
@@ -173,7 +168,7 @@
                 	function(res){
                 		if(res.success)
                 		{
-                			cbobj.empty().append('<option value="">'+lang('menumgmt_found', '{1} 개 검색됨',res.list.length)+'</option>');
+                			cbobj.empty().append('<option value="">'+res.list.length+' 개 검색됨</option>');
                 			
                 			for(var i=0; i<res.list.length; i++)
                 			{
@@ -225,8 +220,8 @@
                     	var uid = $(this).data("id");
                     	var row = $(this).parent().parent().index();
                     	var d = editableTable.fnGetData(row);
-                		App.msg_confirm(lang('common_delete_btn','삭제'), lang('common_msg_delete_confirm','{1} 정보를  삭제 할까요?',d.name), function() {
-                			App.start_loading(lang('common_msg_deleting','정보 삭제중'));
+                		App.msg_confirm('삭제', '['+d.name+'] 메뉴정보를  삭제 할까요?', function() {
+                			App.start_loading('메뉴정보 삭제중');
                 			var cond = {qid:'menudelete',id:uid};
                 			console.log('delete==>', cond);
                             $.post(App.baseurl+"/delete", cond).done(function (res) {
@@ -235,11 +230,11 @@
                             		editableTable.fnDeleteRow(row);
                             	}
                             	else {
-                                	App.msg_alert(lang('common_delete_btn','삭제'), lang('common_msg_delete_failed','정보 삭제 실패하였습니다.'));
+                                	App.msg_alert('삭제', '메뉴정보 삭제 실패하였습니다.');
                             	}
                             }).fail( function () {
                             	App.stop_loading();
-                            	App.msg_alert(lang('common_delete_btn','삭제'), lang('common_msg_delete_failed','정보 삭제 실패하였습니다.'));
+                            	App.msg_alert('삭제', '메뉴정보 삭제  실패 하였습니다.');
                             });
                 		} );
                     });
@@ -247,9 +242,8 @@
 
                 var addHandle = function () {
                      $("#btnAdd").click(function () {
-                    	$('#modal-form .modal-header h4').text(lang('menumgmt_add','메뉴 등록'));
+                    	$('#modal-form .modal-header h4').text('메뉴 등록');
                     	$('[name=id]').val('');
-                    	$('[name=id]').prop('readonly', false);
                     	$('[name=name]').val('');
 //                    	$('[name=type]').val('');
                     	$('[name=parent').val('');
@@ -275,10 +269,9 @@
                     	var row = $(this).parent().parent().index();
                     	var d = editableTable.fnGetData(row);
                     	
-                    	$('#modal-form .modal-header h4').text(lang('menumgmt_modify','메뉴 정보수정'));
+                    	$('#modal-form .modal-header h4').text('메뉴 정보수정');
                     	
                     	$('#modal-form [name=id]').val(d.id);
-                    	$('[name=id]').prop('readonly', true);
                     	$('#modal-form [name=name]').val(d.name);
                     	$('#modal-form [name=type]').val(d.type);
 						chgtype(d.parent);
@@ -336,7 +329,6 @@
                 },
                 columns: [
                     {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
-                    {data: "id"}, 
                     {data: "parentname"}, 
                     {data: "name"},
                     {data: "type", render : function(data, type, row, obj) { return state_str(data); }},
@@ -347,22 +339,21 @@
                     {data: "wpermission", render : function(data, type, row, obj) { return permissionstr(data); }}, 
                     {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
                     {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
-                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn:title" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn:title" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
                 ],
                 paging: true,
                 serverSide: true,
                 processing: true, 
                 });
                 
-                $('.dataTables_filter input').attr('placeholder', lang('common_search_btn','검색'));
+                $('.dataTables_filter input').attr('placeholder', '검색');
                 
                 /* Column별 검색기능 추가 */
-                $('#user-datatables_filter').prepend('<select id="field" class="form-control"><option value="name" selected  data-lang="common_name">'+lang('common_name','이름')+'</option><option value="userid" data-lang="common_id">'+lang('common_id','아이디')+'</option><option value="email" data-lang="common_email">'+lang('common_email','이메일')+'</option></select>');
+                $('#user-datatables_filter').prepend('<select id="field" class="form-control"><option value="name" selected>이름</option><option value="userid">아이디</option><option value="email">이메일</option></select>');
 
                 addHandle();
                 delHandle();
                 editHandle();
-                updatelang();
 
             });
             
@@ -394,46 +385,40 @@
             
             $('#modal-form #btnSave').click(function() {
 
-                if($("#modal-form [name=id]").val()=="")
-                {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('regist_msg_id_empty','아이디를 입력하지 않았습니다.'));
-                    return;
-                }
-
                 if($("#modal-form [name=name]").val()=="")
                 {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('menumgmt_msg_menu_name_empty','메뉴명을 입력하지 않았습니다.'));
+                    App.msg_alert('입력오류', '메뉴명을 입력하지 않았습니다.');
                     return;
                 }
 
                 if($("#modal-form [name=type]").val()!="MAIN" && $("#modal-form [name=parent]").val()=="")
                 {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('menumgmt_msg_parent_menu_empty','상위메뉴를 선택하지않았습니다.'));
+                    App.msg_alert('입력오류', '상위메뉴를 선택하지않았습니다.');
                     return;
                 }
                 
                 if($("#modal-form [name=seq]").val()=="")
                 {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('menumgmt_msg_menu_seq_empty','메뉴순서를 입력하지 않았습니다.'));
+                    App.msg_alert('입력오류', '메뉴순서를 입력하지 않았습니다.');
                     return;
                 }
 
                 if($("#modal-form [name=type]").val()=="SUB" && $("#modal-form [name=link]").val()=="")
                 {
-                    App.msg_alert(lang('common_input_error','입력오류'), lang('menumgmt_msg_menu_link_empty','메뉴링크를 입력하지 않았습니다.'));
+                    App.msg_alert('입력오류', '메뉴링크를 입력하지 않았습니다.');
                     return;
                 }
                                 
                 var data = {qid:"menuupdate"};
-//            	var uid = hashcode('mnu_');
+            	var uid = hashcode('mnu_');
                 var url = App.baseurl+"/update";
                 
-                if(!$("#modal-form [name=id]").prop("readonly")) {
+                if($("#modal-form [name=id]").val()=="") {
                 	url = App.baseurl+"/insert";
                 	data.qid = "menuadd";
-//                	data.id = uid;
+                	data.id = uid;
                	}
-				data.id = $("#modal-form [name=id]").val();
+                else data.id = $("#modal-form [name=id]").val();
                 data.name = $('#modal-form [name=name]').val();
                 data.type = $('#modal-form [name=type]').val();
                 if(data.type=="MAIN") data.parent = "";
@@ -466,16 +451,16 @@
                        	multi_post(posts);
                         
                        	$('#modal-form').modal('hide');
-                        App.msg_alert(lang('menumgmt_menu_info','메뉴정보'), lang('common_msg_saved','저장되었습니다.'), function() {  $('#user-datatables').DataTable().ajax.reload(null, false);});
+                        App.msg_alert('메뉴정보', '저장되었습니다.', function() {  $('#user-datatables').DataTable().ajax.reload(null, false);});
                     }
                     else {
                         App.stop_loading();
-                        App.msg_alert(lang('menumgmt_menu_info','메뉴정보'), lang('common_msg_save_failed','저장에 실패 하였습니다.'));
+                        App.msg_alert('메뉴정보', '저장에 실패 하였습니다.');
                     }
                 }).fail(function(e) {
                     App.stop_loading();
                     console.log('error=>',e);
-                    App.msg_alert(lang('menumgmt_menu_info','메뉴정보'), lang('common_msg_save_failed','저장에 실패 하였습니다.'));
+                    App.msg_alert('메뉴정보', '저장에 실패 하였습니다.');
                 }); 
 
             });

@@ -23,20 +23,20 @@
                     <!-- Navigation info -->
                     <ul id="nav-info" class="clearfix">
                         <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-                        <li><a href="javascript:void(0)" data-lang="main_menu_data_analysis">분석</a></li>
-                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_auto_analysis1">자동분석1</a></li>
+                        <li><a href="javascript:void(0)">분석</a></li>
+                        <li class="active"><a href="javascript:void(0)">자동분석1</a></li>
                     </ul>
                     <!-- END Navigation info -->
 
-                    <h3 class="page-header page-header-top" data-lang="ana1_title">자동분석1</h3>
+                    <h3 class="page-header page-header-top">자동분석1<small> </small></h3>
 			
                     <!-- Toolbar -->
-                   <button id='refresh' class='hide' data-lang="ana1_refresh"><i class="fa fa-refresh"></i> Refresh</button>
+                   <button id='refresh' class='hide'><i class="fa fa-refresh"></i> Refresh</button>
 					
                     <div style='height:800px;'>
                     <div style='height:100%;width:25%;display:inline-block; border: 1px solid black; vertical-align:top'>
                     <ul id="demand-tabs" class="nav nav-tabs" data-toggle="tabs">
-						<li class="active"><a href="#src" data-lang="common_metadata"><i class="fa fa-list-alt"></i>통합데이터</a></li>
+						<li class="active"><a href="#src"><i class="fa fa-list-alt"></i>통합데이터</a></li>
 					</ul>
 					<div class='tab-content'>
 						<div class='tab-pane active' id='src' style='height:720px;overflow:auto;'>
@@ -53,8 +53,8 @@
 						<span class="sr-only">70% Complete</span></div>
 					</div>
                     <ul id="result-tabs" class="nav nav-tabs" data-toggle="tabs">
-						<li class=""><a href="#result"><label class=tab-success>&nbsp;</label><i class="fa fa-list-alt"></i>statistics</a></li>
-						<li class=""><a href="#result"><label class=tab-fail>&nbsp;</label><i class="fa fa-list-alt"></i>statistics</a></li>
+						<li class=""><a href="#result"><label class=tab-success>&nbsp;</label><i class="fa fa-list-alt"></i>기술통계</a></li>
+						<li class=""><a href="#result"><label class=tab-fail>&nbsp;</label><i class="fa fa-list-alt"></i>기술통계</a></li>
 					</ul>
 					<div class='tab-content'>
 						<div class='tab-pane active' id='result' style='width:825px;height:670px;overflow:auto;border:1px solid lightgray'>
@@ -65,13 +65,13 @@
                     </div>
                     <div style='height:100%;width:20%;display:inline-block; border: 1px solid black; vertical-align:top'>
                     <ul id="demand-tabs" class="nav nav-tabs" data-toggle="tabs">
-						<li class="active"><a href="#oaram" data-lang="ana1_param"><i class="fa fa-cog"></i>파라미터</a></li>
+						<li class="active"><a href="#oaram"><i class="fa fa-cog"></i>파라미터</a></li>
 					</ul>
 					<div class='tab-content'>
 						<div class='tab-pane active' id='param' style='height:703px;overflow:auto;'>
 						<br>
 						</div>
-						<button id='btnexec' class='hide' style='width:100%' data-lang="ana1_manual_analysis">수동 분석</button>						
+						<button id='btnexec' class='hide' style='width:100%''>수동 분석</button>						
 					</div>
                     </div>
 					<input type=hidden id='columns' readonly>
@@ -211,7 +211,7 @@
 	            		}
 	            	});
 	            }
-				App.msg_confirm(lang('ana1_auto_analysis','자동분석'), lang('ana1_msg_analysis_confirm','분석을 실행할까요?'), function() {exec_analysis(obj)});
+				App.msg_confirm('자동분석 ', '분석을 실행할까요?', function() {exec_analysis(obj)});
 			});
             
             $(document).off('click', '#columns,.columns').on('click', '#columns,.columns', function() {
@@ -230,10 +230,8 @@
             
             function execautoshell(mtype, sql, host, port, uid, pwd, db)
 			{
-            	var l = getLanguage();
-            	if(l!="ko") l="en";            	
-				App.start_loading(lang('ana1_msg_analyzing','데이터 분석실행중...'));
-				var cmds = ["/lite2/shell/autoanalysis.sh", mtype, App.loginuserid, sql, host, port, uid, pwd, db, l];
+				App.start_loading('데이터 분석실행중...');
+				var cmds = ["/lite2/shell/autoanalysis.sh", mtype, App.loginuserid, sql, host, port, uid, pwd, db];
 //				var cmds = ["/python/python","/lite/shell/autoanalysis.py", "-ftype", mtype, "-userid", App.loginuserid, "-q", sql, "-server", host, "-port", port, "-uid", uid, "-pwd", pwd, "-db", db];
 				console.log('cmd===>', cmds)
 				var d = {};
@@ -243,7 +241,7 @@
 					App.stop_loading();
 					if(res.success)
 					{
-						App.msg_alert(lang('ana1_analysis_ok','분석실행완료'), lang('ana1_msg_analysis_executed','분석이 실행되었습니다.'));
+						App.msg_alert('분석실행완료', '분석이 실행되었습니다.');
 						percent = "0";
 						$('.progress span').text("0");
 						$('.progress-bar').css('width',percent+"%");
@@ -257,7 +255,7 @@
 					else
 					{
 						console.log(res);
-						App.msg_alert(lang('ana1_error','에러'), lang('ana1_msg_analysis_failed','데이터 분석에 오류가 발생했습니다.'));
+						App.msg_alert('에러', '데이터 분석에 오류가 발생했습니다.');
 					}
 				});
            	}
@@ -334,9 +332,7 @@
 			
 			function load_results()
 			{
-				var l = getLanguage();
-				if(l!="ko") l = "en";
-				var cond = {qid:"algorunlist",userid:App.loginuserid,lang:l};
+				var cond = {qid:"algorunlist",userid:App.loginuserid};
 				$.post(App.baseurl+'/list', cond, function(res) {
 //					console.log(res);
 					if(res.success)
@@ -347,7 +343,7 @@
 						for(var i=0; i<res.list.length; i++)
 						{
 							var item = res.list[i];
-							if(item.state=="분석완료" || item.state=="분석불가" || item.state=="Analyzed" || item.state=="Failed" )
+							if(item.state=="분석완료" || item.state=="분석불가" )
 							{
 								var icon = '<i class="fa fa-cogs"></i>';
 								
@@ -356,8 +352,8 @@
 								else icon = '<img width=20 src=img/i8.png>';
 								
 								
-								if(item.state=="분석완료" || item.state=="Analyzed") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-success"><label class=tab-success>&nbsp;</label>'+icon+item.name+'</a></li>');
-								else if(item.state=="분석불가" || item.state=="Failed") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-fail"><label class=tab-fail>&nbsp;</label>'+icon+item.name+'</a></li>');
+								if(item.state=="분석완료") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-success"><label class=tab-success>&nbsp;</label>'+icon+item.name+'</a></li>');
+								else if(item.state=="분석불가") $('#result-tabs').append('<li class=""><a href="#result" data-idx="'+i+'" class="taba-fail"><label class=tab-fail>&nbsp;</label>'+icon+item.name+'</a></li>');
 								if(item.run_log!=null) run_log = item.run_log.trim();
 							}
 						}
@@ -401,7 +397,7 @@
 				
 				$('#btnexec').removeClass('hide');
 				
-				if(state=="분석완료" || state=="Analyzed")
+				if(state=="분석완료")
 				{
 					if(content.indexOf("success:")==0) content = content.substring(8);
 					else if(content.indexOf("error:")==0) content = content.substring(6);
@@ -478,7 +474,7 @@
 			
 			function execshell(cmds, idx)
 			{
-				App.start_loading(lang('ana1_msg_analyzing','데이터 분석중...'));
+				App.start_loading('데이터 분석중...');
 				console.log('cmd===>', cmds)
 				var d = {};
 				d.cmd=cmds.join("@");
@@ -488,14 +484,14 @@
 //					console.log(res);
 					if(res.success)
 					{
-						App.msg_alert(lang('ana1_analysis_success','분석완료'), lang('ana1_msg_analysis_success','데이터 분석이 완료되었습니다.'));
+						App.msg_alert('분석완료', '데이터 분석이 완료되었습니다.');
 						results[idx].run_result = res.result;
 						$('#result').html(res.result);
 					}
 					else
 					{
 						console.log(res);
-						App.msg_alert(lang('ana1_error','에러'), lang('ana1_msg_analysis_failed','데이터 분석에 오류가 발생했습니다.'));
+						App.msg_alert('에러', '데이터 분석에 오류가 발생했습니다.');
 					}
 				});
            	}
@@ -512,7 +508,7 @@
 					var pval = $(this).val();
 					for(var i=0; i<cmds.length; i++) cmds[i] = cmds[i].replace(new RegExp('{'+pname+'.*}'),pval);
 				});
-				App.msg_confirm(lang('ana1_manual_analysis','수동분석'), lang('ana1_msg_analysis_confirm2', '{1} 분석을 실행할까요?', mtext), function() {execshell(cmds, idx)});
+				App.msg_confirm('수동분석 ', mtext+' 분석을 실행할까요?', function() {execshell(cmds, idx)});
 			});
 			
 			function lastcond()
@@ -534,7 +530,6 @@
 			}
 
 			setTimeout(lastcond, 1000)
-            updatelang();
 			
 
         </script>

@@ -1,17 +1,17 @@
                     <!-- Navigation info -->
                     <ul id="nav-info" class="clearfix">
                         <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-                        <li><a href="javascript:void(0)" data-lang="main_menu_datamgr">데이터 통합</a></li>
-                        <li class="active"><a href="javascript:void(0)" data-lang="main_menu_data_mgmt">통합데이터 관리</a></li>
+                        <li><a href="javascript:void(0)">데이터 통합</a></li>
+                        <li class="active"><a href="javascript:void(0)">통합데이터 관리</a></li>
                     </ul>
                     <!-- END Navigation info -->
 
                     <!-- Editable Datatables -->
-                    <h3 class="page-header page-header-top" data-lang="main_menu_data_mgmt">통합데이터 관리</h3>
+                    <h3 class="page-header page-header-top">통합데이터 관리<small> </small></h3>
 
                     <!-- Toolbar -->
                     <div class="push">
-                        <button class="btn btn-success W" id='btnAdd' title="통합데이터 등록" data-lang="metamgr_add_btn:title"><i class="fa fa-plus" data-lang="metamgr_add_btn">통합데이터 등록</i></button>
+                        <button class="btn btn-success W" id='btnAdd' title="통합데이터 정보 등록"><i class="fa fa-plus"></i>통합데이터 등록</button>
                     </div>
                     <!-- END Toolbar -->
 
@@ -20,13 +20,13 @@
                         <thead>
                             <tr>
                                 <th class="cell-small text-center">#</th>
-                                <th data-lang="common_dataname"><i class="fa fa-user"></i> 데이터명</th>
-                                <th class="hidden-xs hidden-sm" data-lang="common_description"><i class="fa fa-envelope-o"></i> 설명</th>
-                                <th class="hidden-xs hidden-sm" data-lang="common_datatype"><i class="fa fa-file"></i> 데이터유형</th>
-                                <th class="hidden-xs hidden-sm" data-lang="common_state"><i class="fa fa-file"></i> 상태</th>
-                                <th class="hidden-xs hidden-sm" data-lang="common_schedule"><i class="fa fa-file"></i> 스케쥴</th>
-                                <th class="hidden-xs hidden-sm" data-lang="common_wdate"><i class="fa fa-file"></i> 등록일시</th>
-                                <th class="text-center" data-lang="common_action"><i class="fa fa-bolt"></i> Actions</th>
+                                <th><i class="fa fa-user"></i> 통합데이터명</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 설명</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 데이터유형</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 스케쥴</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 등록일시</th>
+                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,28 +44,29 @@
 					                <!-- Modal Header -->
 					                <div class="modal-header">
 					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					                    <h4 data-lang="metamgr_add">통합데이터정보 등록</h4>
+					                    <h4>통합데이터정보 등록</h4>
 					                </div>
 					                <!-- END Modal Header -->
 					
 					                <!-- Modal Content -->
 					                <div class="modal-body">
 			                            <form class="form-horizontal">
+			                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_dataname">* 통합데이터명</label>
+			                                    <label class="control-label col-md-3">* 통합데이터명</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="mname" class="form-control">
 		                                            <input type="hidden" name="id" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_description">설명</label>
+			                                    <label class="control-label col-md-3">설명</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="mdesc" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_datatype">* 데이터종류</label>
+			                                    <label class="control-label col-md-3">* 데이터종류</label>
 			                                    <div class="col-md-9">
 		                                            <select name="mtype" class="form-control">
 		                                            <option>csv</option>
@@ -77,68 +78,68 @@
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_savepath">* 저장경로</label>
+			                                    <label class="control-label col-md-3">* 저장경로</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="mpath" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_savetable">* 저장테이블</label>
+			                                    <label class="control-label col-md-3">* 저장테이블</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="mtable" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_orgpath">* 원본경로</label>
+			                                    <label class="control-label col-md-3">* 원본경로</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="opath" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_orgurl">* 원본url</label>
+			                                    <label class="control-label col-md-3">* 원본url</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="ourl" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_orgdb">* 원본database</label>
+			                                    <label class="control-label col-md-3">* 원본database</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="odatabase" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_orgtable">* 원본table</label>
+			                                    <label class="control-label col-md-3">* 원본table</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="otable" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_collect_key">수집key</label>
+			                                    <label class="control-label col-md-3">수집key</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="mkey" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_collect_type">수집방식</label>
+			                                    <label class="control-label col-md-3">수집방식</label>
 			                                    <div class="col-md-9">
 		                                            <select name="mscheduletype" class="form-control">
-		                                            <option value='MANUAL' data-lang="common_manual">수동</option>
+		                                            <option value='MANUAL'>수동</option>
 		                                            <option value='CRONTAB'>CRONTAB</option>
 		                                            </select>
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="metamgr_collect_schedule">수집스케쥴</label>
+			                                    <label class="control-label col-md-3">수집스케쥴</label>
 			                                    <div class="col-md-9">
 		                                            <input type="text" name="mschedule" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="form-group">
-			                                    <label class="control-label col-md-3" data-lang="common_state">상태</label>
+			                                    <label class="control-label col-md-3">수집방식</label>
 			                                    <div class="col-md-9">
 		                                            <select name="mstate" class="form-control">
-		                                            <option value='ACTIVE' data-lang="common_state_active">활성</option>
-		                                            <option value='INACTIVE' data-lang="common_state_inactive">비활성</option>
+		                                            <option value='ACTIVE'>활성</option>
+		                                            <option value='INACTIVE'>비활성</option>
 		                                            </select>
 			                                    </div>
 			                                </div>
@@ -148,8 +149,8 @@
 					
 					                <!-- Modal footer -->
 					                <div class="modal-footer remove-margin">
-					                    <button type="button" class="btn btn-danger" data-dismiss="modal" data-lang="common_close_btn"><i class="fa fa-times"></i> 닫기</button>
-					                    <button type="button" class="btn btn-success W" id="btnSave" data-lang="common_save_btn"><i class="fa fa-check"></i> 저장</button>
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" ><i class="fa fa-check"></i> 저장</button>
 					                </div>
 					                <!-- END Modal footer -->
 					            </div>
@@ -206,8 +207,8 @@
                     {data: "mscheduletype"}, 
                     {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }},
                     {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { 
-					if(data<0) return lang('metamgr_generated','자동생성');
-					return '<a href="javascript:void(0)" title="'+lang('common_delete_btn','삭제')+'" data-lang="common_delete_btn:title" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="'+lang('common_modify_btn','수정')+'" data-lang="common_modify_btn:title" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; 
+					if(data<0) return '자동생성';
+					return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; 
 					}},
                 ],
                 paging: true,
@@ -215,15 +216,16 @@
                 processing: true, 
                 });
                 
-                $('.dataTables_filter input').attr('placeholder', lang('common_search_btn','검색'));
+                $('.dataTables_filter input').attr('placeholder', '검색');
 
                 $("#btnAdd").off('click').on('click',function () {
-                	$('#metaform-modal .modal-header h4').text(lang('metamgr_add','통합데이터정보 등록'));
+                	$('#metaform-modal .modal-header h4').text('통합데이터정보 등록');
                 	$('#metaform-modal form')[0].reset();
                 	$('#metaform-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
                                     	
                 });
                 
+
             });
             
             $('#btnSave').off('click').on('click',function() {
@@ -246,7 +248,7 @@
             	
                 if(formvalid.length>0)
                 {
-                	App.msg_alert(lang('common_input_error','입력오류'), lang('common_msg_inputvalue', '{1}값을 입력해주세요!',formvalid[0]));
+                	App.msg_alert('입력오류', formvalid[0]+'값을 입력해주세요!');
                     return;
                 }
 
@@ -266,23 +268,23 @@
                 }
             	formdata.company = App.company;
                 
-                App.start_loading(lang('common_saving','정보저장중'));
+                App.start_loading('정보저장중');
                 $.post(url, formdata).done(function(res) {
                     console.log(res);
                     if(res.success)
                     {
                       	App.stop_loading();
                       	$('#metaform-modal').modal('hide');
-                       	App.msg_alert(lang('metamgr_datainfo','통합데이터정보'), lang('common_msg_saved','저장되었습니다.'), function() { $('#datatables').DataTable().ajax.reload(null, false); });
+                       	App.msg_alert('통합데이터정보', '저장되었습니다.', function() { $('#datatables').DataTable().ajax.reload(null, false); });
                     }
                     else {
                         App.stop_loading();
-                        App.msg_alert(lang('metamgr_datainfo','통합데이터정보'), lang('common_msg_save_failed','저장에 실패 하였습니다.'));
+                        App.msg_alert('통합데이터정보', '저장에 실패 하였습니다.');
                     }
                 }).fail(function(e) {
                     App.stop_loading();
                     console.log('error=>',e);
-                    App.msg_alert(lang('metamgr_datainfo','통합데이터정보'), lang('common_msg_save_failed','저장에 실패 하였습니다.'));
+                    App.msg_alert('통합데이터정보', '저장에 실패 하였습니다.');
                 });
             }); 
             
@@ -295,8 +297,8 @@
 //            	var id = $(this).data("id");
             	var row = $(this).parent().parent().index();
             	var d = editableTable.fnGetData(row);
-        		App.msg_confirm(lang('common_delete_btn','삭제'), lang('common_msg_delete_confirm', '{1} 정보를  삭제 할까요?', d.mname), function() {
-        			App.start_loading(lang('common_msg_deleting','정보 삭제중'));
+        		App.msg_confirm('삭제', '['+d.mname+'] 정보를  삭제 할까요?', function() {
+        			App.start_loading('통합데이터 정보 삭제중');
         			var cond = {qid:'metadelete',id:d.id};
         			console.log('delete==>', cond);
                     $.post(App.baseurl+"/delete", cond).done(function (res) {
@@ -305,11 +307,11 @@
                     		editableTable.fnDeleteRow(row);
                     	}
                     	else {
-                        	App.msg_alert(lang('common_delete_btn','삭제'), lang('common_msg_delete_failed','정보 삭제에 실패하였습니다.'));
+                        	App.msg_alert('삭제', '통합데이터 정보 삭제에 실패하였습니다.');
                     	}
                     }).fail( function () {
                     	App.stop_loading();
-                    	App.msg_alert(lang('common_delete_btn','삭제'), lang('common_msg_delete_failed','정보 삭제에 실패하였습니다.'));
+                    	App.msg_alert('삭제', '통합데이터 정보 삭제에  실패 하였습니다.');
                     });
         		} );
             });
@@ -321,7 +323,7 @@
             	var row = $(this).parent().parent().index();
             	var d = editableTable.fnGetData(row);
             	
-            	$('#metaform-modal .modal-header h4').text(lang('metamgr_modify','통합데이터 정보수정'));
+            	$('#metaform-modal .modal-header h4').text('통합데이터 정보수정');
             	$('#metaform-modal form')[0].reset();
             	
             	$('#metaform-modal form input,select').each(function(i, e) {
@@ -331,6 +333,8 @@
             	
             	$('#metaform-modal').modal({backdrop:'static'}).find('.modal-content').draggable();
             });
+            
 
-            updatelang();
+            
+            
         </script>
