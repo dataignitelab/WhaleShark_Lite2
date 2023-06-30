@@ -1,0 +1,13 @@
+{
+	"base_path":"/WhaleShark_Edge/",
+	"deviceid":"$HOSTNAME",
+	"devicetype":"tinkerboard2s-TS",
+	"version":"0.01",
+	"update_info_url":"http://whalesharklite2.datacentric.kr:8090/edgeupdate-info",
+	"update_download_url":"http://whalesharklite2.datacentric.kr:8090/edgeupdate-download",
+	"update_interval":60,
+	"data_collect_interval": 10,
+	"update_after_script":"./start.sh",
+	"datagateway_ip":"whalesharkdata.datacentric.kr",
+	"datagateway_port":1233
+}

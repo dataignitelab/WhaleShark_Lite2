@@ -1,0 +1,100 @@
+{
+	"dashboardget":"select data from tb_dashboard where id={id}",
+
+	"algolist":"select * from tb_algoinfo where ((column)) like '%{find}%' order by id",
+	"algorunlist":"select a.id,a.name,a.cmd,a.params,h.state,h.run_stime,h.run_etime,h.run_result,h.run_log,h.run_pid from tb_algoinfo a LEFT outer JOIN (SELECT * FROM tb_algoinfo_history WHERE userid='{userid}' and run_pid=(SELECT run_pid FROM tb_algoinfo_history WHERE userid='{userid}' order by run_stime desc limit 1)) h ON a.id=h.id where a.name like '%{find}%' ORDER BY a.id",
+
+	"finduser":"select id from tb_user where name='{name}' and userid='{userid}' and email='{email}'",
+	"finduserid":"select userid from tb_user where userid='{userid}'",
+	"passwordreset":"update tb_user set password=sha2('{password}',512) where id='{id}'",
+	"userlist":"select r.*,(SELECT GROUP_CONCAT(groupid) FROM tb_usergroup WHERE userid=r.id) groupids,c.name companyname from tb_user r left join tb_company c on r.company = c.cid where ('{session_role}'='ADMIN' OR r.company='{session_company}') and r.((column)) like '%{find}%'",
+	"userdelete":"delete from tb_user where id = '{id}'",
+	"useradd":"insert tb_user (id,userid,name,email,password,bigo,state,company,role) values ('{id}','{userid}','{name}','{email}','{password}','{bigo}','{state}','{company}','{role}')",
+	"userupdate":"update tb_user set userid='{userid}',name='{name}',email='{email}',password=((password)),bigo='{bigo}',state='{state}',role='{role}',company='{company}' where id='{id}'",
+
+	"metalist":"select * from vw_metainfo where ((column)) like '%{find}%' and company='{session_company}' order by ((column))",
+	"metafind":"select * from vw_metainfo where cast( ((column)) as char) in ('{value}','{value1}','{value2}','{value3}') and company='{session_company}' order by mname",
+	"metasynclist":"select * from tb_metainfo where ((column)) in ('{value}','{value1}','{value2}','{value3}') and company='{session_company}' and ourl<>'-' and opath<>'-' order by ((column))",
+	"metadelete":"delete from tb_metainfo where id = {id}",
+	"metaadd":"insert tb_metainfo (mname,mdesc,mtype,mpath,mtable,opath,ourl,odatabase,otable,mkey,mscheduletype,mschedule,mstate,mowner,wdate,company) values ('{mname}','{mdesc}','{mtype}','{mpath}','{mtable}','{opath}','{ourl}','{odatabase}','{otable}','{mkey}','{mscheduletype}','{mschedule}','{mstate}','{mowner}', now(),'{company}')",
+	"metaupdate":"update tb_metainfo set mname='{mname}',mdesc='{mdesc}',mtype='{mtype}',mpath='{mpath}',mtable='{mtable}',opath='{opath}',ourl='{ourl}',odatabase='{odatabase}',otable='{otable}',mkey='{mkey}',mscheduletype='{mscheduletype}',mschedule='{mschdule}',mstate='{mstate}',mowner=((mowner)),udate=now(),company='{company}' where id={id}",
+
+	"grouplist":"select * from tb_group where ((column)) like '%{find}%' and company='{session_company}' order by name",
+	"groupdelete":"delete from tb_group where id = '{id}'",
+	"groupadd":"insert tb_group (id,name,bigo,state,company) values ('{id}','{name}','{bigo}','{state}','{company}')",
+	"groupupdate":"update tb_group set name='{name}',bigo='{bigo}',state='{state}',company='{company}' where id='{id}'",
+
+	"usergroupdelete":"delete from tb_usergroup where ('{groupid}'='' and userid = '{userid}') or ('{userid}'='' and groupid = '{groupid}') or (userid = '{userid}' and groupid = '{groupid}')",
+	"usergroupadd":"insert tb_usergroup (userid,groupid) values ('{userid}','{groupid}')",
+
+	"permissionfind":"select * from (SELECT id,name,'user' as type FROM tb_user where state='ACTIVE' and company='{company}' and name like '%{name}%' union SELECT id,name,'group' as type FROM tb_group where state='ACTIVE' and company='{session_company}' and name like '%{name}%') r order by type,name",
+	"permissiondelete":"delete from tb_permission where ('{uid}'='' and pid = '{pid}') or ('{pid}'='' and uid = '{uid}') or (uid = '{uid}' and pid = '{pid}')",
+	"permissionadd":"insert tb_permission (pid,uid,rwtype,utype) values ('{pid}','{uid}','{rwtype}','{utype}')",
+	
+	"configget":"select * from tb_config where `key`='{key}'",
+	"configput":"replace into tb_config (`key`,`value`) values ('{key}','{value}')",
+	
+	"dashboardlist":"select *,(SELECT group_concat(concat(uid,'|',ifnull( (SELECT max(name) FROM tb_user where id=uid),''),ifnull( (SELECT max(name) FROM tb_group where id=uid),''),'|',utype,'|',rwtype) ) FROM tb_permission where pid=r.id) permissions from tb_dashboard r where ((column)) like '%{find}%' order by wdate desc",
+	"dashboarddelete":"delete from tb_dashboard where id = '{id}'",
+	"dashboardadd":"insert tb_dashboard (name,preview,data,author,state) values ('{name}','{preview}','{data}','{author}','{state}')",
+	"dashboardupdate":"update tb_dashboard set name='{name}',preview='{preview}',data='{data}',author='{author}',state='{state}' where id='{id}'",
+	
+	"menulist":"select *,(SELECT name FROM tb_menu where id=r.parent and type='MAIN') parentname,(SELECT group_concat(concat(uid,'|',ifnull( (SELECT max(name) FROM tb_user where id=uid),''),ifnull( (SELECT max(name) FROM tb_group where id=uid),''),'|',utype,'|',rwtype) ) FROM tb_permission where rwtype='R' and pid=r.id) rpermission,(SELECT group_concat(concat(uid,'|',ifnull( (SELECT max(name) FROM tb_user where id=uid),''),ifnull( (SELECT max(name) FROM tb_group where id=uid),''),'|',utype,'|',rwtype) ) FROM tb_permission where rwtype='W' and pid=r.id) wpermission from tb_menu r where ((column)) like '%{find}%' order by seq, wdate desc",
+	"mainmenulist":"select * from tb_menu where type='MAIN' order by seq",
+	"menudelete":"delete from tb_menu where id = '{id}'",
+	"menuadd":"insert tb_menu (id,name,type,parent,seq,link,bigo,state) values ('{id}','{name}','{type}','{parent}','{seq}','{link}','{bigo}','{state}')",
+	"menuupdate":"update tb_menu set name='{name}',type='{type}',parent='{parent}',seq='{seq}',link='{link}',bigo='{bigo}',state='{state}' where id='{id}'",
+	
+	"userdashboard":"select distinct r.*,ifnull(p.rwtype,'W') rwtype,(SELECT group_concat(concat(uid,'|',ifnull( (SELECT max(name) FROM tb_user where id=uid),''),ifnull( (SELECT max(name) FROM tb_group where id=uid),''),'|',utype,'|',rwtype) ) FROM tb_permission where pid=r.id) permissions from tb_dashboard r left outer JOIN tb_permission p ON r.id=p.pid WHERE p.uid IN (SELECT groupid FROM tb_usergroup WHERE userid='{userid}') or p.uid='{userid}' OR author='{userid}' ORDER BY name, rwtype desc",
+	"usermenu":"select distinct * from (SELECT r.*,ifnull(p.rwtype,'W') rwtype FROM tb_menu r left outer JOIN tb_permission p ON r.id=p.pid WHERE p.uid IN (SELECT groupid FROM tb_usergroup WHERE userid='{userid}') or p.uid='{userid}' UNION SELECT *,'R' rwtype FROM tb_menu r WHERE (SELECT COUNT(*) FROM tb_permission where pid = r.id AND rwtype='R')=0 UNION SELECT *,'W' rwtype FROM tb_menu r WHERE (SELECT COUNT(*) FROM tb_permission where pid = r.id AND rwtype='W')=0) r where state='ACTIVE' ORDER BY seq,rwtype",
+	
+	"datasetnames":"select distinct datasetname from modelling_tool.tb_dataset order by datasetname",
+	"classnames":"select distinct classname from modelling_tool.tb_annotation where fid in (SELECT id FROM modelling_tool.tb_dataset WHERE datasetname='{datasetname}') order by classname",
+	"datasetlist_old":"select * from modelling_tool.tb_dataset where datasetname='{datasetname}'",
+	"datasetlist":"SELECT id,datasetname,filepath,wdate,(SELECT GROUP_CONCAT(classname) FROM modelling_tool.tb_annotation WHERE fid=r.id) fileinfo  FROM modelling_tool.tb_dataset r where datasetname='{datasetname}'",
+	"modelnames":"select distinct modelname from modelling_tool.tb_model where datasetname = '{datasetname}' order by modelname",
+	"modellist":"select * from modelling_tool.tb_model where datasetname = '{datasetname}'",
+	"annotationlist":"select * from modelling_tool.tb_annotation where fid={fid}",
+	"datasetdelete_id":"delete from modelling_tool.tb_dataset where id={id}",
+	"modeldelete_id":"delete from modelling_tool.tb_model where id={id}",
+	"datasetadd":"insert modelling_tool.tb_dataset (datasetname,filepath,fileinfo) values ('{datasetname}','{filepath}','{fileinfo}')",
+	"annotationadd":"insert modelling_tool.tb_annotation (fid,classname,annotationinfo) values ('{fid}','{classname}','{annotationinfo}')",
+	"annotationdelete":"delete from modelling_tool.tb_annotation where fid={fid}",
+	"modeladd":"insert modelling_tool.tb_model (datasetname,modelname,`precision`,recall,f1_score) values ('{datasetname}','{modelname}','{precision}','{recall}','{f1_score}')",
+
+	"sensorlist":"select * from tb_sensor where ((column)) like '%{find}%' and company='{session_company}' order by name",
+	"sensordelete":"delete from tb_sensor where id = '{id}'",
+	"sensoradd":"insert tb_sensor (id,name,vtype,vrange,unit,vname,bigo,state,company) values ('{id}','{name}','{vtype}','{vrange}','{unit}','{vname}','{bigo}','{state}','{company}')",
+	"sensorupdate":"update tb_sensor set name='{name}',vtype='{vtype}',vrange='{vrange}',unit='{unit}',vname='{vname}',bigo='{bigo}',state='{state}',company='{company}' where id='{id}'",
+	
+	"devicelist":"select *,(SELECT GROUP_CONCAT(sensorid) FROM tb_device_sensors WHERE deviceid=id) sensorids from tb_device where ((column)) like '%{find}%' and company='{session_company}' order by bigo",
+	"devicedelete":"delete from tb_device where id = '{id}'; delete from tb_device_sensors where deviceid = '{id}'",
+	"deviceadd":"insert tb_device (id,name,bigo,state,company) values ('{id}','{name}','{bigo}','{state}','{company}')",
+	"deviceupdate":"update tb_device set name='{name}',bigo='{bigo}',state='{state}',company='{company}' where id='{id}'",
+
+	"devicesensorlist":"select *, r2.name devicename from tb_device_sensors r1 left join tb_device r2 on r1.deviceid=r2.id where r1.deviceid = '{deviceid}'",
+	"devicesensordelete":"delete from tb_device_sensors where deviceid = '{deviceid}'",
+	"devicesensoradd":"insert tb_device_sensors (deviceid,sensorid,sid) values ('{deviceid}','{sensorid}','{sid}')",
+	
+	"findcompany":"select * from tb_company where name like '%{name}%'",
+	"companylist":"select * from tb_company r where ((column)) like '%{find}%' order by name",
+	"companydelete":"delete from tb_company where cid = '{cid}'",
+	"companyadd":"insert tb_company (cid,name,daepyo,tel,fax,addr,sano,wdate) values ('{cid}','{name}','{daepyo}','{tel}','{fax}','{addr}','{sano}',now())",
+	"companyupdate":"update tb_company set name='{name}',daepyo='{daepyo}',tel='{tel}',fax='{fax}',addr='{addr}',sano='{sano}',udate=now() where cid='{cid}'",
+	
+	"modelmgrlist":"select *,(SELECT GROUP_CONCAT(did) FROM tb_model_devices WHERE mid=id) deviceids from tb_model where ((column)) like '%{find}%' and company='{session_company}' order by bigo",
+	"modelmgrdelete":"delete from tb_model where id = '{id}'; delete from tb_model_devices where mid = '{id}'",
+	"modelmgradd":"insert tb_model (id,name,bigo,ver,state,apply_time,company,wdate) values ('{id}','{name}','{bigo}','{ver}','{state}','{apply_time}','{company}',now())",
+	"modelmgrupdate":"update tb_model set name='{name}',bigo='{bigo}',state='{state}',ver='{ver}',udate=now() where id='{id}'",
+	"modelmodelfileupdate":"update tb_model set model_file='{filename}' where id='{id}'",
+	"modelexecfileupdate":"update tb_model set exec_file='{filename}' where id='{id}'",
+	
+	"modeldevicedelete":"delete from tb_model_devices where mid = '{mid}'",
+	"modeldeviceadd":"insert tb_model_devices (mid,did) values ('{mid}','{did}')",
+
+	"svcmgrlist":"select * from tb_svcinfo where ((column)) like '%{find}%' and company='{session_company}' ",
+	"svcmgrdelete":"delete from tb_svcinfo where id = '{id}'; delete from tb_svc_history where id = '{id}'",
+	"svcmgradd":"insert tb_svcinfo (id,name,svccomment,state, spath, company, wtime) values ('{id}','{name}','{svccomment}','{state}','{spath}','{company}',now())",
+	"svcmgrupdate":"update tb_svcinfo set name='{name}',svccomment='{svccomment}',state='{state}',utime=now() where id='{id}'",
+	"svcexechistory":"insert tb_svc_history (id,userid,state,run_result,run_log,run_stime,run_etime) values ('{id}','{userid}','{state}','{run_result}','{run_log}','{run_stime}','{run_etime}')"
+}
