@@ -1,9 +1,0 @@
-WhaleShark_IIoT/config/config_server_develop.yaml - 설정값
-
-WhaleShark_IIoT/net_socket/redis_init_info.py - redis 없을시 init json
-
-WhaleShark_IIoT/net_socket/iiot_tcp_async_server.py - socket server 모듈
-WhaleShark_IIoT/net_socket/signal_killer.py - socket kill 모듈
-
-WhaleShark_IIoT/iiot_server.py - server 모듈( device -> tcp -> rabbitmq )
-WhaleShark_IIoT/iiot_mqtt_agent.py -  consumer 모듈 ( rabbitmq -> influxdb )
