@@ -1,0 +1,369 @@
+                    <!-- Navigation info -->
+                    <ul id="nav-info" class="clearfix">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li><a href="javascript:void(0)">장치관리</a></li>
+                        <li class="active"><a href="javascript:void(0)">단말관리</a></li>
+                    </ul>
+                    <!-- END Navigation info -->
+
+                    <!-- Editable Datatables -->
+                    <h3 class="page-header page-header-top">단말관리 <small> </small></h3>
+
+                    <!-- Toolbar -->
+                    <div class="push">
+                        <button class="btn btn-success W" id='btnAdd' title="설비등록"><i class="fa fa-plus"></i> 단말등록</button>
+                    </div>
+                    <!-- END Toolbar -->
+
+                    <!-- Table -->
+                    <table id="group-datatables" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="cell-small text-center">#</th>
+                                <th><i class="fa fa-user"></i> 단말명</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 비고</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-envelope-o"></i> 센서목록</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 상태</th>
+                                <th class="hidden-xs hidden-sm"><i class="fa fa-file"></i> 등록일시</th>
+                                <th class="text-center"><i class="fa fa-bolt"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- END Table -->
+                    <!-- END Editable Datatables -->
+                    
+                    <!-- user modal form -->
+					<div id="group-modal" class="modal">
+					        <!-- Modal Dialog -->
+					        <div class="modal-dialog">
+					            <!-- Modal Content -->
+					            <div class="modal-content">
+					                <!-- Modal Header -->
+					                <div class="modal-header">
+					                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					                    <h4>단말 등록</h4>
+					                </div>
+					                <!-- END Modal Header -->
+					
+					                <!-- Modal Content -->
+					                <div class="modal-body">
+			                            <form class="form-horizontal">
+			                                <!-- <h5 class="page-header-sub">사용자정보</h5> -->
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">단말명</label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="name" class="form-control" value="">
+		                                            <input type="hidden" name="id" class="form-control" value="">
+			                                    </div>
+			                                </div>
+	
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">비고 </label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="bigo" class="form-control" value="">
+			                                    </div>
+			                                </div>
+
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">센서 </label>
+			                                    <div class="col-md-9">
+		                                            <input type="text" name="sensors" class="form-control" value="" readonly>
+		                                            <input type="hidden" name="sensorids" class="form-control" value="" readonly>
+		                                            <div class='sensors' style='border:1px solid lightgray; overflow:auto; width:180px; height:350px; display:inline-block'>
+		                                            <input type=checkbox id=s1><label for=s1>센서1</label><br>
+		                                            <input type=checkbox id=s2><label for=s2>센서2</label><br>
+		                                            <input type=checkbox id=s3><label for=s3>센서3</label><br>
+		                                            <input type=checkbox id=s4><label for=s4>센서4</label><br>
+		                                            </div>
+		                                            <div class='sensorst' style='overflow:auto; height:350px; display:inline-block'>
+		                                            	  <br>
+		                                            	  <button>추가</button><br><br>
+		                                            	  <button>삭제</button>
+		                                            </div>
+		                                            
+		                                            <div class='sensors1' style='border:1px solid lightgray; overflow:auto; width:170px; height:350px; display:inline-block'>
+		                                            <input type=checkbox id=s1><label for=s1>센서1</label><br>
+		                                            <input type=checkbox id=s2><label for=s2>센서2</label><br>
+		                                            <input type=checkbox id=s3><label for=s3>센서3</label><br>
+		                                            <input type=checkbox id=s4><label for=s4>센서4</label><br>
+		                                            </div>
+			                                    </div>
+			                                </div>
+			                                
+			                                <div class="form-group">
+			                                    <label class="control-label col-md-3">상태</label>
+			                                    <div class="col-md-9">
+		                                            <select name="state" class="form-control">
+						                            <option value="ACTIVE">활성</option>
+						                            <option value="INACTIVE">비활성</option>
+						                            </select>
+			                                    </div>
+			                                </div>
+			
+			                            </form>
+					                </div>
+					                <!-- END Modal Content -->
+					
+					                <!-- Modal footer -->
+					                <div class="modal-footer remove-margin">
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> 닫기</button>
+					                    <button type="button" class="btn btn-success W" id="btnSave" ><i class="fa fa-check"></i> 저장</button>
+					                </div>
+					                <!-- END Modal footer -->
+					            </div>
+					            <!-- END Modal Content -->
+					        </div>
+					        <!-- END Modal Dialog -->        
+					</div>
+					<!-- END user modal form -->
+                    
+                    
+        <!-- Javascript code only for this page -->
+        <script>
+        
+        	var editableTable = null;
+        	
+        	var dev_hash = {};
+  
+        	// 센서id목록을 이름목록으로...
+        	function sensor_names(sensors)
+        	{
+        		var names = [];
+        		var sids = [];
+        		
+        		if(sensors===undefined || sensors==null || sensors=="") {
+					$('[name=sensorids]').val("");
+					return "";
+				}
+        		
+        		var ids = sensors.split(",");
+        		for(var i=0; i<ids.length; i++)
+        			if(ids[i].length>0) {
+        				if(dev_hash[ids[i]]!==undefined) {
+	        				names.push(dev_hash[ids[i]].name);
+	        				sids.push(ids[i]);
+        				}
+        				
+        				$('[value='+ids[i]+']').prop('checked', true);
+        			}
+        		
+        		$('[name=sensorids]').val(sids.join(","));
+        		
+        		return names.length>0?names.join(","):"";
+        	}
+        	
+            $(function () {
+            	
+                $.post(App.baseurl+"/list",{qid:"sensorlist",column:"name",company:App.company}).done(
+                    	function(res){
+                    		$('.sensors').empty();
+                    		if(res.success)
+                    		{
+                    			dev_hash = {};
+                    			for(var i=0; i<res.list.length; i++)
+                    			{
+                    				dev_hash[res.list[i].id] = res.list[i];
+                    				if(res.list[i].state=="ACTIVE")
+	    	                			$('.sensors').append('&nbsp;<input name=sensor type=checkbox id=s'+i+' value="'+res.list[i].id+'"><label for=s'+i+'>&nbsp;'+res.list[i].name+'</label><br>');
+                    			}
+                    		}
+                    	});
+
+                var delHandle = function () {
+
+                    // When the user clicks on a delete button
+                    $('body').off('click', 'a.delRow').on('click', 'a.delRow', function () {
+                    	var id = $(this).data("id");
+                    	var row = $(this).parent().parent().index();
+                    	var d = editableTable.fnGetData(row);
+                		App.msg_confirm('삭제', '['+d.name+'] 정보를  삭제 할까요?', function() {
+                			App.start_loading('설비정보 삭제중');
+                			var cond = {qid:'devicedelete',id:id};
+                			console.log('delete==>', cond);
+                            $.post(App.baseurl+"/delete", cond).done(function (res) {
+                            	App.stop_loading();
+                            	if(res.success && res.result>0) {
+                            		editableTable.fnDeleteRow(row);
+                            	}
+                            	else {
+                                	App.msg_alert('삭제', '설비정보 삭제 실패하였습니다.');
+                            	}
+                            }).fail( function () {
+                            	App.stop_loading();
+                            	App.msg_alert('삭제', '설비정보 삭제  실패 하였습니다.');
+                            });
+                		} );
+                    });
+                };
+
+                var addHandle = function () {
+                     $("#btnAdd").click(function () {
+                    	$('#group-modal .modal-header h4').text('설비 등록');
+                    	$('#group-modal [name=sensors]').val('');
+                    	$('#group-modal [name=sensorids]').val('');
+                    	$('#group-modal [name=sensor]').prop('checked',false);
+                    	$('#group-modal [name=id]').val('');
+                    	$('#group-modal [name=name]').val('');
+                    	$('#group-modal [name=bigo]').val('');
+                    	$('#group-modal [name=state]').val("ACTIVE");
+                    	$('#group-modal').modal({backdrop:'static'});
+                    });
+                };
+                
+                var editHandle = function () {
+
+                    // When the user clicks on a delete button
+                    $('body').off('click', 'a.editRow').on('click', 'a.editRow', function () {
+
+                    	var uid = $(this).data("id");
+                    	var row = $(this).parent().parent().index();
+                    	var d = editableTable.fnGetData(row);
+                    	
+                    	$('#group-modal .modal-header h4').text('설비 정보수정');
+                    	
+                    	$('#group-modal [name=sensor]').prop('checked',false); // 순서 중요...
+                    	$('#group-modal [name=sensors]').val(sensor_names(d.sensorids));
+                    	$('#group-modal [name=sensorids]').val(d.sensorids);
+                    	$('#group-modal [name=id]').val(d.id);
+                    	$('#group-modal [name=name]').val(d.name);
+                    	$('#group-modal [name=bigo]').val(d.bigo);
+                    	$('#group-modal [name=state]').val(d.state);
+                    	
+                    	$('#group-modal').modal({backdrop:'static'});
+                    });
+                };
+                
+                editableTable = initgrid('#group-datatables',{
+                ajax: {
+                    url: App.baseurl+'/list', 
+                    type: 'POST',
+                    dataFilter: function(data){
+                        var jdata = jQuery.parseJSON( data );
+                        var json = {};
+                        json.recordsTotal = jdata.total;
+                        json.recordsFiltered = jdata.total;
+                        json.data = jdata.list;
+                        return JSON.stringify( json ); // return JSON string
+                    },
+                    data: function (d) {
+                    	d.qid = "devicelist";
+                    	var fld = "name";
+                    	d.column = fld;
+//                    	d.company = App.company;
+                    	d.find =  $('.dataTables_filter input').val();
+    				},
+                },
+                columns: [
+                    {orderable:false, className:'text-center', render : function(data, type, row, obj) { return obj.row+1+obj.settings._iDisplayStart; }},
+                    {data: "name"},
+                    {data: "bigo"}, 
+                    {data: "sensorids", render:function(data, type, row, obj) {return sensor_names(data);}}, 
+                    {data: "state", render : function(data, type, row, obj) { return state_str(data); }},
+                    {data: "wdate", render : function(data, type, row, obj) { return (new Date(data)).format("yyyy-MM-dd HH:mm:ss"); }}, 
+                    {data: "id", orderable:false, className:'text-center', render : function(data, type, row, obj) { return '<a href="javascript:void(0)" title="삭제" data-id="' + data + '" class="btn btn-xs btn-danger '+ delbtnclass +' delRow"><i class="fa fa-times"></i></a><a href="javascript:void(0)" title="수정" data-id="' + data + '" class="btn btn-xs btn-success editRow"><i class="fa fa-pencil"></i></a>'; }},
+                ],
+                paging: true,
+                serverSide: true,
+                processing: true, 
+                });
+                
+                $('.dataTables_filter input').attr('placeholder', '검색');
+
+                addHandle();
+                delHandle();
+                editHandle();
+
+            });
+            
+            $(document).off('click','[name=sensor]').on('click','[name=sensor]',function() {
+            	
+            	var sensors = $('[name=sensorids]').val();
+            	var txt = $(this).next().text();
+            	
+            	if($(this).is(":checked")) // +
+            	{
+            		sensors += (sensors.length>0?",":"")+ $(this).val();
+            	}
+            	else // -
+            	{
+            		sensors = sensors.split($(this).val()).join('');
+            	}
+        		$('[name=sensors]').val(sensor_names(sensors));
+            	
+            });
+            
+            $('#btnSave').click(function() {
+
+                if($("#group-modal [name=name]").val()=="")
+                {
+                    App.msg_alert('입력오류', '설비명을 입력하지 않았습니다.');
+                    return;
+                }
+
+                var data = {qid:"deviceupdate"};
+            	var uid = hashcode('fac_');
+                var url = App.baseurl+"/update";
+                
+                if($("#group-modal [name=id]").val()=="") {
+                	url = App.baseurl+"/insert";
+                	data.qid = "deviceadd";
+                	data.id = uid;
+               	}
+                else data.id = $("#group-modal [name=id]").val();
+                
+                data.name = $('#group-modal [name=name]').val();
+                data.bigo = $('#group-modal [name=bigo]').val();
+                data.state = $('#group-modal [name=state]').val();
+                data.company = App.company;
+                App.start_loading('정보저장중');
+                $.post(url, data).done(function(res) {
+                    console.log(res);
+                    if(res.success)
+                    {
+                      	App.stop_loading();
+                      	
+                      	var posts = [];
+                      	// 서ㄹ비센서 목록 삭제..
+//                      	$.post(App.baseurl+"/delete",{qid:"facilitysensordelete", facilityid:data.id});
+                      	posts.push({url:App.baseurl+"/delete",data:{qid:"devicesensordelete", deviceid:data.id}});
+                      	// 설비 센서 목록 추가...
+                      	var sensors = $('[name=sensorids]').val();
+                      	var sids = sensors.split(",");
+                      	for(var i=0; i<sids.length; i++)
+                      	{
+                      		if(sids[i]=="") continue; 
+//                      		$.post(App.baseurl+"/insert",{qid:"facilitysensoradd", facilityid:data.id, deviceid:sids[i]});
+                          	posts.push({url:App.baseurl+"/insert",data:{qid:"devicesensoradd", deviceid:data.id, sensorid:sids[i]}});
+                      	}
+                      	
+                      	// 다중 post...
+                      	multi_post(posts);
+                      	
+                      	$('#group-modal').modal('hide');
+                       	App.msg_alert('설비정보', '저장되었습니다.', function() { $('#group-datatables').DataTable().ajax.reload(null, false); });
+                    }
+                    else {
+                        App.stop_loading();
+                        App.msg_alert('설비정보', '저장에 실패 하였습니다.');
+                    }
+                }).fail(function(e) {
+                    App.stop_loading();
+                    console.log('error=>',e);
+                    App.msg_alert('설비정보', '저장에 실패 하였습니다.');
+                }); 
+
+            }); 
+
+			// W 권한 없을때...
+			var delbtnclass = "";
+			if(App.menus[App.curpage] !== undefined)
+			{
+				if(App.menus[App.curpage].rwtype!="W") {
+					$('button.W').hide();
+					delbtnclass = 'hide';
+				}
+			}
+            
+        </script>
